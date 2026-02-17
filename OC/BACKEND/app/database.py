@@ -16,21 +16,24 @@ def build_mysql_url():
         return f"mysql+pymysql://{user}:{pwd}@{host}:{port}/{name}?charset=utf8mb4"
     return None
 
-# Prioridad: DATABASE_URL (prod) -> Variables individuales MySQL -> SQLite (solo dev/fallback)
+# Prioridad: DATABASE_URL (prod/Supabase) -> Variables individuales MySQL -> SQLite (dev/fallback)
 DATABASE_URL = (
     os.getenv("DATABASE_URL")
     or build_mysql_url()
     or "sqlite:///./oc_calisthenics.db"
 )
 
-# Configuración del engine
+# Algunos proveedores usan "postgres://" pero SQLAlchemy requiere "postgresql://"
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Configuracion del engine segun el tipo de base de datos
 engine_kwargs = {}
 if DATABASE_URL.startswith("sqlite"):
-    # Solo para SQLite (fallback de desarrollo)
     engine_kwargs["connect_args"] = {"check_same_thread": False}
-elif DATABASE_URL.startswith("mysql"):
-    # Para MySQL: pool_pre_ping y pool_recycle ya están en create_engine
-    pass
+elif DATABASE_URL.startswith("postgresql"):
+    engine_kwargs["pool_size"] = 5
+    engine_kwargs["max_overflow"] = 10
 
 engine = create_engine(
     DATABASE_URL,
