@@ -1,0 +1,19 @@
+[Unit]
+Description=OC-Calisthenics FastAPI Backend
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/OC-Calisthenics/OC/BACKEND
+Environment="PATH=/home/ubuntu/OC-Calisthenics/OC/BACKEND/venv/bin:/usr/bin:/bin"
+EnvironmentFile=/home/ubuntu/OC-Calisthenics/OC/BACKEND/.env
+ExecStart=/home/ubuntu/OC-Calisthenics/OC/BACKEND/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
