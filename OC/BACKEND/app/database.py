@@ -35,6 +35,8 @@ elif DATABASE_URL.startswith("postgresql"):
     engine_kwargs["pool_size"] = 5
     engine_kwargs["max_overflow"] = 10
 
+print(f"[DB] Conectando a: {DATABASE_URL.split('@')[1] if '@' in DATABASE_URL else DATABASE_URL[:30]}...")
+
 engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,

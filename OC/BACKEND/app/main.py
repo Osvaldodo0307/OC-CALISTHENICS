@@ -26,15 +26,16 @@ from app.routes import (
 )
 
 # =========================
-# Crear tablas (solo si no existen)
+# Crear tablas y seeds al iniciar
 # =========================
-Base.metadata.create_all(bind=engine)
+def init_database():
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("[DB] Tablas creadas/verificadas.")
+    except Exception as e:
+        print(f"[DB] Error creando tablas (reintentara en requests): {e}")
+        return
 
-
-# =========================
-# Seed automatico (solo si la BD esta vacia)
-# =========================
-def run_seeds():
     db = SessionLocal()
     try:
         existing_admin = db.query(User).filter(User.username == "octavio").first()
@@ -91,7 +92,7 @@ def run_seeds():
         db.close()
 
 
-run_seeds()
+init_database()
 
 # =========================
 # App principal
