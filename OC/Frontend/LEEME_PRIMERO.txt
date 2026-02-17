@@ -1,0 +1,44 @@
+═══════════════════════════════════════════════════════════════
+  IMPORTANTE: LEE ESTO ANTES DE SUBIR A NETLIFY
+═══════════════════════════════════════════════════════════════
+
+Esta carpeta contiene el frontend de OC-CALISTHENICS listo para 
+subir directamente a Netlify.
+
+PASOS RÁPIDOS:
+──────────────
+
+1. Ve a https://app.netlify.com
+2. Arrastra esta carpeta completa a Netlify
+3. Configura la variable de entorno VITE_API_URL con la URL 
+   de tu backend en Render
+4. ¡Listo!
+
+CONFIGURACIÓN NECESARIA:
+─────────────────────────
+
+Después de subir, en Netlify:
+- Site settings → Environment variables
+- Agrega: VITE_API_URL = https://tu-backend.onrender.com
+
+ARCHIVOS INCLUIDOS:
+───────────────────
+
+✅ Todos los archivos fuente (src/)
+✅ Configuración de Netlify (netlify.toml)
+✅ Dependencias (package.json)
+✅ Configuraciones de build
+
+NO INCLUIDOS (no son necesarios):
+───────────────────────────────────
+
+❌ node_modules (se instala automáticamente en Netlify)
+❌ dist (se genera automáticamente en Netlify)
+
+MÁS INFORMACIÓN:
+────────────────
+
+Lee el archivo GUIA_COMPLETA_NETLIFY.md en la carpeta OC para 
+instrucciones detalladas.
+
+═══════════════════════════════════════════════════════════════

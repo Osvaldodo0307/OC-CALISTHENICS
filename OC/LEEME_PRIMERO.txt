@@ -1,0 +1,58 @@
+╔══════════════════════════════════════════════════════════════╗
+║          OC-CALISTHENICS - INICIO RAPIDO                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+🚀 PARA INICIAR LA APLICACION:
+
+   ════════════════════════════════════════════════════════
+   👉 DOBLE CLIC EN:  INICIAR.bat
+   ════════════════════════════════════════════════════════
+
+   O también puedes usar:
+   - INICIAR_APP.bat
+   - INICIAR_APP.ps1
+
+🛑 PARA DETENER LA APLICACION:
+
+   ════════════════════════════════════════════════════════
+   👉 DOBLE CLIC EN:  DETENER_APP.bat
+   ════════════════════════════════════════════════════════
+
+═══════════════════════════════════════════════════════════════
+
+📋 QUE HACE EL SCRIPT AUTOMATICO:
+
+   1. ✅ Verifica si el Backend está corriendo (puerto 8000)
+      → Si no, lo inicia automáticamente
+
+   2. ✅ Verifica si el Frontend está corriendo (puerto 5173)
+      → Si no, lo inicia automáticamente
+
+   3. ✅ Verifica si los ejercicios están importados
+      → Si no, los importa automáticamente del Excel
+
+   4. ✅ Abre tu navegador con la aplicación
+
+═══════════════════════════════════════════════════════════════
+
+🌐 URLs DESPUES DE INICIAR:
+
+   • Frontend:     http://localhost:5173
+   • Backend API:  http://localhost:8000
+   • Documentación: http://localhost:8000/docs
+
+═══════════════════════════════════════════════════════════════
+
+👤 CREDENCIALES DEMO:
+
+   Admin:  admin / admin123
+   Coach:  coach1 / coach123
+   Socio:  socio1 / socio123
+
+═══════════════════════════════════════════════════════════════
+
+📖 MAS INFORMACION:
+
+   Lee: README_INICIO_RAPIDO.md
+
+═══════════════════════════════════════════════════════════════

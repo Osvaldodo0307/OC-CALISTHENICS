@@ -1,0 +1,55 @@
+═══════════════════════════════════════════════════════════════
+  ✅ ARCHIVOS LISTOS PARA NETLIFY
+═══════════════════════════════════════════════════════════════
+
+He creado la carpeta Frontend con todos los archivos de 
+configuración necesarios.
+
+LO QUE YA ESTÁ LISTO:
+─────────────────────
+
+✅ package.json
+✅ netlify.toml
+✅ vite.config.ts
+✅ index.html
+✅ tailwind.config.js
+✅ postcss.config.js
+✅ tsconfig.json
+✅ tsconfig.node.json
+✅ .env (crear manualmente con VITE_API_URL)
+
+LO QUE FALTA COPIAR MANUALMENTE:
+────────────────────────────────
+
+Solo si tu codigo esta en otra ruta, copia estas 2 carpetas desde:
+C:\RUTA\ORIGEN\frontend
+
+A:
+C:\RUTA\PROYECTO\OC\Frontend
+
+1. 📁 src/ (carpeta completa con todos los archivos)
+2. 📁 public/ (carpeta completa con vite.svg)
+
+CÓMO COPIAR:
+────────────
+
+1. Abre el Explorador de Archivos
+2. Ve a: C:\RUTA\ORIGEN\frontend
+3. Copia las carpetas "src" y "public"
+4. Péguelas en: C:\RUTA\PROYECTO\OC\Frontend
+
+DESPUÉS DE COPIAR:
+──────────────────
+
+1. Ve a https://app.netlify.com
+2. Arrastra la carpeta Frontend completa a Netlify
+3. Configura VITE_API_URL con la URL de tu backend en Render
+4. ¡Listo!
+
+MÁS DETALLES:
+─────────────
+
+Lee el archivo GUIA_COMPLETA_NETLIFY.md para instrucciones 
+detalladas paso a paso.
+
+═══════════════════════════════════════════════════════════════

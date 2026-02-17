@@ -1,0 +1,56 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║          🏋️ OC-CALISTHENICS - INICIO AUTOMATICO 🏋️            ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────┐
+│  🚀 PARA INICIAR (UN SOLO CLIC):                                │
+│                                                                  │
+│     👉 DOBLE CLIC EN:  INICIAR.bat                              │
+│                                                                  │
+│     O también:  INICIAR_APP.bat                                 │
+└──────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────┐
+│  🛑 PARA DETENER:                                                │
+│                                                                  │
+│     👉 DOBLE CLIC EN:  DETENER_APP.bat                          │
+└──────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+
+El script automático hace TODO por ti:
+
+  ✅ Inicia el Backend (puerto 8000)
+  ✅ Inicia el Frontend (puerto 5173)
+  ✅ Importa ejercicios del Excel (si faltan)
+  ✅ Abre el navegador automáticamente
+
+═══════════════════════════════════════════════════════════════════
+
+🌐 URLs después de iniciar:
+
+  • Frontend:     http://localhost:5173
+  • Backend API: http://localhost:8000
+  • Documentación: http://localhost:8000/docs
+
+═══════════════════════════════════════════════════════════════════
+
+👤 Credenciales Demo:
+
+  Admin:  admin / admin123
+  Coach:  coach1 / coach123
+  Socio:  socio1 / socio123
+
+═══════════════════════════════════════════════════════════════════
+
+✨ NUEVAS FUNCIONALIDADES:
+
+  • Generar rutinas por categorías y nivel
+  • Gestión completa de membresías (activar/desactivar)
+  • Crear alumnos desde el panel de coach
+  • Dar de baja usuarios desde admin
+  • Gráficas optimizadas (no se escalan)
+
+═══════════════════════════════════════════════════════════════════

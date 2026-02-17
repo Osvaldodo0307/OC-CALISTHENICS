@@ -1,0 +1,55 @@
+═══════════════════════════════════════════════════════════════
+  IMPORTANTE: LEE ESTO ANTES DE SUBIR A GITHUB
+═══════════════════════════════════════════════════════════════
+
+Esta carpeta contiene el backend de OC-CALISTHENICS listo para 
+subir a GitHub y conectar con Render.
+
+PASOS RÁPIDOS:
+──────────────
+
+1. Si tu backend está en otra ruta, copia todos los archivos desde:
+   C:\RUTA\ORIGEN\backend
+   
+   A esta carpeta (excluyendo venv, __pycache__, *.db, .env)
+
+2. Crea un repositorio en GitHub
+
+3. Sube esta carpeta a GitHub
+
+4. Conecta el repositorio con Render
+
+5. Configura las variables de entorno en Render
+
+ARCHIVOS INCLUIDOS:
+───────────────────
+
+✅ app/ (carpeta completa con todo el código)
+✅ requirements.txt (dependencias)
+✅ render.yaml (configuración de Render)
+✅ seed.py (datos demo)
+✅ .gitignore (archivos a ignorar)
+
+NO INCLUIR:
+───────────
+
+❌ venv/ (entorno virtual)
+❌ __pycache__/ (caché de Python)
+❌ *.db (archivos de base de datos)
+❌ .env (variables de entorno locales)
+
+CONFIGURACIÓN EN RENDER:
+─────────────────────────
+
+1. Crear base de datos PostgreSQL en Render
+2. Configurar DATABASE_URL con la URL de PostgreSQL
+3. Configurar SECRET_KEY (generar una aleatoria)
+4. Render detectará automáticamente render.yaml
+
+MÁS INFORMACIÓN:
+────────────────
+
+Lee el archivo INSTRUCCIONES_GITHUB_RENDER.md para 
+instrucciones detalladas paso a paso.
+
+═══════════════════════════════════════════════════════════════

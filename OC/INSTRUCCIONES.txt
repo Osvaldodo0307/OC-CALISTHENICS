@@ -1,0 +1,60 @@
+═══════════════════════════════════════════════════════════════
+  INSTRUCCIONES PARA COPIAR EL FRONTEND A NETLIFY
+═══════════════════════════════════════════════════════════════
+
+OPCIÓN 1: Copiar Manualmente (Más Fácil)
+───────────────────────────────────────────
+
+1. Abre el Explorador de Archivos
+2. Ve a: C:\RUTA\PROYECTO\OC\Frontend
+3. Selecciona TODOS los archivos y carpetas EXCEPTO:
+   ❌ node_modules
+   ❌ dist
+   ❌ .git
+   ❌ .npm-cache
+4. Copia (Ctrl+C) solo si vas a duplicar la carpeta
+5. Pega (Ctrl+V) en tu carpeta destino (opcional)
+
+OPCIÓN 2: Usar el Script PowerShell
+─────────────────────────────────────
+
+1. Abre PowerShell como Administrador
+2. Navega a: cd "C:\RUTA\PROYECTO\OC"
+3. Ejecuta: .\COPIAR_FRONTEND.ps1
+
+OPCIÓN 3: Usar Robocopy (Más Confiable)
+─────────────────────────────────────────
+
+Abre PowerShell y ejecuta:
+
+robocopy "C:\RUTA\PROYECTO\OC\Frontend" "C:\RUTA\DESTINO\Frontend" /E /XD node_modules dist .git .npm-cache /XF package-lock.json
+
+Luego copia manualmente:
+- package.json
+- package-lock.json
+- netlify.toml
+- vite.config.ts
+- tailwind.config.js
+- postcss.config.js
+- tsconfig.json
+- tsconfig.node.json
+- index.html
+- (Crear .env manualmente si necesitas variables locales)
+
+═══════════════════════════════════════════════════════════════
+
+DESPUÉS DE COPIAR:
+──────────────────
+
+1. Verifica que la carpeta Frontend tenga:
+   ✅ src/ (con todos los archivos)
+   ✅ public/
+   ✅ package.json
+   ✅ netlify.toml
+   ✅ Todos los archivos de configuración
+
+2. Ve a Netlify y arrastra la carpeta Frontend completa
+
+3. Configura la variable de entorno VITE_API_URL con la URL de tu backend en Render
+
+═══════════════════════════════════════════════════════════════

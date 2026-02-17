@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+.npm-cache/
+
+# Build output
+dist/
+
+# Environment variables (local overrides)
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
