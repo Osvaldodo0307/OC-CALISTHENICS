@@ -149,11 +149,18 @@ export default function Classes() {
   const dayIsSunday = isSunday(selectedDate)
   const isToday = selectedDate === getTodayStr()
 
-  const regularClasses = classes.filter((c) => !isOpenGymOrPowerlifting(c.title))
-  const specialClasses = classes.filter((c) => isOpenGymOrPowerlifting(c.title))
-
   const selectedDayOfWeek = new Date(selectedDate + 'T12:00:00').getDay()
   const isSaturday = selectedDayOfWeek === 6
+
+  const filteredClasses = isSaturday
+    ? classes.filter((c) => {
+        const hour = new Date(c.start_datetime).getHours()
+        return !isOpenGymOrPowerlifting(c.title) && (hour === 10 || hour === 11)
+      })
+    : classes
+
+  const regularClasses = filteredClasses.filter((c) => !isOpenGymOrPowerlifting(c.title))
+  const specialClasses = filteredClasses.filter((c) => isOpenGymOrPowerlifting(c.title))
 
   const { start: gymStart, end: gymEnd } = getGymHours(selectedDate)
   const hourSlots = Array.from({ length: gymEnd - gymStart }, (_, i) => gymStart + i)
