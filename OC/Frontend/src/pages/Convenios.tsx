@@ -1,47 +1,15 @@
 import { Link } from 'react-router-dom'
+import PublicNav from '../components/PublicNav'
 
 export default function Convenios() {
   const aliados = [
-    { name: 'Dentistas (Dr. Ortiz)', category: 'Salud Dental' },
-    { name: 'Nutrición', category: 'Salud y Bienestar' },
-    { name: 'Masajista', category: 'Recuperación' },
     { name: 'CCDF (Certificaciones)', category: 'Educación' },
     { name: 'Team Youri Yeshua (World Strong Man)', category: 'Deporte' },
-    { name: 'Barbershop Richard', category: 'Belleza y Cuidado Personal' },
-    { name: 'Team Wolf', category: 'Deporte' },
-    { name: 'Resilience (accesorios / joyería)', category: 'Accesorios' },
   ]
 
   return (
     <div className="min-h-screen bg-oc-dark text-oc-light">
-      {/* Header */}
-      <header className="bg-oc-metal border-b border-oc-red/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="flex items-center gap-3">
-              <img
-                src="/logo-oc.jpg"
-                alt="OC Calisthenics"
-                className="h-10 w-10 object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement
-                  target.src = '/oc-logo.png'
-                }}
-              />
-              <div className="leading-tight">
-                <span className="text-oc-red font-bold text-xl">OC</span>
-                <span className="text-oc-light block text-xs tracking-[0.2em]">CALISTHENICS</span>
-              </div>
-            </Link>
-            <Link
-              to="/app/login"
-              className="bg-oc-red hover:bg-oc-red-deep text-white px-6 py-2 rounded-full font-semibold text-sm transition-all"
-            >
-              Entrar al Sistema
-            </Link>
-          </div>
-        </div>
-      </header>
+      <PublicNav />
 
       {/* Hero Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-oc-dark to-oc-metal">
@@ -64,7 +32,7 @@ export default function Convenios() {
             <p className="text-oc-muted">Partners estratégicos para tu bienestar integral</p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 max-w-2xl mx-auto gap-6">
             {aliados.map((aliado, index) => (
               <div
                 key={index}

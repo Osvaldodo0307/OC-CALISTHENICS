@@ -1,144 +1,13 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import PublicNav from '../components/PublicNav'
 
 export default function Landing() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-      setMobileMenuOpen(false)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-oc-dark text-oc-light">
-      {/* Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-oc-dark/95 backdrop-blur-sm border-b border-oc-border">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <img
-                src="/logo-oc.jpg"
-                alt="OC Calisthenics"
-                className="h-10 w-10 object-contain transition-transform group-hover:scale-105"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement
-                  target.src = '/oc-logo.png'
-                }}
-              />
-              <div className="leading-tight">
-                <span className="text-oc-red font-bold text-xl tracking-tight">OC</span>
-                <span className="text-oc-light block text-xs tracking-[0.2em] font-medium">CALISTHENICS</span>
-              </div>
-            </Link>
-
-            {/* Desktop Navigation Pills */}
-            <div className="hidden md:flex items-center gap-2">
-              <button
-                onClick={() => scrollToSection('club')}
-                className="px-4 py-2 rounded-full text-sm font-medium text-oc-light hover:text-oc-red hover:bg-oc-metal/50 transition-colors"
-              >
-                Club
-              </button>
-              <Link
-                to="/clases"
-                className="px-4 py-2 rounded-full text-sm font-medium text-oc-light hover:text-oc-red hover:bg-oc-metal/50 transition-colors"
-              >
-                Clases
-              </Link>
-              <Link
-                to="/membresias"
-                className="px-4 py-2 rounded-full text-sm font-medium text-oc-light hover:text-oc-red hover:bg-oc-metal/50 transition-colors"
-              >
-                Membresías
-              </Link>
-              <Link
-                to="/convenios"
-                className="px-4 py-2 rounded-full text-sm font-medium text-oc-light hover:text-oc-red hover:bg-oc-metal/50 transition-colors"
-              >
-                Convenios
-              </Link>
-              <button
-                onClick={() => scrollToSection('contacto')}
-                className="px-4 py-2 rounded-full text-sm font-medium text-oc-light hover:text-oc-red hover:bg-oc-metal/50 transition-colors"
-              >
-                Contacto
-              </button>
-              <Link
-                to="/app/login"
-                className="ml-4 px-6 py-2 rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold text-sm transition-all hover:shadow-lg hover:shadow-oc-red/50"
-              >
-                Entrar al Sistema
-              </Link>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-oc-light hover:text-oc-red transition-colors"
-              aria-label="Menu"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {mobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden py-4 border-t border-oc-border">
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={() => scrollToSection('club')}
-                  className="px-4 py-2 text-left text-oc-light hover:text-oc-red hover:bg-oc-metal/50 rounded-lg transition-colors"
-                >
-                  Club
-                </button>
-                <Link
-                  to="/clases"
-                  className="px-4 py-2 text-left text-oc-light hover:text-oc-red hover:bg-oc-metal/50 rounded-lg transition-colors block"
-                >
-                  Clases
-                </Link>
-                <Link
-                  to="/membresias"
-                  className="px-4 py-2 text-left text-oc-light hover:text-oc-red hover:bg-oc-metal/50 rounded-lg transition-colors block"
-                >
-                  Membresías
-                </Link>
-                                <Link
-                                  to="/convenios"
-                                  className="px-4 py-2 text-left text-oc-light hover:text-oc-red hover:bg-oc-metal/50 rounded-lg transition-colors block"
-                                >
-                                  Convenios
-                                </Link>
-                <button
-                  onClick={() => scrollToSection('contacto')}
-                  className="px-4 py-2 text-left text-oc-light hover:text-oc-red hover:bg-oc-metal/50 rounded-lg transition-colors"
-                >
-                  Contacto
-                </button>
-                <Link
-                  to="/app/login"
-                  className="mt-2 px-4 py-2 text-center rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold transition-colors"
-                >
-                  Entrar al Sistema
-                </Link>
-              </div>
-            </div>
-          )}
-        </nav>
-      </header>
+      <PublicNav />
 
       {/* Hero Section - Imagen derecha, copy izquierda */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
+      <section className="pt-12 pb-20 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-5rem)] flex items-center">
         <div className="max-w-7xl mx-auto w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Copy izquierda */}
@@ -526,18 +395,18 @@ export default function Landing() {
             <div>
               <h4 className="text-oc-light font-semibold mb-4">Enlaces</h4>
               <div className="space-y-2">
-                <button onClick={() => scrollToSection('club')} className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                <button onClick={() => document.getElementById('club')?.scrollIntoView({ behavior: 'smooth' })} className="block text-oc-muted hover:text-oc-red text-sm transition-colors text-left">
                   Club
                 </button>
-                <button onClick={() => scrollToSection('clases')} className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                <Link to="/clases" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
                   Clases
-                </button>
-                <button onClick={() => scrollToSection('precios')} className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                </Link>
+                <Link to="/membresias" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
                   Membresías
-                </button>
-                                <Link to="/convenios" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
-                                  Convenios
-                                </Link>
+                </Link>
+                <Link to="/convenios" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                  Convenios
+                </Link>
               </div>
             </div>
 

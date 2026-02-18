@@ -1,36 +1,10 @@
 import { Link } from 'react-router-dom'
+import PublicNav from '../components/PublicNav'
 
 export default function ClasesInfo() {
   return (
     <div className="min-h-screen bg-oc-dark text-oc-light">
-      {/* Header */}
-      <header className="bg-oc-metal border-b border-oc-red/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="flex items-center gap-3">
-              <img
-                src="/logo-oc.jpg"
-                alt="OC Calisthenics"
-                className="h-10 w-10 object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement
-                  target.src = '/oc-logo.png'
-                }}
-              />
-              <div className="leading-tight">
-                <span className="text-oc-red font-bold text-xl">OC</span>
-                <span className="text-oc-light block text-xs tracking-[0.2em]">CALISTHENICS</span>
-              </div>
-            </Link>
-            <Link
-              to="/app/login"
-              className="bg-oc-red hover:bg-oc-red-deep text-white px-6 py-2 rounded-full font-semibold text-sm transition-all"
-            >
-              Entrar al Sistema
-            </Link>
-          </div>
-        </div>
-      </header>
+      <PublicNav />
 
       {/* Hero Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-oc-dark to-oc-metal">
