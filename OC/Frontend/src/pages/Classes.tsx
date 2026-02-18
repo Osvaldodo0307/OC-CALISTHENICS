@@ -26,22 +26,20 @@ const MONTHS_ES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio
 
 function formatDateLabel(dateStr: string): string {
   const d = new Date(dateStr + 'T12:00:00')
-  const dayName = DAYS_ES[d.getDay()]
-  const dayNum = d.getDate()
-  const month = MONTHS_ES[d.getMonth()]
-  return `${dayName} ${dayNum} de ${month}`
-}
-
-function getTimeLabel(startDatetime: string): string {
-  const d = new Date(startDatetime)
-  const h = d.getHours()
-  const m = d.getMinutes()
-  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`
+  return `${DAYS_ES[d.getDay()]} ${d.getDate()} de ${MONTHS_ES[d.getMonth()]}`
 }
 
 function isOpenGymOrPowerlifting(title: string): boolean {
   const t = title.toUpperCase()
   return t.includes('OPEN GYM') || t.includes('POWERLIFTING')
+}
+
+function getGymHours(dateStr: string): { start: number; end: number } {
+  const d = new Date(dateStr + 'T12:00:00')
+  const day = d.getDay()
+  if (day === 6) return { start: 8, end: 16 }
+  if (day === 0) return { start: 6, end: 23 }
+  return { start: 6, end: 23 }
 }
 
 export default function Classes() {
@@ -52,6 +50,7 @@ export default function Classes() {
     return today.toISOString().split('T')[0]
   })
   const [actionLoading, setActionLoading] = useState<number | null>(null)
+  const [expandedCard, setExpandedCard] = useState<number | null>(null)
   const { user } = useAuth()
 
   const fetchClasses = useCallback(async () => {
@@ -75,7 +74,7 @@ export default function Classes() {
   const handleBook = async (classId: number) => {
     setActionLoading(classId)
     try {
-      await axios.post(`${API_URL}/bookings`, { class_id: classId, status: 'booked' })
+      await axios.post(`${API_URL}/bookings/`, { class_id: classId, status: 'booked' })
       await fetchClasses()
     } catch (error) {
       const message = axios.isAxiosError(error)
@@ -110,6 +109,12 @@ export default function Classes() {
 
   const isToday = selectedDate === new Date().toISOString().split('T')[0]
 
+  const regularClasses = classes.filter((c) => !isOpenGymOrPowerlifting(c.title))
+  const specialClasses = classes.filter((c) => isOpenGymOrPowerlifting(c.title))
+
+  const { start: gymStart, end: gymEnd } = getGymHours(selectedDate)
+  const hourSlots = Array.from({ length: gymEnd - gymStart }, (_, i) => gymStart + i)
+
   return (
     <div className="px-4 max-w-2xl mx-auto">
       {/* Date navigation */}
@@ -124,12 +129,8 @@ export default function Classes() {
         </button>
 
         <div className="text-center">
-          <h1 className="text-xl font-bold text-white">
-            {formatDateLabel(selectedDate)}
-          </h1>
-          {isToday && (
-            <span className="text-xs text-oc-red font-semibold">HOY</span>
-          )}
+          <h1 className="text-xl font-bold text-white">{formatDateLabel(selectedDate)}</h1>
+          {isToday && <span className="text-xs text-oc-red font-semibold">HOY</span>}
         </div>
 
         <button
@@ -166,7 +167,6 @@ export default function Classes() {
         })}
       </div>
 
-      {/* Classes list */}
       {loading ? (
         <div className="text-center py-12">
           <div className="animate-spin w-8 h-8 border-2 border-oc-red border-t-transparent rounded-full mx-auto mb-4" />
@@ -177,9 +177,102 @@ export default function Classes() {
           <p className="text-gray-400 text-lg">No hay clases programadas para este día</p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {classes.map((cls) => {
-            const isSpecial = isOpenGymOrPowerlifting(cls.title)
+        <div className="space-y-4">
+          {/* OPEN GYM / POWERLIFTING — expandable cards */}
+          {specialClasses.map((cls) => {
+            const isExpanded = expandedCard === cls.id
+            const isBooked = cls.is_booked_by_me
+
+            return (
+              <div
+                key={cls.id}
+                className={`bg-oc-metal rounded-xl border overflow-hidden transition-all ${
+                  isBooked
+                    ? 'border-green-500/50 shadow-lg shadow-green-500/10'
+                    : 'border-gray-700/50'
+                }`}
+              >
+                {/* Header — clickable to expand */}
+                <button
+                  onClick={() => setExpandedCard(isExpanded ? null : cls.id)}
+                  className="w-full p-4 flex items-center justify-between text-left"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
+                      isBooked ? 'bg-green-500' : 'bg-oc-red'
+                    }`} />
+                    <div>
+                      <h3 className={`font-bold text-base ${
+                        isBooked ? 'text-green-400' : 'text-white'
+                      }`}>
+                        {cls.title}
+                      </h3>
+                      <p className="text-xs text-gray-500">
+                        {isBooked ? '✓ Ya tienes reserva' : 'Toca para elegir horario'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {cls.bookings_count > 0 && (
+                      <span className="text-gray-500 text-sm">{cls.bookings_count} 👤</span>
+                    )}
+                    <svg
+                      className={`w-5 h-5 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </button>
+
+                {/* Expanded: hourly slots */}
+                {isExpanded && (
+                  <div className="border-t border-gray-700/50 p-4">
+                    <p className="text-gray-400 text-xs mb-3">
+                      Selecciona la hora a la que planeas asistir:
+                    </p>
+                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                      {hourSlots.map((hour) => (
+                        <button
+                          key={hour}
+                          onClick={() => handleBook(cls.id)}
+                          disabled={actionLoading === cls.id || isBooked}
+                          className={`py-2 px-1 rounded-lg text-sm font-medium transition-colors ${
+                            isBooked
+                              ? 'bg-green-600/20 text-green-400 border border-green-600/30 cursor-default'
+                              : 'bg-oc-dark border border-gray-700 text-white hover:border-oc-red hover:bg-oc-red/10 active:bg-oc-red active:text-white'
+                          }`}
+                        >
+                          {hour.toString().padStart(2, '0')}:00
+                        </button>
+                      ))}
+                    </div>
+                    {isBooked && cls.my_booking_id && (
+                      <button
+                        onClick={() => handleCancel(cls.my_booking_id!)}
+                        disabled={actionLoading === cls.my_booking_id}
+                        className="mt-3 w-full py-2 rounded-lg bg-red-900/30 border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-900/50 transition-colors"
+                      >
+                        {actionLoading === cls.my_booking_id ? 'Cancelando...' : 'Cancelar reserva'}
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+
+          {/* Separator */}
+          {specialClasses.length > 0 && regularClasses.length > 0 && (
+            <div className="flex items-center gap-3 py-2">
+              <div className="flex-1 h-px bg-gray-700" />
+              <span className="text-gray-500 text-xs uppercase tracking-wide">Clases del día</span>
+              <div className="flex-1 h-px bg-gray-700" />
+            </div>
+          )}
+
+          {/* Regular classes */}
+          {regularClasses.map((cls) => {
             const isBooked = cls.is_booked_by_me
             const isProcessing = actionLoading === cls.id || actionLoading === cls.my_booking_id
 
@@ -193,60 +286,45 @@ export default function Classes() {
                 }`}
               >
                 <div className="p-4">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      {/* Booking indicator */}
                       <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
                         isBooked ? 'bg-green-500' : 'bg-gray-600'
                       }`} />
-
-                      {/* Class info */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className={`font-bold truncate ${
-                          isBooked ? 'text-green-400' : 'text-white'
-                        }`}>
-                          {isSpecial ? cls.title : cls.title}
-                        </h3>
-                        {isSpecial && (
-                          <p className="text-xs text-gray-500">Disponible todo el día</p>
-                        )}
-                      </div>
+                      <h3 className={`font-bold text-base truncate ${
+                        isBooked ? 'text-green-400' : 'text-white'
+                      }`}>
+                        {cls.title}
+                      </h3>
                     </div>
-
-                    {/* Right side: people count + action */}
-                    <div className="flex items-center gap-3 flex-shrink-0">
-                      {cls.bookings_count > 0 && (
-                        <div className="flex items-center gap-1 text-gray-400">
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
-                          </svg>
-                          <span className="text-sm font-medium">{cls.bookings_count}</span>
-                        </div>
-                      )}
-
-                      {user && (
-                        isBooked ? (
-                          <button
-                            onClick={() => cls.my_booking_id && handleCancel(cls.my_booking_id)}
-                            disabled={isProcessing}
-                            className="bg-green-600 hover:bg-red-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
-                          >
-                            {isProcessing ? '...' : '✓ Agendado'}
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleBook(cls.id)}
-                            disabled={isProcessing}
-                            className="bg-oc-red hover:bg-oc-red-deep text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
-                          >
-                            {isProcessing ? '...' : 'Agendar'}
-                          </button>
-                        )
-                      )}
-                    </div>
+                    {cls.bookings_count > 0 && (
+                      <span className="text-gray-500 text-sm ml-2 flex-shrink-0">
+                        {cls.bookings_count} 👤
+                      </span>
+                    )}
                   </div>
 
-                  {/* Progress bar */}
+                  {/* Action button — full width, clear text */}
+                  {user && (
+                    isBooked ? (
+                      <button
+                        onClick={() => cls.my_booking_id && handleCancel(cls.my_booking_id)}
+                        disabled={isProcessing}
+                        className="w-full py-2.5 rounded-lg bg-green-600 hover:bg-red-600 text-white text-sm font-semibold transition-colors disabled:opacity-50"
+                      >
+                        {isProcessing ? 'Cancelando...' : '✓ Agendado — toca para cancelar'}
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleBook(cls.id)}
+                        disabled={isProcessing}
+                        className="w-full py-2.5 rounded-lg bg-oc-red hover:bg-oc-red-deep text-white text-sm font-semibold transition-colors disabled:opacity-50"
+                      >
+                        {isProcessing ? 'Reservando...' : 'Agendar clase'}
+                      </button>
+                    )
+                  )}
+
                   {cls.bookings_count > 0 && (
                     <div className="mt-3 h-1.5 bg-gray-700 rounded-full overflow-hidden">
                       <div
@@ -255,7 +333,7 @@ export default function Classes() {
                         }`}
                         style={{
                           width: `${Math.min((cls.bookings_count / Math.max(cls.capacity || 20, 1)) * 100, 100)}%`,
-                          minWidth: cls.bookings_count > 0 ? '10%' : '0%'
+                          minWidth: '10%',
                         }}
                       />
                     </div>
