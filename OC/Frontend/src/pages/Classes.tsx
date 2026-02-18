@@ -51,14 +51,20 @@ export default function Classes() {
   })
   const [actionLoading, setActionLoading] = useState<number | null>(null)
   const [expandedCard, setExpandedCard] = useState<number | null>(null)
-  const { user } = useAuth()
+  const { user, token } = useAuth()
+
+  useEffect(() => {
+    console.log('[Classes] user:', user, 'token:', token ? 'present' : 'null')
+  }, [user, token])
 
   const fetchClasses = useCallback(async () => {
     setLoading(true)
     try {
+      console.log('[Classes] fetching with auth header:', axios.defaults.headers.common['Authorization'] ? 'SET' : 'NOT SET')
       const response = await axios.get<ClassWithBookings[]>(
         `${API_URL}/classes/?target_date=${selectedDate}`
       )
+      console.log('[Classes] got', response.data.length, 'classes')
       setClasses(response.data)
     } catch (error) {
       console.error('Error fetching classes:', error)
@@ -304,25 +310,23 @@ export default function Classes() {
                     )}
                   </div>
 
-                  {/* Action button — full width, clear text */}
-                  {user && (
-                    isBooked ? (
-                      <button
-                        onClick={() => cls.my_booking_id && handleCancel(cls.my_booking_id)}
-                        disabled={isProcessing}
-                        className="w-full py-2.5 rounded-lg bg-green-600 hover:bg-red-600 text-white text-sm font-semibold transition-colors disabled:opacity-50"
-                      >
-                        {isProcessing ? 'Cancelando...' : '✓ Agendado — toca para cancelar'}
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleBook(cls.id)}
-                        disabled={isProcessing}
-                        className="w-full py-2.5 rounded-lg bg-oc-red hover:bg-oc-red-deep text-white text-sm font-semibold transition-colors disabled:opacity-50"
-                      >
-                        {isProcessing ? 'Reservando...' : 'Agendar clase'}
-                      </button>
-                    )
+                  {/* Action button — always visible on protected route */}
+                  {isBooked ? (
+                    <button
+                      onClick={() => cls.my_booking_id && handleCancel(cls.my_booking_id)}
+                      disabled={isProcessing}
+                      className="w-full py-2.5 rounded-lg bg-green-600 hover:bg-red-600 text-white text-sm font-semibold transition-colors disabled:opacity-50"
+                    >
+                      {isProcessing ? 'Cancelando...' : '✓ Agendado — toca para cancelar'}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleBook(cls.id)}
+                      disabled={isProcessing}
+                      className="w-full py-2.5 rounded-lg bg-oc-red hover:bg-oc-red-deep text-white text-sm font-semibold transition-colors disabled:opacity-50"
+                    >
+                      {isProcessing ? 'Reservando...' : 'Agendar clase'}
+                    </button>
                   )}
 
                   {cls.bookings_count > 0 && (
