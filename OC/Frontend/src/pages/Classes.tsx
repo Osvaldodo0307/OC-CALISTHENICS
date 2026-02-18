@@ -36,9 +36,26 @@ function isOpenGymOrPowerlifting(title: string): boolean {
 function getGymHours(dateStr: string): { start: number; end: number } {
   const d = new Date(dateStr + 'T12:00:00')
   const day = d.getDay()
-  if (day === 6) return { start: 8, end: 16 }
-  if (day === 0) return { start: 6, end: 23 }
+  if (day === 6) return { start: 10, end: 12 }
   return { start: 6, end: 23 }
+}
+
+function getTodayStr(): string {
+  return new Date().toISOString().split('T')[0]
+}
+
+function isDayPast(dateStr: string): boolean {
+  const today = getTodayStr()
+  if (dateStr < today) return true
+  if (dateStr === today) {
+    const now = new Date()
+    return now.getHours() >= 22
+  }
+  return false
+}
+
+function isSunday(dateStr: string): boolean {
+  return new Date(dateStr + 'T12:00:00').getDay() === 0
 }
 
 export default function Classes() {
@@ -46,10 +63,18 @@ export default function Classes() {
   const [loading, setLoading] = useState(true)
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     const today = new Date()
-    return today.toISOString().split('T')[0]
+    let d = new Date(today)
+    if (today.getHours() >= 22) {
+      d.setDate(d.getDate() + 1)
+    }
+    if (d.getDay() === 0) {
+      d.setDate(d.getDate() + 1)
+    }
+    return d.toISOString().split('T')[0]
   })
   const [actionLoading, setActionLoading] = useState<number | null>(null)
   const [expandedCard, setExpandedCard] = useState<number | null>(null)
+
   const fetchClasses = useCallback(async () => {
     setLoading(true)
     try {
@@ -104,13 +129,27 @@ export default function Classes() {
   const navigateDate = (offset: number) => {
     const current = new Date(selectedDate + 'T12:00:00')
     current.setDate(current.getDate() + offset)
-    setSelectedDate(current.toISOString().split('T')[0])
+    const newDate = current.toISOString().split('T')[0]
+    if (isDayPast(newDate)) return
+    if (isSunday(newDate)) {
+      current.setDate(current.getDate() + (offset > 0 ? 1 : -1))
+      const skipped = current.toISOString().split('T')[0]
+      if (isDayPast(skipped)) return
+      setSelectedDate(skipped)
+      return
+    }
+    setSelectedDate(newDate)
   }
 
-  const isToday = selectedDate === new Date().toISOString().split('T')[0]
+  const dayIsPast = isDayPast(selectedDate)
+  const dayIsSunday = isSunday(selectedDate)
+  const isToday = selectedDate === getTodayStr()
 
   const regularClasses = classes.filter((c) => !isOpenGymOrPowerlifting(c.title))
   const specialClasses = classes.filter((c) => isOpenGymOrPowerlifting(c.title))
+
+  const selectedDayOfWeek = new Date(selectedDate + 'T12:00:00').getDay()
+  const isSaturday = selectedDayOfWeek === 6
 
   const { start: gymStart, end: gymEnd } = getGymHours(selectedDate)
   const hourSlots = Array.from({ length: gymEnd - gymStart }, (_, i) => gymStart + i)
@@ -150,24 +189,44 @@ export default function Classes() {
           d.setDate(d.getDate() + i)
           const dateStr = d.toISOString().split('T')[0]
           const isSelected = dateStr === selectedDate
+          const past = isDayPast(dateStr)
+          const sunday = isSunday(dateStr)
+          const disabled = past || sunday
           return (
             <button
               key={dateStr}
-              onClick={() => setSelectedDate(dateStr)}
+              onClick={() => !disabled && setSelectedDate(dateStr)}
+              disabled={disabled}
               className={`flex-shrink-0 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
-                isSelected
-                  ? 'bg-oc-red text-white'
-                  : 'bg-oc-metal text-gray-400 hover:text-white border border-gray-700'
+                disabled
+                  ? 'bg-gray-800/50 text-gray-600 cursor-not-allowed border border-gray-800'
+                  : isSelected
+                    ? 'bg-oc-red text-white'
+                    : 'bg-oc-metal text-gray-400 hover:text-white border border-gray-700'
               }`}
             >
               <div>{DAYS_ES[d.getDay()].slice(0, 3)}</div>
               <div className="text-lg font-bold">{d.getDate()}</div>
+              {sunday && <div className="text-[9px] mt-0.5">Cerrado</div>}
             </button>
           )
         })}
       </div>
 
-      {loading ? (
+      {/* Sunday message */}
+      {dayIsSunday ? (
+        <div className="text-center py-16">
+          <div className="text-5xl mb-4">🏖️</div>
+          <p className="text-white text-lg font-semibold mb-2">Día de descanso</p>
+          <p className="text-gray-500">No hay clases los domingos</p>
+        </div>
+      ) : dayIsPast ? (
+        <div className="text-center py-16">
+          <div className="text-5xl mb-4">🔒</div>
+          <p className="text-white text-lg font-semibold mb-2">Día cerrado</p>
+          <p className="text-gray-500">Las reservas para este día ya cerraron</p>
+        </div>
+      ) : loading ? (
         <div className="text-center py-12">
           <div className="animate-spin w-8 h-8 border-2 border-oc-red border-t-transparent rounded-full mx-auto mb-4" />
           <p className="text-gray-400">Cargando clases...</p>
@@ -178,8 +237,15 @@ export default function Classes() {
         </div>
       ) : (
         <div className="space-y-4">
-          {/* OPEN GYM / POWERLIFTING — expandable cards */}
-          {specialClasses.map((cls) => {
+          {/* Saturday info banner */}
+          {isSaturday && (
+            <div className="bg-oc-red/10 border border-oc-red/30 rounded-xl p-3 text-center">
+              <p className="text-oc-red text-sm font-medium">Sábado — Horario especial de Calistenia</p>
+            </div>
+          )}
+
+          {/* OPEN GYM / POWERLIFTING — only on weekdays */}
+          {!isSaturday && specialClasses.map((cls) => {
             const isExpanded = expandedCard === cls.id
             const isBooked = cls.is_booked_by_me
 
@@ -192,7 +258,6 @@ export default function Classes() {
                     : 'border-gray-700/50'
                 }`}
               >
-                {/* Header — clickable to expand */}
                 <button
                   onClick={() => setExpandedCard(isExpanded ? null : cls.id)}
                   className="w-full p-4 flex items-center justify-between text-left"
@@ -225,7 +290,6 @@ export default function Classes() {
                   </div>
                 </button>
 
-                {/* Expanded: hourly slots */}
                 {isExpanded && (
                   <div className="border-t border-gray-700/50 p-4">
                     <p className="text-gray-400 text-xs mb-3">
@@ -263,7 +327,7 @@ export default function Classes() {
           })}
 
           {/* Separator */}
-          {specialClasses.length > 0 && regularClasses.length > 0 && (
+          {!isSaturday && specialClasses.length > 0 && regularClasses.length > 0 && (
             <div className="flex items-center gap-3 py-2">
               <div className="flex-1 h-px bg-gray-700" />
               <span className="text-gray-500 text-xs uppercase tracking-wide">Clases del día</span>
@@ -304,7 +368,6 @@ export default function Classes() {
                     )}
                   </div>
 
-                  {/* Action button — always visible on protected route */}
                   {isBooked ? (
                     <button
                       onClick={() => cls.my_booking_id && handleCancel(cls.my_booking_id)}

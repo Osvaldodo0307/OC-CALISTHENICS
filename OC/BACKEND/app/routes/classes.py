@@ -190,7 +190,7 @@ async def generate_daily_schedule(
     Generate the daily class schedule for the next N days.
     Uses the standard OC-Calisthenics timetable.
     """
-    schedule_template = [
+    weekday_template = [
         {"title": "OPEN GYM", "discipline": "Open Gym", "hour": 6, "minute": 0, "duration": 720},
         {"title": "POWERLIFTING", "discipline": "Powerlifting", "hour": 6, "minute": 0, "duration": 720},
         {"title": "7:00 - 8:00 Calistenia", "discipline": "Calistenia", "hour": 7, "minute": 0, "duration": 60},
@@ -204,6 +204,10 @@ async def generate_daily_schedule(
         {"title": "21:00 - 22:00 Funcional", "discipline": "Funcional", "hour": 21, "minute": 0, "duration": 60},
         {"title": "22:00 - 23:00 HYROX", "discipline": "HYROX", "hour": 22, "minute": 0, "duration": 60},
     ]
+    saturday_template = [
+        {"title": "10:00 - 11:00 Calistenia", "discipline": "Calistenia", "hour": 10, "minute": 0, "duration": 60},
+        {"title": "11:00 - 12:00 Calistenia", "discipline": "Calistenia", "hour": 11, "minute": 0, "duration": 60},
+    ]
 
     created = 0
     skipped = 0
@@ -211,6 +215,10 @@ async def generate_daily_schedule(
 
     for day_offset in range(days):
         current_date = today + timedelta(days=day_offset)
+        weekday = current_date.weekday()
+        if weekday == 6:  # domingo — sin clases
+            continue
+        schedule_template = saturday_template if weekday == 5 else weekday_template
         for template in schedule_template:
             start_dt = datetime.combine(
                 current_date,

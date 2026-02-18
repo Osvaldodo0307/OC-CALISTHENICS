@@ -59,7 +59,7 @@ def init_database():
 
         existing_classes = db.query(ClassSession).count()
         if existing_classes == 0:
-            SCHEDULE = [
+            WEEKDAY_SCHEDULE = [
                 {"title": "OPEN GYM",                "discipline": "Open Gym",     "hour": 6,  "minute": 0, "duration": 720},
                 {"title": "POWERLIFTING",             "discipline": "Powerlifting", "hour": 6,  "minute": 0, "duration": 720},
                 {"title": "7:00 - 8:00 Calistenia",  "discipline": "Calistenia",  "hour": 7,  "minute": 0, "duration": 60},
@@ -73,10 +73,19 @@ def init_database():
                 {"title": "21:00 - 22:00 Funcional", "discipline": "Funcional",   "hour": 21, "minute": 0, "duration": 60},
                 {"title": "22:00 - 23:00 HYROX",     "discipline": "HYROX",       "hour": 22, "minute": 0, "duration": 60},
             ]
+            SATURDAY_SCHEDULE = [
+                {"title": "10:00 - 11:00 Calistenia", "discipline": "Calistenia", "hour": 10, "minute": 0, "duration": 60},
+                {"title": "11:00 - 12:00 Calistenia", "discipline": "Calistenia", "hour": 11, "minute": 0, "duration": 60},
+            ]
             today = date.today()
+            created_count = 0
             for day_offset in range(7):
                 current_date = today + timedelta(days=day_offset)
-                for t in SCHEDULE:
+                weekday = current_date.weekday()
+                if weekday == 6:  # domingo
+                    continue
+                schedule = SATURDAY_SCHEDULE if weekday == 5 else WEEKDAY_SCHEDULE
+                for t in schedule:
                     start_dt = datetime.combine(
                         current_date,
                         datetime.min.time().replace(hour=t["hour"], minute=t["minute"])
@@ -87,8 +96,9 @@ def init_database():
                         duration_minutes=t["duration"], capacity=999,
                         start_datetime=start_dt, coach_id=None
                     ))
+                    created_count += 1
             db.commit()
-            print(f"[SEED] {7 * len(SCHEDULE)} clases creadas para 7 dias.")
+            print(f"[SEED] {created_count} clases creadas para 7 dias (sin domingos, sabados especial).")
         else:
             print(f"[SEED] BD ya tiene {existing_classes} clases, omitiendo seed.")
     except Exception as e:
