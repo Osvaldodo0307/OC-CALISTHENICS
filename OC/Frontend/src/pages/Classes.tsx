@@ -152,11 +152,9 @@ export default function Classes() {
   const selectedDayOfWeek = new Date(selectedDate + 'T12:00:00').getDay()
   const isSaturday = selectedDayOfWeek === 6
 
+  const SATURDAY_ALLOWED = ['10:00 - 11:00 Calistenia', '11:00 - 12:00 Calistenia']
   const filteredClasses = isSaturday
-    ? classes.filter((c) => {
-        const hour = new Date(c.start_datetime).getHours()
-        return !isOpenGymOrPowerlifting(c.title) && (hour === 10 || hour === 11)
-      })
+    ? classes.filter((c) => SATURDAY_ALLOWED.includes(c.title))
     : classes
 
   const regularClasses = filteredClasses.filter((c) => !isOpenGymOrPowerlifting(c.title))
