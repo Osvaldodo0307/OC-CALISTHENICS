@@ -104,6 +104,7 @@ class Booking(Base):
     class_id = Column(Integer, ForeignKey("class_sessions.id"), nullable=False)
 
     status = Column(String(20), nullable=False)  # booked, canceled
+    preferred_hour = Column(Integer, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="bookings")

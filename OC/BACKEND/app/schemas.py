@@ -95,11 +95,12 @@ class BookingBase(BaseModel):
     status: str = "booked"
 
 class BookingCreate(BookingBase):
-    pass
+    preferred_hour: Optional[int] = None
 
 class BookingResponse(BookingBase):
     id: int
     user_id: int
+    preferred_hour: Optional[int] = None
     created_at: datetime
     
     class Config:

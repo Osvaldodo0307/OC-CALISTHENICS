@@ -9,6 +9,7 @@ interface BookingWithClass {
   user_id: number
   class_id: number
   status: string
+  preferred_hour?: number | null
   created_at: string
   class_title?: string
   class_discipline?: string
@@ -136,7 +137,9 @@ export default function Reservas() {
                     </h3>
                     {booking.class_datetime && (
                       <p className="text-sm text-gray-400 mt-1">
-                        {formatDateTime(booking.class_datetime)}
+                        {booking.preferred_hour != null
+                          ? `${formatDateTime(booking.class_datetime).split(' — ')[0]} — ${booking.preferred_hour.toString().padStart(2, '0')}:00`
+                          : formatDateTime(booking.class_datetime)}
                       </p>
                     )}
                   </div>

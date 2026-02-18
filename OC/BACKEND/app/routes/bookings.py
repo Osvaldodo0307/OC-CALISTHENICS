@@ -42,7 +42,8 @@ async def create_booking(
     db_booking = Booking(
         user_id=current_user.id,
         class_id=booking.class_id,
-        status="booked"
+        status="booked",
+        preferred_hour=booking.preferred_hour
     )
     db.add(db_booking)
     db.commit()

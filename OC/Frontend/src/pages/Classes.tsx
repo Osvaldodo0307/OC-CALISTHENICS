@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
-import { useAuth } from '../contexts/AuthContext'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
@@ -51,20 +50,12 @@ export default function Classes() {
   })
   const [actionLoading, setActionLoading] = useState<number | null>(null)
   const [expandedCard, setExpandedCard] = useState<number | null>(null)
-  const { user, token } = useAuth()
-
-  useEffect(() => {
-    console.log('[Classes] user:', user, 'token:', token ? 'present' : 'null')
-  }, [user, token])
-
   const fetchClasses = useCallback(async () => {
     setLoading(true)
     try {
-      console.log('[Classes] fetching with auth header:', axios.defaults.headers.common['Authorization'] ? 'SET' : 'NOT SET')
       const response = await axios.get<ClassWithBookings[]>(
         `${API_URL}/classes/?target_date=${selectedDate}`
       )
-      console.log('[Classes] got', response.data.length, 'classes')
       setClasses(response.data)
     } catch (error) {
       console.error('Error fetching classes:', error)
@@ -77,10 +68,13 @@ export default function Classes() {
     fetchClasses()
   }, [fetchClasses])
 
-  const handleBook = async (classId: number) => {
+  const handleBook = async (classId: number, preferredHour?: number) => {
     setActionLoading(classId)
     try {
-      await axios.post(`${API_URL}/bookings/`, { class_id: classId, status: 'booked' })
+      const payload: Record<string, unknown> = { class_id: classId, status: 'booked' }
+      if (preferredHour !== undefined) payload.preferred_hour = preferredHour
+      await axios.post(`${API_URL}/bookings/`, payload)
+      setExpandedCard(null)
       await fetchClasses()
     } catch (error) {
       const message = axios.isAxiosError(error)
@@ -241,7 +235,7 @@ export default function Classes() {
                       {hourSlots.map((hour) => (
                         <button
                           key={hour}
-                          onClick={() => handleBook(cls.id)}
+                          onClick={() => handleBook(cls.id, hour)}
                           disabled={actionLoading === cls.id || isBooked}
                           className={`py-2 px-1 rounded-lg text-sm font-medium transition-colors ${
                             isBooked

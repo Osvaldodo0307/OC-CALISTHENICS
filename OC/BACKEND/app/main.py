@@ -38,6 +38,12 @@ def init_database():
 
     db = SessionLocal()
     try:
+        db.execute(text("ALTER TABLE bookings ADD COLUMN preferred_hour INTEGER"))
+        db.commit()
+        print("[MIGRATION] Columna preferred_hour agregada a bookings.")
+    except Exception:
+        db.rollback()
+    try:
         existing_admin = db.query(User).filter(User.username == "octavio").first()
         if not existing_admin:
             admin_user = User(
