@@ -194,7 +194,6 @@ export default function Membresias() {
               <span className="text-5xl sm:text-6xl font-bold text-oc-red">$1,799</span>
               <span className="text-oc-muted text-xl ml-2">MXN</span>
             </div>
-            <p className="text-oc-muted mt-3">Pago mensual</p>
           </div>
         </div>
       </section>
