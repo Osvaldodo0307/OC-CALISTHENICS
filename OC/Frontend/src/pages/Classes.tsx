@@ -23,6 +23,10 @@ interface ClassWithBookings {
 const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 const MONTHS_ES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
+function toLocalDateStr(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
 function formatDateLabel(dateStr: string): string {
   const d = new Date(dateStr + 'T12:00:00')
   return `${DAYS_ES[d.getDay()]} ${d.getDate()} de ${MONTHS_ES[d.getMonth()]}`
@@ -41,7 +45,7 @@ function getGymHours(dateStr: string): { start: number; end: number } {
 }
 
 function getTodayStr(): string {
-  return new Date().toISOString().split('T')[0]
+  return toLocalDateStr(new Date())
 }
 
 function isDayPast(dateStr: string): boolean {
@@ -63,14 +67,14 @@ export default function Classes() {
   const [loading, setLoading] = useState(true)
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     const today = new Date()
-    let d = new Date(today)
+    const d = new Date(today)
     if (today.getHours() >= 22) {
       d.setDate(d.getDate() + 1)
     }
     if (d.getDay() === 0) {
       d.setDate(d.getDate() + 1)
     }
-    return d.toISOString().split('T')[0]
+    return toLocalDateStr(d)
   })
   const [actionLoading, setActionLoading] = useState<number | null>(null)
   const [expandedCard, setExpandedCard] = useState<number | null>(null)
@@ -129,11 +133,11 @@ export default function Classes() {
   const navigateDate = (offset: number) => {
     const current = new Date(selectedDate + 'T12:00:00')
     current.setDate(current.getDate() + offset)
-    const newDate = current.toISOString().split('T')[0]
+    const newDate = toLocalDateStr(current)
     if (isDayPast(newDate)) return
     if (isSunday(newDate)) {
       current.setDate(current.getDate() + (offset > 0 ? 1 : -1))
-      const skipped = current.toISOString().split('T')[0]
+      const skipped = toLocalDateStr(current)
       if (isDayPast(skipped)) return
       setSelectedDate(skipped)
       return
@@ -187,7 +191,7 @@ export default function Classes() {
         {Array.from({ length: 7 }, (_, i) => {
           const d = new Date()
           d.setDate(d.getDate() + i)
-          const dateStr = d.toISOString().split('T')[0]
+          const dateStr = toLocalDateStr(d)
           const isSelected = dateStr === selectedDate
           const past = isDayPast(dateStr)
           const sunday = isSunday(dateStr)
