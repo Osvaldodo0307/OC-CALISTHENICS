@@ -274,7 +274,7 @@ export default function Classes() {
           {/* Regular classes */}
           {regularClasses.map((cls) => {
             const isBooked = cls.is_booked_by_me
-            const isProcessing = actionLoading === cls.id || actionLoading === cls.my_booking_id
+            const isProcessing = actionLoading !== null && (actionLoading === cls.id || actionLoading === cls.my_booking_id)
 
             return (
               <div
