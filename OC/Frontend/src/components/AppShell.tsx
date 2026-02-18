@@ -27,7 +27,9 @@ export default function AppShell() {
   ]
 
   const adminNav = [
-    { path: '/app/admin/dashboard', label: 'Agenda Semanal' }
+    { path: '/app/admin/dashboard', label: 'Agenda Semanal' },
+    { path: '/app/admin/clases', label: 'Gestión de Clases' },
+    { path: '/app/admin/usuarios', label: 'Usuarios' },
   ]
 
   const navItems = user?.role === 'admin' ? adminNav : user?.role === 'coach' ? coachNav : socioNav

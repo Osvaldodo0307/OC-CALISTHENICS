@@ -22,6 +22,14 @@ import AsistenciaVirtual from './pages/coach/AsistenciaVirtual'
 import Rutinas from './pages/Rutinas'
 import ProtectedRoute from './components/ProtectedRoute'
 import ScrollToTop from './components/ScrollToTop'
+import { useAuth } from './contexts/AuthContext'
+
+function AppRedirect() {
+  const { user } = useAuth()
+  if (user?.role === 'admin') return <Navigate to="admin/dashboard" replace />
+  if (user?.role === 'coach') return <Navigate to="coach/dashboard" replace />
+  return <Navigate to="clases" replace />
+}
 
 function App() {
   return (
@@ -43,7 +51,7 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="clases" replace />} />
+            <Route index element={<AppRedirect />} />
             <Route path="clases" element={<Classes />} />
             <Route path="reservas" element={<Reservas />} />
             <Route path="perfil" element={<Perfil />} />
