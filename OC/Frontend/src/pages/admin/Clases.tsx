@@ -1,253 +1,369 @@
 import { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
-import { ClassSession } from '../../types'
-import { format } from 'date-fns'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
-type ClassFormData = {
+interface ClassSession {
+  id: number
   title: string
   discipline: string
-  description: string
-  intensity: ClassSession['intensity']
-  level: ClassSession['level']
+  description?: string
+  intensity: string
+  level: string
   duration_minutes: number
   capacity: number
   start_datetime: string
-  coach_id: number | null
+  coach_id?: number
+  created_at: string
+  bookings_count?: number
+}
+
+const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+
+function toLocalDateStr(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+function formatTime(dt: string): string {
+  const d = new Date(dt)
+  return `${d.getUTCHours().toString().padStart(2, '0')}:${d.getUTCMinutes().toString().padStart(2, '0')}`
+}
+
+const DISCIPLINES = [
+  'Calistenia', 'Explosive', 'HYROX', 'GAP', 'Karate',
+  'Kickboxing', 'Funcional', 'Open Gym', 'Powerlifting', 'Otra'
+]
+
+type FormData = {
+  title: string
+  discipline: string
+  hour: number
+  minute: number
+  duration_minutes: number
+  capacity: number
+  date: string
+}
+
+const EMPTY_FORM: FormData = {
+  title: '',
+  discipline: 'Calistenia',
+  hour: 7,
+  minute: 0,
+  duration_minutes: 60,
+  capacity: 999,
+  date: '',
 }
 
 export default function AdminClases() {
   const [classes, setClasses] = useState<ClassSession[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedDate, setSelectedDate] = useState<string>(toLocalDateStr(new Date()))
   const [showForm, setShowForm] = useState(false)
-  const [editingClass, setEditingClass] = useState<ClassSession | null>(null)
-  const [formData, setFormData] = useState<ClassFormData>({
-    title: '',
-    discipline: '',
-    description: '',
-    intensity: 'med' as 'low' | 'med' | 'high',
-    level: 'all' as 'all' | 'inter' | 'adv',
-    duration_minutes: 60,
-    capacity: 20,
-    start_datetime: '',
-    coach_id: null as number | null
-  })
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [form, setForm] = useState<FormData>({ ...EMPTY_FORM })
+  const [saving, setSaving] = useState(false)
+  const [generating, setGenerating] = useState(false)
 
   const fetchClasses = useCallback(async () => {
+    setLoading(true)
     try {
-      const response = await axios.get<ClassSession[]>(`${API_URL}/classes`)
+      const response = await axios.get<ClassSession[]>(
+        `${API_URL}/classes/?target_date=${selectedDate}`
+      )
       setClasses(response.data)
     } catch (error) {
       console.error('Error fetching classes:', error)
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [selectedDate])
 
   useEffect(() => {
     fetchClasses()
   }, [fetchClasses])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      if (editingClass) {
-        await axios.put(`${API_URL}/classes/${editingClass.id}`, {
-          ...formData,
-          start_datetime: new Date(formData.start_datetime).toISOString()
-        })
-      } else {
-        await axios.post(`${API_URL}/classes`, {
-          ...formData,
-          start_datetime: new Date(formData.start_datetime).toISOString()
-        })
-      }
-      fetchClasses()
-      setShowForm(false)
-      setEditingClass(null)
-      resetForm()
-    } catch (error) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.detail
-        : undefined
-      alert(message || 'Error al guardar')
-    }
+  const openNewForm = () => {
+    setEditingId(null)
+    setForm({ ...EMPTY_FORM, date: selectedDate })
+    setShowForm(true)
   }
 
-  const handleEdit = (classSession: ClassSession) => {
-    setEditingClass(classSession)
-    setFormData({
-      title: classSession.title,
-      discipline: classSession.discipline,
-      description: classSession.description || '',
-      intensity: classSession.intensity,
-      level: classSession.level,
-      duration_minutes: classSession.duration_minutes,
-      capacity: classSession.capacity,
-      start_datetime: new Date(classSession.start_datetime).toISOString().slice(0, 16),
-      coach_id: classSession.coach_id || null
+  const openEditForm = (cls: ClassSession) => {
+    const dt = new Date(cls.start_datetime)
+    setEditingId(cls.id)
+    setForm({
+      title: cls.title,
+      discipline: cls.discipline,
+      hour: dt.getUTCHours(),
+      minute: dt.getUTCMinutes(),
+      duration_minutes: cls.duration_minutes,
+      capacity: cls.capacity,
+      date: selectedDate,
     })
     setShowForm(true)
   }
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('¿Estás seguro de eliminar esta clase?')) return
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSaving(true)
     try {
-      await axios.delete(`${API_URL}/classes/${id}`)
-      fetchClasses()
+      const startDt = `${form.date}T${form.hour.toString().padStart(2, '0')}:${form.minute.toString().padStart(2, '0')}:00`
+      const payload = {
+        title: form.title,
+        discipline: form.discipline,
+        description: null,
+        intensity: 'med',
+        level: 'all',
+        duration_minutes: form.duration_minutes,
+        capacity: form.capacity,
+        start_datetime: startDt,
+        coach_id: null,
+      }
+      if (editingId) {
+        await axios.put(`${API_URL}/classes/${editingId}`, payload)
+      } else {
+        await axios.post(`${API_URL}/classes/`, payload)
+      }
+      setShowForm(false)
+      setEditingId(null)
+      await fetchClasses()
     } catch (error) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.detail
-        : undefined
-      alert(message || 'Error al eliminar')
+      const msg = axios.isAxiosError(error) ? error.response?.data?.detail : undefined
+      alert(msg || 'Error al guardar')
+    } finally {
+      setSaving(false)
     }
   }
 
-  const resetForm = () => {
-    setFormData({
-      title: '',
-      discipline: '',
-      description: '',
-      intensity: 'med',
-      level: 'all',
-      duration_minutes: 60,
-      capacity: 20,
-      start_datetime: '',
-      coach_id: null
-    })
+  const handleDelete = async (id: number, title: string) => {
+    if (!confirm(`¿Eliminar "${title}"?`)) return
+    try {
+      await axios.delete(`${API_URL}/classes/${id}`)
+      await fetchClasses()
+    } catch (error) {
+      const msg = axios.isAxiosError(error) ? error.response?.data?.detail : undefined
+      alert(msg || 'Error al eliminar')
+    }
   }
 
-  if (loading) {
-    return <div className="text-white text-center py-8">Cargando clases...</div>
+  const handleGenerate = async () => {
+    if (!confirm('Esto generará clases para los próximos 7 días (sin duplicar las existentes). ¿Continuar?')) return
+    setGenerating(true)
+    try {
+      const r = await axios.post(`${API_URL}/classes/generate-schedule?days=7`)
+      alert(`Listo: ${r.data.created} clases creadas, ${r.data.skipped} ya existían.`)
+      await fetchClasses()
+    } catch (error) {
+      const msg = axios.isAxiosError(error) ? error.response?.data?.detail : undefined
+      alert(msg || 'Error al generar')
+    } finally {
+      setGenerating(false)
+    }
   }
+
+  const updateTitle = (disc: string, hour: number, min: number, dur: number) => {
+    const h1 = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`
+    const endH = hour + Math.floor((min + dur) / 60)
+    const endM = (min + dur) % 60
+    const h2 = `${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`
+    if (disc === 'Open Gym') return 'OPEN GYM'
+    if (disc === 'Powerlifting') return 'POWERLIFTING'
+    return `${h1} - ${h2} ${disc}`
+  }
+
+  const weekDays = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date()
+    d.setDate(d.getDate() + i)
+    return toLocalDateStr(d)
+  })
+
+  const selectedDayName = DAYS_ES[new Date(selectedDate + 'T12:00:00').getDay()]
 
   return (
-    <div className="px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-white">Gestión de Clases</h1>
+    <div className="px-4 max-w-4xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Gestión de Clases</h1>
+          <p className="text-gray-500 text-sm">Agregar, editar o eliminar clases</p>
+        </div>
         <button
-          onClick={() => {
-            setShowForm(true)
-            setEditingClass(null)
-            resetForm()
-          }}
-          className="bg-oc-red hover:bg-oc-red-deep text-white px-6 py-2 rounded font-semibold"
+          onClick={handleGenerate}
+          disabled={generating}
+          className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
         >
-          Nueva Clase
+          {generating ? 'Generando...' : 'Generar semana'}
         </button>
       </div>
 
+      {/* Day selector */}
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+        {weekDays.map((dateStr) => {
+          const d = new Date(dateStr + 'T12:00:00')
+          const isSelected = dateStr === selectedDate
+          return (
+            <button
+              key={dateStr}
+              onClick={() => setSelectedDate(dateStr)}
+              className={`flex-shrink-0 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                isSelected
+                  ? 'bg-oc-red text-white'
+                  : 'bg-oc-metal text-gray-400 hover:text-white border border-gray-700'
+              }`}
+            >
+              <div>{DAYS_ES[d.getDay()].slice(0, 3)}</div>
+              <div className="text-lg font-bold">{d.getDate()}</div>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Header for selected day */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-white">
+          {selectedDayName} — {classes.length} clase{classes.length !== 1 ? 's' : ''}
+        </h2>
+        <button
+          onClick={openNewForm}
+          className="bg-oc-red hover:bg-oc-red-deep text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+        >
+          + Nueva clase
+        </button>
+      </div>
+
+      {/* Form */}
       {showForm && (
-        <div className="bg-oc-metal p-6 rounded-lg border border-oc-red/20 mb-6">
-          <h2 className="text-2xl font-semibold text-oc-red mb-4">
-            {editingClass ? 'Editar Clase' : 'Nueva Clase'}
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
+        <div className="bg-oc-metal rounded-xl border border-oc-red/30 p-5 mb-6">
+          <h3 className="text-white font-semibold mb-4">
+            {editingId ? 'Editar clase' : 'Nueva clase'}
+          </h3>
+          <form onSubmit={handleSave} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Título</label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  required
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Disciplina</label>
-                <input
-                  type="text"
-                  value={formData.discipline}
-                  onChange={(e) => setFormData({ ...formData, discipline: e.target.value })}
-                  required
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Descripción</label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
-                rows={3}
-              />
-            </div>
-            <div className="grid md:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Intensidad</label>
+                <label className="block text-xs text-gray-400 mb-1">Disciplina</label>
                 <select
-                  value={formData.intensity}
-                  onChange={(e) =>
-                    setFormData({ ...formData, intensity: e.target.value as ClassSession['intensity'] })
-                  }
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                  value={form.discipline}
+                  onChange={(e) => {
+                    const disc = e.target.value
+                    setForm((f) => ({
+                      ...f,
+                      discipline: disc,
+                      title: updateTitle(disc, f.hour, f.minute, f.duration_minutes),
+                    }))
+                  }}
+                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
                 >
-                  <option value="low">Baja</option>
-                  <option value="med">Media</option>
-                  <option value="high">Alta</option>
+                  {DISCIPLINES.map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Nivel</label>
-                <select
-                  value={formData.level}
-                  onChange={(e) =>
-                    setFormData({ ...formData, level: e.target.value as ClassSession['level'] })
-                  }
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
-                >
-                  <option value="all">Todos</option>
-                  <option value="inter">Intermedio</option>
-                  <option value="adv">Avanzado</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Duración (min)</label>
+                <label className="block text-xs text-gray-400 mb-1">Fecha</label>
                 <input
-                  type="number"
-                  value={formData.duration_minutes}
-                  onChange={(e) => setFormData({ ...formData, duration_minutes: Number(e.target.value) })}
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Capacidad</label>
-                <input
-                  type="number"
-                  value={formData.capacity}
-                  onChange={(e) => setFormData({ ...formData, capacity: Number(e.target.value) })}
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                  type="date"
+                  value={form.date}
+                  onChange={(e) => setForm({ ...form, date: e.target.value })}
+                  required
+                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
                 />
               </div>
             </div>
+
+            <div className="grid grid-cols-4 gap-4">
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">Hora inicio</label>
+                <select
+                  value={form.hour}
+                  onChange={(e) => {
+                    const h = Number(e.target.value)
+                    setForm((f) => ({
+                      ...f,
+                      hour: h,
+                      title: updateTitle(f.discipline, h, f.minute, f.duration_minutes),
+                    }))
+                  }}
+                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                >
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <option key={i} value={i}>{i.toString().padStart(2, '0')}:00</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">Minutos</label>
+                <select
+                  value={form.minute}
+                  onChange={(e) => {
+                    const m = Number(e.target.value)
+                    setForm((f) => ({
+                      ...f,
+                      minute: m,
+                      title: updateTitle(f.discipline, f.hour, m, f.duration_minutes),
+                    }))
+                  }}
+                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                >
+                  <option value={0}>:00</option>
+                  <option value={15}>:15</option>
+                  <option value={30}>:30</option>
+                  <option value={45}>:45</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">Duración</label>
+                <select
+                  value={form.duration_minutes}
+                  onChange={(e) => {
+                    const dur = Number(e.target.value)
+                    setForm((f) => ({
+                      ...f,
+                      duration_minutes: dur,
+                      title: updateTitle(f.discipline, f.hour, f.minute, dur),
+                    }))
+                  }}
+                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                >
+                  <option value={30}>30 min</option>
+                  <option value={60}>1 hora</option>
+                  <option value={90}>1.5 horas</option>
+                  <option value={120}>2 horas</option>
+                  <option value={720}>Todo el día</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">Capacidad</label>
+                <input
+                  type="number"
+                  value={form.capacity}
+                  onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })}
+                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                />
+              </div>
+            </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Fecha y Hora</label>
+              <label className="block text-xs text-gray-400 mb-1">Título (se genera automático)</label>
               <input
-                type="datetime-local"
-                value={formData.start_datetime}
-                onChange={(e) => setFormData({ ...formData, start_datetime: e.target.value })}
+                type="text"
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
                 required
-                className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
               />
             </div>
-            <div className="flex gap-4">
+
+            <div className="flex gap-3">
               <button
                 type="submit"
-                className="bg-oc-red hover:bg-oc-red-deep text-white px-6 py-2 rounded font-semibold"
+                disabled={saving}
+                className="bg-oc-red hover:bg-oc-red-deep text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-50"
               >
-                {editingClass ? 'Actualizar' : 'Crear'}
+                {saving ? 'Guardando...' : editingId ? 'Actualizar' : 'Crear clase'}
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setShowForm(false)
-                  setEditingClass(null)
-                  resetForm()
-                }}
-                className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded font-semibold"
+                onClick={() => { setShowForm(false); setEditingId(null) }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-5 py-2 rounded-lg transition-colors"
               >
                 Cancelar
               </button>
@@ -256,34 +372,68 @@ export default function AdminClases() {
         </div>
       )}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {classes.map((classSession) => (
-          <div
-            key={classSession.id}
-            className="bg-oc-metal p-6 rounded-lg border border-oc-red/20"
+      {/* Classes list */}
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="animate-spin w-8 h-8 border-2 border-oc-red border-t-transparent rounded-full mx-auto mb-4" />
+          <p className="text-gray-400">Cargando...</p>
+        </div>
+      ) : classes.length === 0 ? (
+        <div className="text-center py-12 bg-oc-metal rounded-xl border border-gray-700/50">
+          <p className="text-gray-400 mb-3">No hay clases para este día</p>
+          <button
+            onClick={openNewForm}
+            className="text-oc-red hover:text-white text-sm font-medium transition-colors"
           >
-            <h2 className="text-xl font-bold text-oc-red mb-2">{classSession.title}</h2>
-            <p className="text-gray-300 mb-2">{classSession.discipline}</p>
-            <p className="text-sm text-gray-400 mb-4">
-              {format(new Date(classSession.start_datetime), "dd/MM/yyyy HH:mm")}
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleEdit(classSession)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
-              >
-                Editar
-              </button>
-              <button
-                onClick={() => handleDelete(classSession.id)}
-                className="bg-oc-red hover:bg-oc-red-deep text-white px-4 py-2 rounded text-sm"
-              >
-                Eliminar
-              </button>
+            + Agregar una clase
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {classes.map((cls) => (
+            <div
+              key={cls.id}
+              className="bg-oc-metal rounded-xl border border-gray-700/50 p-4 flex items-center justify-between"
+            >
+              <div className="flex items-center gap-4 flex-1 min-w-0">
+                <div className="text-center flex-shrink-0 w-14">
+                  <p className="text-oc-red font-bold text-sm">{formatTime(cls.start_datetime)}</p>
+                  <p className="text-gray-600 text-[10px]">{cls.duration_minutes} min</p>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-white font-semibold text-sm truncate">{cls.title}</h3>
+                  <p className="text-gray-500 text-xs">{cls.discipline} · Cap: {cls.capacity}</p>
+                </div>
+                {cls.bookings_count != null && cls.bookings_count > 0 && (
+                  <span className="bg-green-900/30 text-green-400 text-xs font-medium px-2 py-1 rounded-full flex-shrink-0">
+                    {cls.bookings_count} 👤
+                  </span>
+                )}
+              </div>
+              <div className="flex gap-2 ml-3 flex-shrink-0">
+                <button
+                  onClick={() => openEditForm(cls)}
+                  className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 p-2 rounded-lg transition-colors"
+                  title="Editar"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => handleDelete(cls.id, cls.title)}
+                  className="text-red-400 hover:text-red-300 hover:bg-red-900/30 p-2 rounded-lg transition-colors"
+                  title="Eliminar"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
