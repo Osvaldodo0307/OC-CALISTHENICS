@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from datetime import datetime, date, timedelta
 import os
+import asyncio
+import httpx
 
 from app.database import engine, Base, get_db, SessionLocal
 from app.models import User, ClassSession
@@ -160,7 +162,7 @@ async def root():
     return {"message": "OC-CALISTHENICS API"}
 
 # =========================
-# HEALTH CHECK BD (ESTO ES LO QUE FALTABA)
+# HEALTH CHECK BD
 # =========================
 @app.get("/health/db")
 def health_db(db: Session = Depends(get_db)):
@@ -169,3 +171,26 @@ def health_db(db: Session = Depends(get_db)):
         "ok": True,
         "database": "connected"
     }
+
+# =========================
+# KEEP-ALIVE (evita que Render duerma el servicio)
+# =========================
+KEEP_ALIVE_INTERVAL = int(os.getenv("KEEP_ALIVE_INTERVAL", "600"))  # 10 min default
+
+async def _keep_alive_loop(url: str):
+    await asyncio.sleep(30)
+    async with httpx.AsyncClient(timeout=30) as client:
+        while True:
+            try:
+                r = await client.get(f"{url}/health/db")
+                print(f"[KEEP-ALIVE] Ping -> {r.status_code}")
+            except Exception as e:
+                print(f"[KEEP-ALIVE] Error: {e}")
+            await asyncio.sleep(KEEP_ALIVE_INTERVAL)
+
+@app.on_event("startup")
+async def start_keep_alive():
+    render_url = os.getenv("RENDER_EXTERNAL_URL")
+    if render_url:
+        asyncio.create_task(_keep_alive_loop(render_url))
+        print(f"[KEEP-ALIVE] Activo — ping cada {KEEP_ALIVE_INTERVAL}s a {render_url}")
