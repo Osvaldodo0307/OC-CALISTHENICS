@@ -46,6 +46,18 @@ def init_database():
     except Exception:
         db.rollback()
     try:
+        db.execute(text("ALTER TABLE users ADD COLUMN gym_code VARCHAR(50)"))
+        db.commit()
+        print("[MIGRATION] Columna gym_code agregada a users.")
+    except Exception:
+        db.rollback()
+    try:
+        db.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS ix_users_gym_code ON users (gym_code)"))
+        db.commit()
+        print("[MIGRATION] Indice unico ix_users_gym_code verificado.")
+    except Exception:
+        db.rollback()
+    try:
         existing_admin = db.query(User).filter(User.username == "octavio").first()
         if not existing_admin:
             admin_user = User(
