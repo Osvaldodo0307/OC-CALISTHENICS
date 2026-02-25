@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, status
 from sqlalchemy.orm import Session
 from typing import List, Dict
 from sqlalchemy import func
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+from calendar import monthrange
 import pandas as pd
 import io
 from app.database import get_db
@@ -12,8 +13,168 @@ from app.models import (
     User, CoachStudent, Membership, ProgressEntry, Booking, ClassSession,
     TrainingPlan, VirtualAssessment, Exercise
 )
+from app.utils.timezone import parse_yyyy_mm_dd
 
 router = APIRouter(prefix="/admin", tags=["admin"], include_in_schema=True)
+
+
+@router.get("/attendance")
+async def get_attendance_history(
+    from_date: str = Query(..., alias="from", description="Fecha inicio YYYY-MM-DD"),
+    to_date: str = Query(..., alias="to", description="Fecha fin YYYY-MM-DD"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin)
+):
+    try:
+        parsed_from = parse_yyyy_mm_dd(from_date)
+        parsed_to = parse_yyyy_mm_dd(to_date)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Formato de fecha invalido. Usa YYYY-MM-DD")
+
+    if parsed_to < parsed_from:
+        raise HTTPException(status_code=400, detail="El rango de fechas es invalido")
+
+    start_dt = datetime.combine(parsed_from, datetime.min.time())
+    end_dt = datetime.combine(parsed_to, datetime.max.time())
+
+    rows = db.query(Booking, ClassSession, User).join(
+        ClassSession, Booking.class_id == ClassSession.id
+    ).join(
+        User, Booking.user_id == User.id
+    ).filter(
+        Booking.status == "booked",
+        ClassSession.start_datetime >= start_dt,
+        ClassSession.start_datetime <= end_dt
+    ).order_by(
+        ClassSession.start_datetime.asc(),
+        User.name.asc()
+    ).all()
+
+    users_map: Dict[int, Dict] = {}
+    day_totals: Dict[str, int] = {}
+
+    for booking, cls, user in rows:
+        day_key = cls.start_datetime.date().isoformat()
+        hour_label = f"{booking.preferred_hour:02d}:00" if booking.preferred_hour is not None else cls.start_datetime.strftime("%H:%M")
+
+        day_totals[day_key] = day_totals.get(day_key, 0) + 1
+
+        if user.id not in users_map:
+            users_map[user.id] = {
+                "user_id": user.id,
+                "name": user.name,
+                "username": user.username,
+                "total": 0,
+                "by_day": {},
+                "records": []
+            }
+
+        users_map[user.id]["total"] += 1
+        users_map[user.id]["by_day"][day_key] = users_map[user.id]["by_day"].get(day_key, 0) + 1
+        users_map[user.id]["records"].append({
+            "booking_id": booking.id,
+            "date": day_key,
+            "class_id": cls.id,
+            "class_title": cls.title,
+            "discipline": cls.discipline,
+            "attendance_hour": hour_label,
+            "preferred_hour": booking.preferred_hour
+        })
+
+    return {
+        "from": parsed_from.isoformat(),
+        "to": parsed_to.isoformat(),
+        "total_records": len(rows),
+        "daily_totals": [
+            {"date": day, "count": count}
+            for day, count in sorted(day_totals.items())
+        ],
+        "students": sorted(users_map.values(), key=lambda row: (-row["total"], row["name"]))
+    }
+
+
+@router.get("/attendance/summary")
+async def get_attendance_summary_by_month(
+    month: str = Query(..., description="Mes en formato YYYY-MM"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin)
+):
+    try:
+        year, month_number = month.split("-")
+        parsed_year = int(year)
+        parsed_month = int(month_number)
+        if parsed_month < 1 or parsed_month > 12:
+            raise ValueError
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Formato inválido. Usa YYYY-MM")
+
+    first_day = date(parsed_year, parsed_month, 1)
+    last_day = date(parsed_year, parsed_month, monthrange(parsed_year, parsed_month)[1])
+
+    start_dt = datetime.combine(first_day, datetime.min.time())
+    end_dt = datetime.combine(last_day, datetime.max.time())
+
+    rows = db.query(Booking, ClassSession, User).join(
+        ClassSession, Booking.class_id == ClassSession.id
+    ).join(
+        User, Booking.user_id == User.id
+    ).filter(
+        Booking.status == "booked",
+        ClassSession.start_datetime >= start_dt,
+        ClassSession.start_datetime <= end_dt
+    ).order_by(
+        ClassSession.start_datetime.asc(),
+        User.name.asc()
+    ).all()
+
+    users_map: Dict[int, Dict] = {}
+    day_totals: Dict[str, int] = {}
+    discipline_totals: Dict[str, int] = {}
+
+    for booking, cls, user in rows:
+        day_key = cls.start_datetime.date().isoformat()
+        hour_label = f"{booking.preferred_hour:02d}:00" if booking.preferred_hour is not None else cls.start_datetime.strftime("%H:%M")
+
+        day_totals[day_key] = day_totals.get(day_key, 0) + 1
+        discipline_totals[cls.discipline] = discipline_totals.get(cls.discipline, 0) + 1
+
+        if user.id not in users_map:
+            users_map[user.id] = {
+                "user_id": user.id,
+                "name": user.name,
+                "username": user.username,
+                "total": 0,
+                "by_day": {},
+                "records": []
+            }
+
+        users_map[user.id]["total"] += 1
+        users_map[user.id]["by_day"][day_key] = users_map[user.id]["by_day"].get(day_key, 0) + 1
+        users_map[user.id]["records"].append({
+            "booking_id": booking.id,
+            "date": day_key,
+            "class_id": cls.id,
+            "class_title": cls.title,
+            "discipline": cls.discipline,
+            "attendance_hour": hour_label,
+            "preferred_hour": booking.preferred_hour
+        })
+
+    return {
+        "month": month,
+        "from": first_day.isoformat(),
+        "to": last_day.isoformat(),
+        "total_records": len(rows),
+        "daily_totals": [
+            {"date": day, "count": count}
+            for day, count in sorted(day_totals.items())
+        ],
+        "discipline_totals": [
+            {"discipline": discipline, "count": count}
+            for discipline, count in sorted(discipline_totals.items(), key=lambda row: row[1], reverse=True)
+        ],
+        "students": sorted(users_map.values(), key=lambda row: (-row["total"], row["name"]))
+    }
 
 @router.get("/coaches-info")
 async def get_coaches_info(
@@ -247,6 +408,17 @@ async def get_student_details(
             {
                 "id": b.id,
                 "class_title": classes_map[b.class_id].title if b.class_id in classes_map else "N/A",
+                "class_datetime": classes_map[b.class_id].start_datetime.isoformat() if b.class_id in classes_map and classes_map[b.class_id].start_datetime else None,
+                "attendance_hour": (
+                    f"{b.preferred_hour:02d}:00"
+                    if b.preferred_hour is not None
+                    else (
+                        classes_map[b.class_id].start_datetime.strftime("%H:%M")
+                        if b.class_id in classes_map and classes_map[b.class_id].start_datetime
+                        else None
+                    )
+                ),
+                "preferred_hour": b.preferred_hour,
                 "status": b.status,
                 "created_at": b.created_at.isoformat() if b.created_at else None
             }

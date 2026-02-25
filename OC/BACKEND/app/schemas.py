@@ -17,12 +17,21 @@ class UserLogin(BaseModel):
 # User
 class UserBase(BaseModel):
     username: str
+    gym_code: Optional[str] = None
     name: str
     role: str
     phone: Optional[str] = None
 
 class UserCreate(UserBase):
     password: str
+
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    gym_code: Optional[str] = None
+    name: Optional[str] = None
+    role: Optional[str] = None
+    phone: Optional[str] = None
 
 class StudentCreate(BaseModel):
     username: str
@@ -85,6 +94,7 @@ class ClassSessionWithBookings(ClassSessionBase):
     bookings_count: int = 0
     is_booked_by_me: bool = False
     my_booking_id: Optional[int] = None
+    my_booking_preferred_hour: Optional[int] = None
     
     class Config:
         from_attributes = True

@@ -10,6 +10,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     username = Column(String(60), unique=True, index=True, nullable=False)
+    gym_code = Column(String(50), unique=True, index=True, nullable=True)
     name = Column(String(120), nullable=False)
 
     password_hash = Column(String(255), nullable=False)
