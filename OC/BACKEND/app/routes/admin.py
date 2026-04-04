@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, status
 from sqlalchemy.orm import Session
-from typing import List, Dict
+from typing import List, Dict, Optional, Literal
+from pydantic import BaseModel
 from sqlalchemy import func
 from datetime import date, datetime, timedelta
 from calendar import monthrange
@@ -16,6 +17,124 @@ from app.models import (
 from app.utils.timezone import parse_yyyy_mm_dd
 
 router = APIRouter(prefix="/admin", tags=["admin"], include_in_schema=True)
+
+
+class SessionAttendanceMarkItem(BaseModel):
+    booking_id: int
+    mark: Literal["present", "absent", "clear"]
+
+
+class UpdateSessionAttendanceBody(BaseModel):
+    role: Literal["socio", "coach"]
+    marks: Optional[List[SessionAttendanceMarkItem]] = None
+    coach_mark: Optional[Literal["present", "absent", "clear"]] = None
+
+
+@router.get("/attendance/session/{class_id}/roster")
+async def get_session_attendance_roster(
+    class_id: int,
+    role: str = Query(..., description="socio o coach"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    if role not in ("socio", "coach"):
+        raise HTTPException(status_code=400, detail="role debe ser 'socio' o 'coach'")
+
+    cls = db.query(ClassSession).filter(ClassSession.id == class_id).first()
+    if not cls:
+        raise HTTPException(status_code=404, detail="Clase no encontrada")
+
+    if role == "socio":
+        rows = (
+            db.query(Booking, User)
+            .join(User, Booking.user_id == User.id)
+            .filter(Booking.class_id == class_id, Booking.status == "booked")
+            .order_by(User.name.asc())
+            .all()
+        )
+        return {
+            "class_id": class_id,
+            "role": "socio",
+            "title": cls.title,
+            "start_datetime": cls.start_datetime.isoformat(),
+            "entries": [
+                {
+                    "booking_id": b.id,
+                    "user_id": u.id,
+                    "name": u.name,
+                    "attended": b.attended,
+                }
+                for b, u in rows
+            ],
+        }
+
+    coach = None
+    if cls.coach_id:
+        coach = db.query(User).filter(User.id == cls.coach_id).first()
+    return {
+        "class_id": class_id,
+        "role": "coach",
+        "title": cls.title,
+        "start_datetime": cls.start_datetime.isoformat(),
+        "coach_attended": cls.coach_attended,
+        "coach": (
+            {"user_id": coach.id, "name": coach.name}
+            if coach
+            else None
+        ),
+    }
+
+
+@router.patch("/attendance/session/{class_id}")
+async def patch_session_attendance(
+    class_id: int,
+    body: UpdateSessionAttendanceBody,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    cls = db.query(ClassSession).filter(ClassSession.id == class_id).first()
+    if not cls:
+        raise HTTPException(status_code=404, detail="Clase no encontrada")
+
+    if body.role == "coach":
+        if body.coach_mark is None:
+            raise HTTPException(status_code=400, detail="coach_mark es requerido (present, absent o clear)")
+        if not cls.coach_id:
+            raise HTTPException(status_code=400, detail="La clase no tiene coach asignado")
+        if body.coach_mark == "clear":
+            cls.coach_attended = None
+        else:
+            cls.coach_attended = body.coach_mark == "present"
+        db.add(cls)
+        db.commit()
+        db.refresh(cls)
+        return {"ok": True, "coach_attended": cls.coach_attended}
+
+    if body.role == "socio":
+        if not body.marks:
+            raise HTTPException(status_code=400, detail="marks es requerido para role socio")
+        booking_ids = [m.booking_id for m in body.marks]
+        bookings = (
+            db.query(Booking)
+            .filter(Booking.id.in_(booking_ids), Booking.class_id == class_id)
+            .all()
+        )
+        by_id = {b.id: b for b in bookings}
+        for item in body.marks:
+            b = by_id.get(item.booking_id)
+            if not b:
+                raise HTTPException(status_code=404, detail=f"Reserva {item.booking_id} no pertenece a esta clase")
+            if b.status != "booked":
+                raise HTTPException(status_code=400, detail=f"Reserva {item.booking_id} no está activa")
+            if item.mark == "clear":
+                b.attended = None
+            else:
+                b.attended = item.mark == "present"
+            db.add(b)
+        db.commit()
+        return {"ok": True, "updated": len(body.marks)}
+
+    raise HTTPException(status_code=400, detail="role invalido")
 
 
 @router.get("/attendance")

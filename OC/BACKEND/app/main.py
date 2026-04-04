@@ -58,6 +58,18 @@ def init_database():
     except Exception:
         db.rollback()
     try:
+        db.execute(text("ALTER TABLE bookings ADD COLUMN attended BOOLEAN"))
+        db.commit()
+        print("[MIGRATION] Columna attended agregada a bookings.")
+    except Exception:
+        db.rollback()
+    try:
+        db.execute(text("ALTER TABLE class_sessions ADD COLUMN coach_attended BOOLEAN"))
+        db.commit()
+        print("[MIGRATION] Columna coach_attended agregada a class_sessions.")
+    except Exception:
+        db.rollback()
+    try:
         existing_admin = db.query(User).filter(User.username == "octavio").first()
         if not existing_admin:
             admin_user = User(

@@ -89,6 +89,7 @@ class ClassSession(Base):
 
     start_datetime = Column(DateTime(timezone=True), nullable=False)
     coach_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    coach_attended = Column(Boolean, nullable=True)  # lista admin coach asignado
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -106,6 +107,7 @@ class Booking(Base):
 
     status = Column(String(20), nullable=False)  # booked, canceled
     preferred_hour = Column(Integer, nullable=True)
+    attended = Column(Boolean, nullable=True)  # lista admin: None sin marcar, True/False presente/ausente
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="bookings")
