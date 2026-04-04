@@ -19,7 +19,7 @@ echo ""
 # --- Pedir datos al usuario ---
 read -p "Password para el usuario MySQL 'ocadmin': " MYSQL_PASS
 read -p "Dominio DuckDNS (ej: oc-calisthenics.duckdns.org): " DOMAIN
-read -p "URL del frontend en Netlify (ej: https://tu-sitio.netlify.app): " FRONTEND_URL
+read -p "URL del frontend en Netlify (ej: https://oc-club.netlify.app): " FRONTEND_URL
 
 JWT_SECRET=$(openssl rand -hex 32)
 echo ""

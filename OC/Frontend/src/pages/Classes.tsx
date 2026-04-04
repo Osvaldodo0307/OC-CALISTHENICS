@@ -1,7 +1,20 @@
 import { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
+import { runtime } from '../config/runtime'
+import LoadingState from '../components/ui/LoadingState'
+import ErrorState from '../components/ui/ErrorState'
+import EmptyState from '../components/ui/EmptyState'
+import InlineNotice from '../components/ui/InlineNotice'
+import { toUserMessage } from '../services/api/errorMessages'
+import {
+  addDaysToYmd,
+  getMxDateString,
+  ymdDayOfMonth,
+  ymdMonthIndex,
+  ymdWeekday,
+} from '../utils/datetimeMx'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 
 interface ClassWithBookings {
   id: number
@@ -18,18 +31,14 @@ interface ClassWithBookings {
   bookings_count: number
   is_booked_by_me: boolean
   my_booking_id?: number
+  my_booking_preferred_hour?: number | null
 }
 
 const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 const MONTHS_ES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
-function toLocalDateStr(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
-
 function formatDateLabel(dateStr: string): string {
-  const d = new Date(dateStr + 'T12:00:00')
-  return `${DAYS_ES[d.getDay()]} ${d.getDate()} de ${MONTHS_ES[d.getMonth()]}`
+  return `${DAYS_ES[ymdWeekday(dateStr)]} ${ymdDayOfMonth(dateStr)} de ${MONTHS_ES[ymdMonthIndex(dateStr)]}`
 }
 
 function isOpenGymOrPowerlifting(title: string): boolean {
@@ -38,56 +47,41 @@ function isOpenGymOrPowerlifting(title: string): boolean {
 }
 
 function getGymHours(dateStr: string): { start: number; end: number } {
-  const d = new Date(dateStr + 'T12:00:00')
-  const day = d.getDay()
+  const day = ymdWeekday(dateStr)
   if (day === 6) return { start: 10, end: 12 }
   return { start: 6, end: 23 }
 }
 
-function getTodayStr(): string {
-  return toLocalDateStr(new Date())
-}
-
 function isDayPast(dateStr: string): boolean {
-  const today = getTodayStr()
-  if (dateStr < today) return true
-  if (dateStr === today) {
-    const now = new Date()
-    return now.getHours() >= 22
-  }
-  return false
+  return dateStr < getMxDateString()
 }
 
 function isSunday(dateStr: string): boolean {
-  return new Date(dateStr + 'T12:00:00').getDay() === 0
+  return ymdWeekday(dateStr) === 0
 }
 
 export default function Classes() {
   const [classes, setClasses] = useState<ClassWithBookings[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedDate, setSelectedDate] = useState<string>(() => {
-    const today = new Date()
-    const d = new Date(today)
-    if (today.getHours() >= 22) {
-      d.setDate(d.getDate() + 1)
-    }
-    if (d.getDay() === 0) {
-      d.setDate(d.getDate() + 1)
-    }
-    return toLocalDateStr(d)
+    const todayMx = getMxDateString()
+    return isSunday(todayMx) ? addDaysToYmd(todayMx, 1) : todayMx
   })
   const [actionLoading, setActionLoading] = useState<number | null>(null)
   const [expandedCard, setExpandedCard] = useState<number | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
 
   const fetchClasses = useCallback(async () => {
     setLoading(true)
+    setError(null)
     try {
       const response = await axios.get<ClassWithBookings[]>(
         `${API_URL}/classes/?target_date=${selectedDate}`
       )
       setClasses(response.data)
     } catch (error) {
-      console.error('Error fetching classes:', error)
+      setError(toUserMessage(error, 'No se pudieron cargar las clases.'))
     } finally {
       setLoading(false)
     }
@@ -98,46 +92,44 @@ export default function Classes() {
   }, [fetchClasses])
 
   const handleBook = async (classId: number, preferredHour?: number) => {
+    if (actionLoading !== null) return
     setActionLoading(classId)
+    setNotice(null)
     try {
       const payload: Record<string, unknown> = { class_id: classId, status: 'booked' }
       if (preferredHour !== undefined) payload.preferred_hour = preferredHour
       await axios.post(`${API_URL}/bookings/`, payload)
       setExpandedCard(null)
+      setNotice('Reserva creada correctamente.')
       await fetchClasses()
     } catch (error) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.detail
-        : undefined
-      alert(message || 'Error al reservar')
+      setError(toUserMessage(error, 'No se pudo crear la reserva.'))
     } finally {
       setActionLoading(null)
     }
   }
 
   const handleCancel = async (bookingId: number) => {
+    if (actionLoading !== null) return
+    if (!confirm('¿Cancelar esta reserva?')) return
     setActionLoading(bookingId)
+    setNotice(null)
     try {
       await axios.delete(`${API_URL}/bookings/${bookingId}`)
+      setNotice('Reserva cancelada correctamente.')
       await fetchClasses()
     } catch (error) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.detail
-        : undefined
-      alert(message || 'Error al cancelar reserva')
+      setError(toUserMessage(error, 'No se pudo cancelar la reserva.'))
     } finally {
       setActionLoading(null)
     }
   }
 
   const navigateDate = (offset: number) => {
-    const current = new Date(selectedDate + 'T12:00:00')
-    current.setDate(current.getDate() + offset)
-    const newDate = toLocalDateStr(current)
+    const newDate = addDaysToYmd(selectedDate, offset)
     if (isDayPast(newDate)) return
     if (isSunday(newDate)) {
-      current.setDate(current.getDate() + (offset > 0 ? 1 : -1))
-      const skipped = toLocalDateStr(current)
+      const skipped = addDaysToYmd(newDate, offset > 0 ? 1 : -1)
       if (isDayPast(skipped)) return
       setSelectedDate(skipped)
       return
@@ -147,9 +139,9 @@ export default function Classes() {
 
   const dayIsPast = isDayPast(selectedDate)
   const dayIsSunday = isSunday(selectedDate)
-  const isToday = selectedDate === getTodayStr()
+  const isToday = selectedDate === getMxDateString()
 
-  const selectedDayOfWeek = new Date(selectedDate + 'T12:00:00').getDay()
+  const selectedDayOfWeek = ymdWeekday(selectedDate)
   const isSaturday = selectedDayOfWeek === 6
 
   const SATURDAY_ALLOWED = ['10:00 - 11:00 Calistenia', '11:00 - 12:00 Calistenia']
@@ -190,13 +182,22 @@ export default function Classes() {
           </svg>
         </button>
       </div>
+      <div className="mb-4 flex justify-end">
+        <button
+          onClick={() => fetchClasses()}
+          disabled={loading}
+          className="touch-target px-3 py-2 rounded-lg border border-gray-700 text-gray-300 text-sm hover:text-white hover:border-oc-red disabled:opacity-50"
+        >
+          Actualizar
+        </button>
+      </div>
+      {notice && <div className="mb-4"><InlineNotice type="success" message={notice} /></div>}
+      {error && <div className="mb-4"><ErrorState message={error} onRetry={fetchClasses} /></div>}
 
       {/* Quick date selector */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         {Array.from({ length: 7 }, (_, i) => {
-          const d = new Date()
-          d.setDate(d.getDate() + i)
-          const dateStr = toLocalDateStr(d)
+          const dateStr = addDaysToYmd(getMxDateString(), i)
           const isSelected = dateStr === selectedDate
           const past = isDayPast(dateStr)
           const sunday = isSunday(dateStr)
@@ -214,8 +215,8 @@ export default function Classes() {
                     : 'bg-oc-metal text-gray-400 hover:text-white border border-gray-700'
               }`}
             >
-              <div>{DAYS_ES[d.getDay()].slice(0, 3)}</div>
-              <div className="text-lg font-bold">{d.getDate()}</div>
+              <div>{DAYS_ES[ymdWeekday(dateStr)].slice(0, 3)}</div>
+              <div className="text-lg font-bold">{ymdDayOfMonth(dateStr)}</div>
               {sunday && <div className="text-[9px] mt-0.5">Cerrado</div>}
             </button>
           )
@@ -236,14 +237,16 @@ export default function Classes() {
           <p className="text-gray-500">Las reservas para este día ya cerraron</p>
         </div>
       ) : loading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin w-8 h-8 border-2 border-oc-red border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-gray-400">Cargando clases...</p>
-        </div>
+        <LoadingState message="Cargando clases..." />
+      ) : error ? (
+        <ErrorState message={error} onRetry={fetchClasses} />
       ) : classes.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-400 text-lg">No hay clases programadas para este día</p>
-        </div>
+        <EmptyState
+          title="Sin clases disponibles"
+          message="No hay clases programadas para este dia."
+          actionLabel="Actualizar"
+          onAction={fetchClasses}
+        />
       ) : (
         <div className="space-y-4">
           {/* Saturday info banner */}
@@ -257,6 +260,7 @@ export default function Classes() {
           {!isSaturday && specialClasses.map((cls) => {
             const isExpanded = expandedCard === cls.id
             const isBooked = cls.is_booked_by_me
+            const selectedHour = cls.my_booking_preferred_hour ?? null
 
             return (
               <div
@@ -311,8 +315,10 @@ export default function Classes() {
                           onClick={() => handleBook(cls.id, hour)}
                           disabled={actionLoading === cls.id || isBooked}
                           className={`py-2 px-1 rounded-lg text-sm font-medium transition-colors ${
-                            isBooked
+                            isBooked && selectedHour === hour
                               ? 'bg-green-600/20 text-green-400 border border-green-600/30 cursor-default'
+                              : isBooked
+                                ? 'bg-oc-dark/60 border border-gray-700 text-gray-500 cursor-default'
                               : 'bg-oc-dark border border-gray-700 text-white hover:border-oc-red hover:bg-oc-red/10 active:bg-oc-red active:text-white'
                           }`}
                         >
@@ -320,6 +326,11 @@ export default function Classes() {
                         </button>
                       ))}
                     </div>
+                    {isBooked && selectedHour != null && (
+                      <p className="text-xs text-green-400 mt-2">
+                        Tu horario registrado es: {selectedHour.toString().padStart(2, '0')}:00
+                      </p>
+                    )}
                     {isBooked && cls.my_booking_id && (
                       <button
                         onClick={() => handleCancel(cls.my_booking_id!)}

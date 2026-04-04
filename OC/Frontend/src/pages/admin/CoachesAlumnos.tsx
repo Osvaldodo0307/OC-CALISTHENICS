@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
+import { runtime } from '../../config/runtime'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 
 interface CoachInfo {
   id: number
@@ -97,6 +98,9 @@ interface StudentDetails {
   recent_bookings: Array<{
     id: number
     class_title: string
+    class_datetime?: string | null
+    attendance_hour?: string | null
+    preferred_hour?: number | null
     status: string
     created_at: string
   }>
@@ -115,20 +119,9 @@ export default function CoachesAlumnos() {
   const fetchData = useCallback(async () => {
     setLoading(true)
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        alert('No hay token de autenticación. Por favor, inicia sesión nuevamente.')
-        setLoading(false)
-        return
-      }
-
       const [coachesRes, studentsRes] = await Promise.all([
-        axios.get<CoachInfo[]>(`${API_URL}/admin/coaches-info`, {
-          headers: { Authorization: `Bearer ${token}` }
-        }),
-        axios.get<StudentInfo[]>(`${API_URL}/admin/students-info`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        axios.get<CoachInfo[]>(`${API_URL}/admin/coaches-info`),
+        axios.get<StudentInfo[]>(`${API_URL}/admin/students-info`)
       ])
       setCoaches(Array.isArray(coachesRes.data) ? coachesRes.data : [])
       setStudents(Array.isArray(studentsRes.data) ? studentsRes.data : [])
@@ -156,14 +149,7 @@ export default function CoachesAlumnos() {
 
   const handleViewCoachDetails = async (coachId: number) => {
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        alert('No hay token de autenticación. Por favor, inicia sesión nuevamente.')
-        return
-      }
-      const response = await axios.get<CoachDetails>(`${API_URL}/admin/coach/${coachId}/details`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const response = await axios.get<CoachDetails>(`${API_URL}/admin/coach/${coachId}/details`)
       setCoachDetails(response.data)
       setSelectedCoach(coachId)
     } catch (error) {
@@ -176,14 +162,7 @@ export default function CoachesAlumnos() {
 
   const handleViewStudentDetails = async (studentId: number) => {
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        alert('No hay token de autenticación. Por favor, inicia sesión nuevamente.')
-        return
-      }
-      const response = await axios.get<StudentDetails>(`${API_URL}/admin/student/${studentId}/details`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const response = await axios.get<StudentDetails>(`${API_URL}/admin/student/${studentId}/details`)
       setStudentDetails(response.data)
       setSelectedStudent(studentId)
     } catch (error) {
@@ -201,20 +180,13 @@ export default function CoachesAlumnos() {
     expiresAt.setMonth(expiresAt.getMonth() + months)
 
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        alert('No hay token de autenticación.')
-        return
-      }
-
       await axios.put(
         `${API_URL}/membership/${studentId}/renew`,
         {
           status: 'active',
           plan: 'grupal',
           expires_at: expiresAt.toISOString()
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       )
       alert('Membresía activada exitosamente')
       if (selectedStudent === studentId) {
@@ -224,7 +196,6 @@ export default function CoachesAlumnos() {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
         try {
-          const token = localStorage.getItem('token')
           await axios.post(
             `${API_URL}/membership`,
             {
@@ -232,8 +203,7 @@ export default function CoachesAlumnos() {
               status: 'active',
               plan: 'grupal',
               expires_at: expiresAt.toISOString()
-            },
-            { headers: { Authorization: `Bearer ${token}` } }
+            }
           )
           alert('Membresía creada y activada exitosamente')
           if (selectedStudent === studentId) {
@@ -259,17 +229,7 @@ export default function CoachesAlumnos() {
     if (!confirm('¿Desactivar membresía de este alumno?')) return
 
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        alert('No hay token de autenticación.')
-        return
-      }
-
-      await axios.put(
-        `${API_URL}/membership/${studentId}/deactivate`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
+      await axios.put(`${API_URL}/membership/${studentId}/deactivate`, {})
       alert('Membresía desactivada exitosamente')
       if (selectedStudent === studentId) {
         handleViewStudentDetails(studentId)
@@ -796,6 +756,11 @@ export default function CoachesAlumnos() {
                               >
                                 <div>
                                   <p className="text-white font-semibold">{booking.class_title}</p>
+                                  {booking.attendance_hour && (
+                                    <p className="text-xs text-oc-red mt-1">
+                                      Horario de asistencia: {booking.attendance_hour}
+                                    </p>
+                                  )}
                                   <span
                                     className={`text-xs px-2 py-1 rounded ${
                                       booking.status === 'booked'

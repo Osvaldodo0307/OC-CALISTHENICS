@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import axios from 'axios'
 import { User, ProgressEntry, TrainingPlan } from '../../types'
+import { runtime } from '../../config/runtime'
 import { Line } from 'react-chartjs-2'
 import {
   type ChartData,
@@ -17,7 +18,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 const MAX_POINTS = 30
 const CHART_AXIS_COLOR = '#B5A497'
 

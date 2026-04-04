@@ -1,13 +1,25 @@
 import { useEffect, useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { runtime } from '../../config/runtime'
+import {
+  addDaysToYmd,
+  getMxDateString,
+  startOfWeekMondayYmd,
+  ymdDayOfMonth,
+  ymdMonthIndex,
+  ymdYear,
+} from '../../utils/datetimeMx'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 
 interface Student {
   id: number
   name: string
   username: string
   phone?: string
+  attendance_hour?: string
+  preferred_hour?: number | null
 }
 
 interface ClassData {
@@ -37,16 +49,8 @@ interface WeeklyData {
 
 const MONTHS_ES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
 
-function getMonday(d: Date): Date {
-  const day = d.getDay()
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1)
-  return new Date(d.setDate(diff))
-}
-
 function formatWeekRange(startStr: string, endStr: string): string {
-  const s = new Date(startStr + 'T12:00:00')
-  const e = new Date(endStr + 'T12:00:00')
-  return `${s.getDate()} ${MONTHS_ES[s.getMonth()]} — ${e.getDate()} ${MONTHS_ES[e.getMonth()]} ${e.getFullYear()}`
+  return `${ymdDayOfMonth(startStr)} ${MONTHS_ES[ymdMonthIndex(startStr)]} — ${ymdDayOfMonth(endStr)} ${MONTHS_ES[ymdMonthIndex(endStr)]} ${ymdYear(endStr)}`
 }
 
 export default function AdminDashboard() {
@@ -57,10 +61,8 @@ export default function AdminDashboard() {
   const [expandedClass, setExpandedClass] = useState<number | null>(null)
 
   const getWeekStart = useCallback(() => {
-    const today = new Date()
-    const monday = getMonday(new Date(today))
-    monday.setDate(monday.getDate() + weekOffset * 7)
-    return monday.toISOString().split('T')[0]
+    const monday = startOfWeekMondayYmd(getMxDateString())
+    return addDaysToYmd(monday, weekOffset * 7)
   }, [weekOffset])
 
   const fetchWeekData = useCallback(async () => {
@@ -99,6 +101,12 @@ export default function AdminDashboard() {
     setExpandedClass(expandedClass === classId ? null : classId)
   }
 
+  const resolveAttendanceHour = (student: Student): string => {
+    if (student.attendance_hour) return student.attendance_hour
+    if (student.preferred_hour != null) return `${student.preferred_hour.toString().padStart(2, '0')}:00`
+    return 'Sin hora'
+  }
+
   if (loading) {
     return (
       <div className="text-center py-12">
@@ -115,9 +123,25 @@ export default function AdminDashboard() {
   return (
     <div className="px-4 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white mb-1">Agenda Semanal</h1>
-        <p className="text-gray-500 text-sm">Reservas de alumnos por clase y día</p>
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white mb-1">Agenda Semanal</h1>
+          <p className="text-gray-500 text-sm">Reservas de alumnos por clase y día</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            to="/app/admin/asistencia"
+            className="inline-flex items-center justify-center bg-oc-red hover:bg-oc-red-deep text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          >
+            Asistencia y reportes
+          </Link>
+          <Link
+            to="/app/admin/clases"
+            className="inline-flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          >
+            Gestión de clases
+          </Link>
+        </div>
       </div>
 
       {/* Week navigation */}
@@ -166,8 +190,7 @@ export default function AdminDashboard() {
       <div className="space-y-3">
         {weekData.days.map((day) => {
           const isExpanded = expandedDay === day.date
-          const dateObj = new Date(day.date + 'T12:00:00')
-          const dayNum = dateObj.getDate()
+          const dayNum = ymdDayOfMonth(day.date)
 
           return (
             <div key={day.date} className="bg-oc-metal rounded-xl border border-gray-700/50 overflow-hidden">
@@ -225,41 +248,52 @@ export default function AdminDashboard() {
 
                         return (
                           <div key={cls.id}>
-                            <button
-                              onClick={() => hasStudents && toggleClass(cls.id)}
-                              className={`w-full px-4 py-3 flex items-center justify-between ${
-                                hasStudents ? 'hover:bg-gray-700/20 cursor-pointer' : 'cursor-default'
-                              } transition-colors`}
-                            >
-                              <div className="flex items-center gap-3 flex-1 min-w-0">
-                                <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                                  hasStudents ? 'bg-green-500' : 'bg-gray-600'
-                                }`} />
-                                <span className="text-sm text-white truncate">{cls.title}</span>
-                              </div>
+                            <div className="flex items-stretch gap-2 px-2 sm:px-4 py-2">
+                              <button
+                                type="button"
+                                onClick={() => hasStudents && toggleClass(cls.id)}
+                                className={`flex-1 min-w-0 px-2 py-2 rounded-lg flex items-center justify-between ${
+                                  hasStudents ? 'hover:bg-gray-700/20 cursor-pointer' : 'cursor-default'
+                                } transition-colors`}
+                              >
+                                <div className="flex items-center gap-3 flex-1 min-w-0">
+                                  <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                                    hasStudents ? 'bg-green-500' : 'bg-gray-600'
+                                  }`} />
+                                  <span className="text-sm text-white truncate">{cls.title}</span>
+                                </div>
 
-                              <div className="flex items-center gap-2 flex-shrink-0">
-                                {hasStudents && (
-                                  <>
-                                    <div className="flex items-center gap-1 text-gray-400">
-                                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  {hasStudents && (
+                                    <>
+                                      <div className="flex items-center gap-1 text-gray-400">
+                                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                                          <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+                                        </svg>
+                                        <span className="text-xs font-medium">{cls.bookings_count}</span>
+                                      </div>
+                                      <svg
+                                        className={`w-4 h-4 text-gray-500 transition-transform ${isClassExpanded ? 'rotate-180' : ''}`}
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                      >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                       </svg>
-                                      <span className="text-xs font-medium">{cls.bookings_count}</span>
-                                    </div>
-                                    <svg
-                                      className={`w-4 h-4 text-gray-500 transition-transform ${isClassExpanded ? 'rotate-180' : ''}`}
-                                      fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    >
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                  </>
-                                )}
-                                {!hasStudents && (
-                                  <span className="text-xs text-gray-600">0</span>
-                                )}
-                              </div>
-                            </button>
+                                    </>
+                                  )}
+                                  {!hasStudents && (
+                                    <span className="text-xs text-gray-600">0</span>
+                                  )}
+                                </div>
+                              </button>
+                              <Link
+                                to={`/app/admin/asistencia?date=${encodeURIComponent(day.date)}&classId=${cls.id}`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="self-center bg-gray-700 hover:bg-gray-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap flex-shrink-0"
+                                title="Registrar asistencia de alumnos"
+                              >
+                                Asistencia
+                              </Link>
+                            </div>
 
                             {/* Student list */}
                             {isClassExpanded && hasStudents && (
@@ -277,6 +311,9 @@ export default function AdminDashboard() {
                                           </span>
                                         </div>
                                         <span className="text-sm text-gray-300">{student.name}</span>
+                                        <span className="text-[11px] text-oc-red bg-oc-red/10 border border-oc-red/30 rounded px-1.5 py-0.5">
+                                          Hora: {resolveAttendanceHour(student)}
+                                        </span>
                                       </div>
                                       {student.phone && (
                                         <a

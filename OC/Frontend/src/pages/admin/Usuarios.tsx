@@ -2,8 +2,9 @@ import { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
 import { User } from '../../types'
 import { useAuth } from '../../contexts/AuthContext'
+import { runtime } from '../../config/runtime'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 
 export default function AdminUsuarios() {
   const { user: currentUser } = useAuth()

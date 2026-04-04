@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { runtime } from '../config/runtime'
+import LoadingState from '../components/ui/LoadingState'
+import EmptyState from '../components/ui/EmptyState'
+import ErrorState from '../components/ui/ErrorState'
+import InlineNotice from '../components/ui/InlineNotice'
+import { toUserMessage } from '../services/api/errorMessages'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 
 interface Student {
   id: number
@@ -12,9 +19,13 @@ interface Student {
 
 export default function Rutinas() {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<'ai' | 'exercise'>('exercise')
   const [students, setStudents] = useState<Student[]>([])
   const [loadingStudents, setLoadingStudents] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
   
   const [formData, setFormData] = useState({
     student_id: '',
@@ -40,8 +51,6 @@ export default function Rutinas() {
     weeks: 4
   })
   
-  const [loading, setLoading] = useState(false)
-  
   const categories = [
     { value: 'T.S.E', label: 'Tren Superior Empuje (T.S.E)' },
     { value: 'T.S.J', label: 'Tren Superior Jalón (T.S.J)' },
@@ -65,14 +74,12 @@ export default function Rutinas() {
   
   const fetchStudents = async () => {
     setLoadingStudents(true)
+    setError(null)
     try {
-      const token = localStorage.getItem('token')
-      const response = await axios.get<Student[]>(`${API_URL}/coaches/students`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const response = await axios.get<Student[]>(`${API_URL}/coaches/students`)
       setStudents(response.data)
     } catch (error) {
-      console.error('Error fetching students:', error)
+      setError(toUserMessage(error, 'No se pudieron cargar tus alumnos.'))
     } finally {
       setLoadingStudents(false)
     }
@@ -81,11 +88,13 @@ export default function Rutinas() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!formData.student_id) {
-      alert('Selecciona un alumno')
+      setError('Selecciona un alumno antes de generar el plan.')
       return
     }
 
     setLoading(true)
+    setError(null)
+    setNotice(null)
     try {
       const response = await axios.post(`${API_URL}/routines/generate`, {
         student_id: Number(formData.student_id),
@@ -96,12 +105,9 @@ export default function Rutinas() {
         preference: formData.preference,
         equipment_json: formData.equipment_json
       })
-      alert(`Plan generado exitosamente: ${response.data.title}`)
+      setNotice(`Plan generado: ${response.data.title}`)
     } catch (error) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.detail
-        : undefined
-      alert(message || 'Error al generar plan')
+      setError(toUserMessage(error, 'No se pudo generar el plan.'))
     } finally {
       setLoading(false)
     }
@@ -135,17 +141,18 @@ export default function Rutinas() {
   const handleExerciseSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!exerciseFormData.student_id) {
-      alert('Selecciona un alumno')
+      setError('Selecciona un alumno antes de generar la rutina.')
       return
     }
     if (exerciseFormData.categories.length === 0) {
-      alert('Selecciona al menos una categoría')
+      setError('Selecciona al menos una categoria.')
       return
     }
     
     setLoading(true)
+    setError(null)
+    setNotice(null)
     try {
-      const token = localStorage.getItem('token')
       const response = await axios.post(
         `${API_URL}/routines/generate-from-exercises`,
         {
@@ -154,10 +161,9 @@ export default function Rutinas() {
           level: exerciseFormData.level,
           days_per_week: exerciseFormData.days_per_week,
           weeks: exerciseFormData.weeks
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       )
-      alert(`Rutina generada exitosamente: ${response.data.title}`)
+      setNotice(`Rutina generada: ${response.data.title}`)
       // Reset form
       setExerciseFormData({
         student_id: '',
@@ -167,18 +173,35 @@ export default function Rutinas() {
         weeks: 4
       })
     } catch (error) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.detail
-        : undefined
-      alert(message || 'Error al generar rutina')
+      setError(toUserMessage(error, 'No se pudo generar la rutina.'))
     } finally {
       setLoading(false)
     }
   }
 
+  if (!user) {
+    return <EmptyState title="Sin sesion activa" message="Inicia sesion para acceder al modulo." />
+  }
+
+  if (user.role === 'socio') {
+    return (
+      <div className="px-4 max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold text-white mb-6">Rutinas</h1>
+        <EmptyState
+          title="Rutinas gestionadas por coach"
+          message="Tu coach crea y ajusta tus rutinas. Revisa tu modulo Mi Plan para consultar tu entrenamiento actual."
+          actionLabel="Ir a Mi Plan"
+          onAction={() => navigate('/app/mi-plan')}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className="px-4">
       <h1 className="text-3xl font-bold text-white mb-6">Generar Rutina</h1>
+      {notice && <div className="mb-4"><InlineNotice type="success" message={notice} /></div>}
+      {error && <div className="mb-4"><ErrorState message={error} onRetry={fetchStudents} /></div>}
       
       {/* Tabs */}
       <div className="flex gap-4 mb-6 border-b border-oc-red/20">
@@ -210,7 +233,7 @@ export default function Rutinas() {
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Alumno</label>
             {loadingStudents ? (
-              <p className="text-gray-400">Cargando alumnos...</p>
+              <LoadingState message="Cargando alumnos..." />
             ) : (
               <select
                 value={exerciseFormData.student_id}

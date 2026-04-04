@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import { addDaysToYmd, getMxDateString, startOfWeekMondayYmd } from '../../utils/datetimeMx'
 import { runtime } from '../../config/runtime'
@@ -80,7 +81,12 @@ function attendedToMark(v: boolean | null | undefined): RollMark {
   return 'clear'
 }
 
+type AsistenciaTab = 'reportes' | 'registrar'
+
 export default function AdminAsistencia() {
+  const [searchParams] = useSearchParams()
+  const [activeTab, setActiveTab] = useState<AsistenciaTab>('reportes')
+
   const [weekStart, setWeekStart] = useState<string>(startOfWeekMondayYmd(getMxDateString()))
   const [month, setMonth] = useState<string>(getMxDateString().slice(0, 7))
   const [weekData, setWeekData] = useState<AttendanceResponse | null>(null)
@@ -161,6 +167,19 @@ export default function AdminAsistencia() {
     void fetchDayClasses()
   }, [fetchDayClasses])
 
+  useEffect(() => {
+    const d = searchParams.get('date')
+    const cid = searchParams.get('classId')
+    if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) {
+      setRollDate(d)
+    }
+    if (cid && /^\d+$/.test(cid)) {
+      setSelectedClassId(Number(cid))
+      setRollRole('socio')
+      setActiveTab('registrar')
+    }
+  }, [searchParams])
+
   const fetchRoster = useCallback(async () => {
     if (selectedClassId === '') {
       setSocioEntries([])
@@ -239,8 +258,158 @@ export default function AdminAsistencia() {
   return (
     <div className="px-4 max-w-6xl mx-auto">
       <h1 className="text-2xl font-bold text-white mb-1">Asistencia</h1>
-      <p className="text-gray-500 text-sm mb-6">Pasar lista por clase y consulta histórica</p>
+      <p className="text-gray-500 text-sm mb-4">Reportes por periodo y registro de lista por clase</p>
 
+      <div className="flex flex-wrap gap-2 mb-6 border-b border-gray-700 pb-1">
+        <button
+          type="button"
+          onClick={() => setActiveTab('reportes')}
+          className={`px-4 py-2 rounded-t-lg text-sm font-semibold transition-colors ${
+            activeTab === 'reportes'
+              ? 'bg-oc-metal text-oc-red border border-b-0 border-gray-700 -mb-px'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          Reportes (semanal y mensual)
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('registrar')}
+          className={`px-4 py-2 rounded-t-lg text-sm font-semibold transition-colors ${
+            activeTab === 'registrar'
+              ? 'bg-oc-metal text-oc-red border border-b-0 border-gray-700 -mb-px'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          Registrar asistencia por clase
+        </button>
+      </div>
+
+      {activeTab === 'reportes' && (
+        <>
+      <h2 className="text-lg font-semibold text-white mb-4">Histórico</h2>
+      <div className="grid lg:grid-cols-2 gap-4 mb-6">
+        <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
+          <h2 className="text-white font-semibold mb-3">Vista semanal</h2>
+          <div className="flex items-center gap-2 mb-3">
+            <button
+              onClick={() => setWeekStart(addDaysToYmd(weekStart, -7))}
+              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
+            >
+              Semana anterior
+            </button>
+            <button
+              onClick={() => setWeekStart(addDaysToYmd(weekStart, 7))}
+              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
+            >
+              Semana siguiente
+            </button>
+            <button
+              onClick={() => setWeekStart(startOfWeekMondayYmd(getMxDateString()))}
+              className="bg-oc-red hover:bg-oc-red-deep text-white px-3 py-1.5 rounded text-sm"
+            >
+              Semana actual
+            </button>
+          </div>
+          <p className="text-sm text-gray-300">Rango: {weekStart} a {weekEnd}</p>
+        </div>
+
+        <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
+          <h2 className="text-white font-semibold mb-3">Resumen mensual</h2>
+          <label className="text-sm text-gray-400 mr-2">Mes</label>
+          <input
+            type="month"
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+            className="bg-oc-dark border border-gray-700 rounded px-3 py-1.5 text-white text-sm"
+          />
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-6 mb-8">
+        <section className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
+          <h3 className="text-oc-red font-semibold mb-3">Detalle semanal</h3>
+          {loadingWeek ? (
+            <p className="text-gray-400 text-sm">Cargando asistencia semanal...</p>
+          ) : !weekData ? (
+            <p className="text-gray-400 text-sm">No se pudo cargar la semana.</p>
+          ) : (
+            <>
+              <p className="text-sm text-gray-300 mb-3">Reservas registradas: {weekData.total_records}</p>
+              <div className="overflow-x-auto mb-4">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-700">
+                      <th className="text-left py-2 text-gray-300">Alumno</th>
+                      <th className="text-left py-2 text-gray-300">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {weekData.students.map((student) => (
+                      <tr key={student.user_id} className="border-b border-gray-800">
+                        <td className="py-2 text-white">{student.name}</td>
+                        <td className="py-2 text-gray-300">{student.total}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="space-y-2">
+                {weekData.daily_totals.map((row) => (
+                  <div key={row.date} className="flex items-center justify-between text-sm">
+                    <span className="text-gray-400">{row.date}</span>
+                    <span className="text-white font-semibold">{row.count}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </section>
+
+        <section className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
+          <h3 className="text-oc-red font-semibold mb-3">Resumen mensual</h3>
+          {loadingMonth ? (
+            <p className="text-gray-400 text-sm">Cargando resumen mensual...</p>
+          ) : !monthData ? (
+            <p className="text-gray-400 text-sm">No se pudo cargar el mes.</p>
+          ) : (
+            <>
+              <p className="text-sm text-gray-300 mb-3">Reservas registradas: {monthData.total_records}</p>
+              <div className="overflow-x-auto mb-4">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-700">
+                      <th className="text-left py-2 text-gray-300">Alumno</th>
+                      <th className="text-left py-2 text-gray-300">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {monthData.students.map((student) => (
+                      <tr key={student.user_id} className="border-b border-gray-800">
+                        <td className="py-2 text-white">{student.name}</td>
+                        <td className="py-2 text-gray-300">{student.total}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <h4 className="text-white text-sm font-semibold mb-2">Disciplinas</h4>
+              <div className="space-y-2">
+                {monthData.discipline_totals.map((row) => (
+                  <div key={row.discipline} className="flex items-center justify-between text-sm">
+                    <span className="text-gray-400">{row.discipline}</span>
+                    <span className="text-white font-semibold">{row.count}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </section>
+      </div>
+        </>
+      )}
+
+      {activeTab === 'registrar' && (
       <section className="bg-oc-metal rounded-xl border border-gray-700/50 p-4 mb-8">
         <h2 className="text-white font-semibold mb-1">Pasar lista por clase</h2>
         <p className="text-gray-500 text-sm mb-4">
@@ -412,126 +581,7 @@ export default function AdminAsistencia() {
           </>
         )}
       </section>
-
-      <h2 className="text-lg font-semibold text-white mb-4">Histórico</h2>
-      <div className="grid lg:grid-cols-2 gap-4 mb-6">
-        <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
-          <h2 className="text-white font-semibold mb-3">Vista semanal</h2>
-          <div className="flex items-center gap-2 mb-3">
-            <button
-              onClick={() => setWeekStart(addDaysToYmd(weekStart, -7))}
-              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
-            >
-              Semana anterior
-            </button>
-            <button
-              onClick={() => setWeekStart(addDaysToYmd(weekStart, 7))}
-              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
-            >
-              Semana siguiente
-            </button>
-            <button
-              onClick={() => setWeekStart(startOfWeekMondayYmd(getMxDateString()))}
-              className="bg-oc-red hover:bg-oc-red-deep text-white px-3 py-1.5 rounded text-sm"
-            >
-              Semana actual
-            </button>
-          </div>
-          <p className="text-sm text-gray-300">Rango: {weekStart} a {weekEnd}</p>
-        </div>
-
-        <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
-          <h2 className="text-white font-semibold mb-3">Resumen mensual</h2>
-          <label className="text-sm text-gray-400 mr-2">Mes</label>
-          <input
-            type="month"
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
-            className="bg-oc-dark border border-gray-700 rounded px-3 py-1.5 text-white text-sm"
-          />
-        </div>
-      </div>
-
-      <div className="grid lg:grid-cols-2 gap-6">
-        <section className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
-          <h3 className="text-oc-red font-semibold mb-3">Detalle semanal</h3>
-          {loadingWeek ? (
-            <p className="text-gray-400 text-sm">Cargando asistencia semanal...</p>
-          ) : !weekData ? (
-            <p className="text-gray-400 text-sm">No se pudo cargar la semana.</p>
-          ) : (
-            <>
-              <p className="text-sm text-gray-300 mb-3">Reservas registradas: {weekData.total_records}</p>
-              <div className="overflow-x-auto mb-4">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 text-gray-300">Alumno</th>
-                      <th className="text-left py-2 text-gray-300">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {weekData.students.map((student) => (
-                      <tr key={student.user_id} className="border-b border-gray-800">
-                        <td className="py-2 text-white">{student.name}</td>
-                        <td className="py-2 text-gray-300">{student.total}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="space-y-2">
-                {weekData.daily_totals.map((row) => (
-                  <div key={row.date} className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">{row.date}</span>
-                    <span className="text-white font-semibold">{row.count}</span>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </section>
-
-        <section className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
-          <h3 className="text-oc-red font-semibold mb-3">Resumen mensual</h3>
-          {loadingMonth ? (
-            <p className="text-gray-400 text-sm">Cargando resumen mensual...</p>
-          ) : !monthData ? (
-            <p className="text-gray-400 text-sm">No se pudo cargar el mes.</p>
-          ) : (
-            <>
-              <p className="text-sm text-gray-300 mb-3">Reservas registradas: {monthData.total_records}</p>
-              <div className="overflow-x-auto mb-4">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 text-gray-300">Alumno</th>
-                      <th className="text-left py-2 text-gray-300">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {monthData.students.map((student) => (
-                      <tr key={student.user_id} className="border-b border-gray-800">
-                        <td className="py-2 text-white">{student.name}</td>
-                        <td className="py-2 text-gray-300">{student.total}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <h4 className="text-white text-sm font-semibold mb-2">Disciplinas</h4>
-              <div className="space-y-2">
-                {monthData.discipline_totals.map((row) => (
-                  <div key={row.discipline} className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">{row.discipline}</span>
-                    <span className="text-white font-semibold">{row.count}</span>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </section>
-      </div>
+      )}
     </div>
   )
 }

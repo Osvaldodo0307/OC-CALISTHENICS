@@ -2,8 +2,9 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { User, VirtualAssessment } from '../../types'
+import { runtime } from '../../config/runtime'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 const defaultEquipment = {
   barra: false,
   anillas: false,

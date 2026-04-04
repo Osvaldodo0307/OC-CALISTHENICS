@@ -2,24 +2,31 @@ import { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
 import { TrainingPlan, TrainingPlanItem } from '../types'
 import { format } from 'date-fns'
+import { runtime } from '../config/runtime'
+import LoadingState from '../components/ui/LoadingState'
+import EmptyState from '../components/ui/EmptyState'
+import ErrorState from '../components/ui/ErrorState'
+import { toUserMessage } from '../services/api/errorMessages'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 
 export default function MiPlan() {
   const [plan, setPlan] = useState<TrainingPlan | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const fetchPlan = useCallback(async () => {
+    setError(null)
     try {
       const response = await axios.get<TrainingPlan>(`${API_URL}/plans/my-plan`)
       setPlan(response.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status !== 404) {
-          console.error('Error fetching plan:', error.response?.data || error.message)
+          setError(toUserMessage(error, 'No se pudo cargar tu plan.'))
         }
       } else {
-        console.error('Error fetching plan:', error)
+        setError('No se pudo cargar tu plan.')
       }
     } finally {
       setLoading(false)
@@ -31,18 +38,29 @@ export default function MiPlan() {
   }, [fetchPlan])
 
   if (loading) {
-    return <div className="text-white text-center py-8">Cargando plan...</div>
+    return <LoadingState message="Cargando plan..." />
+  }
+
+  if (error) {
+    return (
+      <div className="px-4">
+        <h1 className="text-3xl font-bold text-white mb-6">Mi Plan de Entrenamiento</h1>
+        <ErrorState message={error} onRetry={() => {
+          setLoading(true)
+          void fetchPlan()
+        }} />
+      </div>
+    )
   }
 
   if (!plan) {
     return (
       <div className="px-4">
         <h1 className="text-3xl font-bold text-white mb-6">Mi Plan de Entrenamiento</h1>
-        <div className="bg-oc-metal p-8 rounded-lg border border-oc-red/20 text-center">
-          <p className="text-gray-400 text-lg">
-            No tienes un plan asignado. Contacta a tu coach para obtener uno.
-          </p>
-        </div>
+        <EmptyState
+          title="Aun no tienes plan asignado"
+          message="Contacta a tu coach para obtener un plan de entrenamiento."
+        />
       </div>
     )
   }
@@ -72,7 +90,12 @@ export default function MiPlan() {
         </div>
       </div>
 
-      {itemsByWeek && Object.entries(itemsByWeek).map(([week, items]) => (
+      {!itemsByWeek || Object.keys(itemsByWeek).length === 0 ? (
+        <EmptyState
+          title="Plan sin detalle"
+          message="Tu plan no tiene bloques semanales cargados todavia."
+        />
+      ) : Object.entries(itemsByWeek).map(([week, items]) => (
         <div key={week} className="bg-oc-metal p-6 rounded-lg border border-oc-red/20 mb-6">
           <h3 className="text-xl font-bold text-oc-red mb-4">Semana {week}</h3>
           <div className="space-y-4">

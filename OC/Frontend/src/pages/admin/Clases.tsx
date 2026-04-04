@@ -1,7 +1,10 @@
 import { useEffect, useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { addDaysToYmd, getMxDateString, ymdDayOfMonth, ymdWeekday } from '../../utils/datetimeMx'
+import { runtime } from '../../config/runtime'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 
 interface ClassSession {
   id: number
@@ -20,13 +23,15 @@ interface ClassSession {
 
 const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
-function toLocalDateStr(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+function formatTime(dt: string): string {
+  const [, timePart = '00:00:00'] = dt.split('T')
+  return timePart.slice(0, 5)
 }
 
-function formatTime(dt: string): string {
-  const d = new Date(dt)
-  return `${d.getUTCHours().toString().padStart(2, '0')}:${d.getUTCMinutes().toString().padStart(2, '0')}`
+function extractHourMinute(dt: string): { hour: number; minute: number } {
+  const [, timePart = '00:00:00'] = dt.split('T')
+  const [hour = '0', minute = '0'] = timePart.split(':')
+  return { hour: Number(hour), minute: Number(minute) }
 }
 
 const DISCIPLINES = [
@@ -57,7 +62,7 @@ const EMPTY_FORM: FormData = {
 export default function AdminClases() {
   const [classes, setClasses] = useState<ClassSession[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedDate, setSelectedDate] = useState<string>(toLocalDateStr(new Date()))
+  const [selectedDate, setSelectedDate] = useState<string>(getMxDateString())
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState<number | null>(null)
   const [form, setForm] = useState<FormData>({ ...EMPTY_FORM })
@@ -89,13 +94,13 @@ export default function AdminClases() {
   }
 
   const openEditForm = (cls: ClassSession) => {
-    const dt = new Date(cls.start_datetime)
+    const { hour, minute } = extractHourMinute(cls.start_datetime)
     setEditingId(cls.id)
     setForm({
       title: cls.title,
       discipline: cls.discipline,
-      hour: dt.getUTCHours(),
-      minute: dt.getUTCMinutes(),
+      hour,
+      minute,
       duration_minutes: cls.duration_minutes,
       capacity: cls.capacity,
       date: selectedDate,
@@ -172,12 +177,10 @@ export default function AdminClases() {
   }
 
   const weekDays = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date()
-    d.setDate(d.getDate() + i)
-    return toLocalDateStr(d)
+    return addDaysToYmd(getMxDateString(), i)
   })
 
-  const selectedDayName = DAYS_ES[new Date(selectedDate + 'T12:00:00').getDay()]
+  const selectedDayName = DAYS_ES[ymdWeekday(selectedDate)]
 
   return (
     <div className="px-4 max-w-4xl mx-auto">
@@ -198,7 +201,6 @@ export default function AdminClases() {
       {/* Day selector */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         {weekDays.map((dateStr) => {
-          const d = new Date(dateStr + 'T12:00:00')
           const isSelected = dateStr === selectedDate
           return (
             <button
@@ -210,8 +212,8 @@ export default function AdminClases() {
                   : 'bg-oc-metal text-gray-400 hover:text-white border border-gray-700'
               }`}
             >
-              <div>{DAYS_ES[d.getDay()].slice(0, 3)}</div>
-              <div className="text-lg font-bold">{d.getDate()}</div>
+              <div>{DAYS_ES[ymdWeekday(dateStr)].slice(0, 3)}</div>
+              <div className="text-lg font-bold">{ymdDayOfMonth(dateStr)}</div>
             </button>
           )
         })}
@@ -410,7 +412,14 @@ export default function AdminClases() {
                   </span>
                 )}
               </div>
-              <div className="flex gap-2 ml-3 flex-shrink-0">
+              <div className="flex flex-wrap items-center gap-2 ml-3 flex-shrink-0 justify-end">
+                <Link
+                  to={`/app/admin/asistencia?date=${encodeURIComponent(selectedDate)}&classId=${cls.id}`}
+                  className="bg-gray-700 hover:bg-gray-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
+                  title="Registrar asistencia de alumnos con reserva en esta clase"
+                >
+                  Asistencia
+                </Link>
                 <button
                   onClick={() => openEditForm(cls)}
                   className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 p-2 rounded-lg transition-colors"

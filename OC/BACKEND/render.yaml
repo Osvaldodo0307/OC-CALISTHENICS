@@ -1,3 +1,6 @@
+# Conectar GitHub en Render: Root Directory = OC/BACKEND
+# En el panel, define ALLOWED_ORIGINS (ej. https://oc-club.netlify.app) para CORS con Netlify.
+
 services:
   - type: web
     name: oc-calisthenics-api

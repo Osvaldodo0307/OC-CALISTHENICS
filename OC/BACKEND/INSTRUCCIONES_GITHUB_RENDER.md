@@ -1,5 +1,11 @@
 # 🚀 Guía: Subir Backend a GitHub y Conectar con Render
 
+## OC Club + CORS con Netlify
+
+- Frontend producción: **`https://oc-club.netlify.app`**
+- Pasos unificados Netlify + Render: **[`../DEPLOY_OC_CLUB.md`](../DEPLOY_OC_CLUB.md)**
+- En Render, al conectar el mismo repo monorepo, usa **Root Directory = `OC/BACKEND`**.
+
 ## 📋 Resumen
 
 Esta guía te ayudará a subir el backend a GitHub y conectarlo con Render para que se despliegue automáticamente.

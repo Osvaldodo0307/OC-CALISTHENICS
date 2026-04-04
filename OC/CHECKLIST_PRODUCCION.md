@@ -1,5 +1,7 @@
 # ✅ Checklist Pre-Producción
 
+**OC Club (Netlify + Render + Git):** guía paso a paso en [`DEPLOY_OC_CLUB.md`](DEPLOY_OC_CLUB.md) (`https://oc-club.netlify.app`, monorepo `OC/Frontend` y `OC/BACKEND`).
+
 ## 🔍 Validación Local (ANTES de subir)
 
 ### Backend
@@ -25,6 +27,7 @@
 ### En Render Dashboard
 - [ ] Crear nuevo servicio Web Service
 - [ ] Conectar con GitHub (o subir archivos)
+- [ ] **Root Directory:** `OC/BACKEND`
 - [ ] Configurar variables de entorno:
   - [ ] `DATABASE_URL` (PostgreSQL - Render lo crea automáticamente)
   - [ ] `SECRET_KEY` (generar uno seguro)
@@ -46,16 +49,16 @@
 - [ ] Verificar que no haya rutas hardcodeadas a localhost
 
 ### En Netlify Dashboard
-- [ ] Arrastrar carpeta `Frontend` o conectar con GitHub
-- [ ] Verificar que Netlify detecte la configuración automáticamente
+- [ ] **Recomendado:** Conectar con GitHub (repo raíz) y dejar de usar solo Netlify Drop
+- [ ] Confirmar que Netlify use el `netlify.toml` en la **raíz del repo** (`base = OC/Frontend`) o Base directory `OC/Frontend` + `netlify.toml` local
 - [ ] Configurar variable de entorno:
-  - [ ] `VITE_API_URL` = URL del backend en Render (ej: `https://oc-calisthenics-api.onrender.com`)
+  - [ ] `VITE_API_URL` = URL del backend en Render (ej: `https://oc-calisthenics.onrender.com`)
 
 ### Después del Despliegue
 - [ ] Verificar que el sitio cargue correctamente
 - [ ] Probar login
 - [ ] Verificar que las peticiones vayan al backend correcto
-- [ ] Anotar la URL del frontend (ej: `https://oc-calisthenics.netlify.app`)
+- [ ] URL del frontend producción: **`https://oc-club.netlify.app`**
 
 ## 🔄 Actualización de CORS
 

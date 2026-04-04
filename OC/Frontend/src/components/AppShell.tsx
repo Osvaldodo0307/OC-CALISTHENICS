@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { runtime } from '../config/runtime'
+import MobileBottomNav from './MobileBottomNav'
 
 export default function AppShell() {
   const { user, logout } = useAuth()
@@ -8,16 +10,19 @@ export default function AppShell() {
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async () => {
+    await logout()
     navigate('/app/login')
   }
 
   const isActive = (path: string) => location.pathname === path
 
   const socioNav = [
+    { path: '/app/inicio', label: 'Inicio' },
     { path: '/app/clases', label: 'Clases' },
-    { path: '/app/reservas', label: 'Mis Reservas' }
+    { path: '/app/reservas', label: 'Mis Reservas' },
+    { path: '/app/mi-plan', label: 'Mi Plan' },
+    { path: '/app/perfil', label: 'Perfil' },
   ]
 
   const coachNav = [
@@ -28,15 +33,19 @@ export default function AppShell() {
 
   const adminNav = [
     { path: '/app/admin/dashboard', label: 'Agenda Semanal' },
+    { path: '/app/admin/asistencia', label: 'Asistencia' },
     { path: '/app/admin/clases', label: 'Gestión de Clases' },
     { path: '/app/admin/usuarios', label: 'Usuarios' },
   ]
 
   const navItems = user?.role === 'admin' ? adminNav : user?.role === 'coach' ? coachNav : socioNav
 
+  const isSocio = user?.role === 'socio'
+  const showBottomNav = runtime.isAppMode && isSocio
+
   return (
-    <div className="min-h-screen bg-oc-dark">
-      <nav className="bg-oc-metal border-b border-oc-red/20">
+    <div className="mobile-safe-top min-h-screen bg-oc-dark">
+      <nav className="sticky top-0 z-30 bg-oc-metal border-b border-oc-red/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
@@ -69,7 +78,7 @@ export default function AppShell() {
             <div className="flex items-center gap-3">
               <span className="text-gray-300 text-sm hidden sm:block">{user?.name}</span>
               <button
-                onClick={handleLogout}
+                onClick={() => void handleLogout()}
                 className="bg-oc-red hover:bg-oc-red-deep text-white px-3 py-1.5 rounded text-sm"
               >
                 Salir
@@ -116,9 +125,10 @@ export default function AppShell() {
           </div>
         )}
       </nav>
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <main className={`max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 ${showBottomNav ? 'mobile-safe-bottom pb-20' : ''}`}>
         <Outlet />
       </main>
+      {showBottomNav && <MobileBottomNav />}
     </div>
   )
 }
