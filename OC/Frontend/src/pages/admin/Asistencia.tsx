@@ -70,6 +70,12 @@ interface CoachRosterResponse {
   coach: { user_id: number; name: string } | null
 }
 
+interface AdminStudentInfoRow {
+  id: number
+  name: string
+  username: string
+}
+
 function formatTime(dt: string): string {
   const [, timePart = '00:00:00'] = dt.split('T')
   return timePart.slice(0, 5)
@@ -107,7 +113,24 @@ export default function AdminAsistencia() {
   const [savingRoll, setSavingRoll] = useState(false)
   const [rollMessage, setRollMessage] = useState<string | null>(null)
 
+  const [sociosModalOpen, setSociosModalOpen] = useState(false)
+  const [sociosList, setSociosList] = useState<AdminStudentInfoRow[]>([])
+  const [sociosModalLoading, setSociosModalLoading] = useState(false)
+  const [sociosFilter, setSociosFilter] = useState('')
+  const [addingUserId, setAddingUserId] = useState<number | null>(null)
+
   const weekEnd = useMemo(() => addDaysToYmd(weekStart, 6), [weekStart])
+  const rosterUserIds = useMemo(() => new Set(socioEntries.map((e) => e.user_id)), [socioEntries])
+  const filteredSociosForModal = useMemo(() => {
+    const q = sociosFilter.trim().toLowerCase()
+    if (!q) return sociosList
+    return sociosList.filter(
+      (s) =>
+        s.name.toLowerCase().includes(q) ||
+        s.username.toLowerCase().includes(q) ||
+        String(s.id).includes(q),
+    )
+  }, [sociosList, sociosFilter])
 
   useEffect(() => {
     const fetchWeek = async () => {
@@ -223,6 +246,42 @@ export default function AdminAsistencia() {
   useEffect(() => {
     void fetchRoster()
   }, [fetchRoster])
+
+  const openSociosModal = async () => {
+    setSociosModalOpen(true)
+    setSociosFilter('')
+    setSociosModalLoading(true)
+    setRollMessage(null)
+    try {
+      const { data } = await axios.get<AdminStudentInfoRow[]>(`${API_URL}/admin/students-info`)
+      setSociosList(data.map((s) => ({ id: s.id, name: s.name, username: s.username })))
+    } catch (e) {
+      console.error(e)
+      setRollMessage('No se pudo cargar el listado de socios.')
+      setSociosModalOpen(false)
+    } finally {
+      setSociosModalLoading(false)
+    }
+  }
+
+  const addAttendeeToClass = async (userId: number) => {
+    if (selectedClassId === '') return
+    setAddingUserId(userId)
+    setRollMessage(null)
+    try {
+      await axios.post(`${API_URL}/admin/attendance/session/${selectedClassId}/add-attendee`, {
+        user_id: userId,
+      })
+      await fetchRoster()
+      setRollMessage('Alumno añadido a la clase. Marca asistencia y guarda cuando termines.')
+    } catch (e) {
+      console.error(e)
+      const msg = axios.isAxiosError(e) ? e.response?.data?.detail : undefined
+      setRollMessage(typeof msg === 'string' ? msg : 'No se pudo añadir al alumno.')
+    } finally {
+      setAddingUserId(null)
+    }
+  }
 
   const saveRoll = async () => {
     if (selectedClassId === '') return
@@ -410,10 +469,12 @@ export default function AdminAsistencia() {
       )}
 
       {activeTab === 'registrar' && (
+      <>
       <section className="bg-oc-metal rounded-xl border border-gray-700/50 p-4 mb-8">
         <h2 className="text-white font-semibold mb-1">Pasar lista por clase</h2>
         <p className="text-gray-500 text-sm mb-4">
-          Elige la fecha, la clase y si registrarás alumnos (reservas activas) o al coach asignado.
+          Elige fecha y clase. Los que ya reservaron aparecen solos; si no usan la app, usa{' '}
+          <strong className="text-gray-300">Todos los socios</strong> para añadirlos y marcar asistencia.
         </p>
 
         <div className="flex flex-wrap items-end gap-3 mb-4">
@@ -466,6 +527,15 @@ export default function AdminAsistencia() {
           >
             Coach
           </button>
+          {rollRole === 'socio' && selectedClassId !== '' && (
+            <button
+              type="button"
+              onClick={() => void openSociosModal()}
+              className="ml-1 px-3 py-1.5 rounded text-sm bg-emerald-900/50 text-emerald-300 border border-emerald-700/50 hover:bg-emerald-900/70"
+            >
+              Todos los socios
+            </button>
+          )}
         </div>
 
         {rollMessage && (
@@ -493,7 +563,8 @@ export default function AdminAsistencia() {
                   {socioEntries.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="py-3 text-gray-500">
-                        No hay reservas activas en esta clase.
+                        No hay reservas en esta clase. Pulsa <strong className="text-gray-400">Todos los socios</strong>{' '}
+                        para añadir alumnos y pasar lista aunque no hayan reservado.
                       </td>
                     </tr>
                   ) : (
@@ -581,6 +652,86 @@ export default function AdminAsistencia() {
           </>
         )}
       </section>
+
+      {sociosModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="socios-modal-title"
+          onClick={() => setSociosModalOpen(false)}
+        >
+          <div
+            className="bg-oc-metal border border-gray-600 rounded-xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
+              <h3 id="socios-modal-title" className="text-white font-semibold text-sm">
+                Socios registrados — añadir a esta clase
+              </h3>
+              <button
+                type="button"
+                onClick={() => setSociosModalOpen(false)}
+                className="text-gray-400 hover:text-white p-1 rounded"
+                aria-label="Cerrar"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="px-4 py-3 border-b border-gray-700">
+              <input
+                type="search"
+                value={sociosFilter}
+                onChange={(e) => setSociosFilter(e.target.value)}
+                placeholder="Buscar por nombre, usuario o ID…"
+                className="w-full bg-oc-dark border border-gray-700 rounded px-3 py-2 text-white text-sm"
+              />
+            </div>
+            <div className="overflow-y-auto flex-1 px-2 py-2 min-h-[200px]">
+              {sociosModalLoading ? (
+                <p className="text-gray-400 text-sm text-center py-8">Cargando socios…</p>
+              ) : filteredSociosForModal.length === 0 ? (
+                <p className="text-gray-500 text-sm text-center py-8">Sin resultados.</p>
+              ) : (
+                <ul className="space-y-1">
+                  {filteredSociosForModal.map((s) => {
+                    const onRoster = rosterUserIds.has(s.id)
+                    return (
+                      <li
+                        key={s.id}
+                        className="flex items-center justify-between gap-2 px-2 py-2 rounded-lg bg-gray-800/40 border border-gray-700/50"
+                      >
+                        <div className="min-w-0">
+                          <p className="text-white text-sm font-medium truncate">{s.name}</p>
+                          <p className="text-gray-500 text-xs font-mono">
+                            ID {s.id} · @{s.username}
+                          </p>
+                        </div>
+                        {onRoster ? (
+                          <span className="text-xs text-gray-500 flex-shrink-0">Ya en lista</span>
+                        ) : (
+                          <button
+                            type="button"
+                            disabled={addingUserId !== null}
+                            onClick={() => void addAttendeeToClass(s.id)}
+                            className="flex-shrink-0 text-xs font-semibold bg-oc-red hover:bg-oc-red-deep disabled:opacity-50 text-white px-3 py-1.5 rounded"
+                          >
+                            {addingUserId === s.id ? '…' : 'Añadir'}
+                          </button>
+                        )}
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
+            </div>
+            <p className="px-4 py-2 text-[11px] text-gray-500 border-t border-gray-700">
+              Se crea una reserva en el sistema para poder guardar la asistencia (sin límite de cupo por decisión del admin).
+            </p>
+          </div>
+        </div>
+      )}
+      </>
       )}
     </div>
   )

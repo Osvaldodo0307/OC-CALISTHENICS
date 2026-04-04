@@ -30,6 +30,56 @@ class UpdateSessionAttendanceBody(BaseModel):
     coach_mark: Optional[Literal["present", "absent", "clear"]] = None
 
 
+class AddSessionAttendeeBody(BaseModel):
+    user_id: int
+
+
+@router.post("/attendance/session/{class_id}/add-attendee")
+async def add_session_attendee(
+    class_id: int,
+    body: AddSessionAttendeeBody,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    """
+    Añade un socio a la lista de la clase creando o reactivando una reserva.
+    No aplica límite de capacidad (asistencia presencial sin reserva previa).
+    """
+    cls = db.query(ClassSession).filter(ClassSession.id == class_id).first()
+    if not cls:
+        raise HTTPException(status_code=404, detail="Clase no encontrada")
+
+    student = db.query(User).filter(User.id == body.user_id, User.role == "socio").first()
+    if not student:
+        raise HTTPException(status_code=404, detail="Alumno no encontrado o no es socio")
+
+    existing = db.query(Booking).filter(
+        Booking.user_id == body.user_id,
+        Booking.class_id == class_id,
+    ).first()
+
+    if existing:
+        if existing.status == "booked":
+            return {"booking_id": existing.id, "created": False, "reactivated": False}
+        existing.status = "booked"
+        db.add(existing)
+        db.commit()
+        db.refresh(existing)
+        return {"booking_id": existing.id, "created": False, "reactivated": True}
+
+    db_booking = Booking(
+        user_id=body.user_id,
+        class_id=class_id,
+        status="booked",
+        preferred_hour=None,
+        attended=None,
+    )
+    db.add(db_booking)
+    db.commit()
+    db.refresh(db_booking)
+    return {"booking_id": db_booking.id, "created": True, "reactivated": False}
+
+
 @router.get("/attendance/session/{class_id}/roster")
 async def get_session_attendance_roster(
     class_id: int,
