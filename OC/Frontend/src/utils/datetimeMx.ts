@@ -59,3 +59,39 @@ export function startOfWeekMondayYmd(ymd: string): string {
   const diff = weekday === 0 ? -6 : 1 - weekday
   return addDaysToYmd(ymd, diff)
 }
+
+/** `YYYY-MM` + delta meses (p. ej. resumen mensual en admin). */
+export function addMonthsToYearMonth(ym: string, delta: number): string {
+  const [yStr, mStr] = ym.split('-')
+  const y = Number(yStr)
+  const m = Number(mStr)
+  if (!Number.isFinite(y) || !Number.isFinite(m) || m < 1 || m > 12) return ym
+  const d = new Date(Date.UTC(y, m - 1 + delta, 1))
+  const year = d.getUTCFullYear()
+  const month = String(d.getUTCMonth() + 1).padStart(2, '0')
+  return `${year}-${month}`
+}
+
+const MONTHS_ES = [
+  'enero',
+  'febrero',
+  'marzo',
+  'abril',
+  'mayo',
+  'junio',
+  'julio',
+  'agosto',
+  'septiembre',
+  'octubre',
+  'noviembre',
+  'diciembre',
+]
+
+/** Etiqueta legible para `YYYY-MM`. */
+export function formatYearMonthEs(ym: string): string {
+  const [yStr, mStr] = ym.split('-')
+  const m = Number(mStr)
+  const y = Number(yStr)
+  if (!Number.isFinite(y) || !Number.isFinite(m) || m < 1 || m > 12) return ym
+  return `${MONTHS_ES[m - 1]} de ${y}`
+}

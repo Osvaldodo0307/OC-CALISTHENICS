@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import axios from 'axios'
-import { addDaysToYmd, getMxDateString, startOfWeekMondayYmd } from '../../utils/datetimeMx'
+import {
+  addDaysToYmd,
+  addMonthsToYearMonth,
+  formatYearMonthEs,
+  getMxDateString,
+  startOfWeekMondayYmd,
+} from '../../utils/datetimeMx'
 import { runtime } from '../../config/runtime'
 
 const API_URL = runtime.apiBaseUrl
@@ -375,13 +381,45 @@ export default function AdminAsistencia() {
 
         <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
           <h2 className="text-white font-semibold mb-3">Resumen mensual</h2>
-          <label className="text-sm text-gray-400 mr-2">Mes</label>
-          <input
-            type="month"
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
-            className="bg-oc-dark border border-gray-700 rounded px-3 py-1.5 text-white text-sm"
-          />
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <button
+              type="button"
+              onClick={() => setMonth((m) => addMonthsToYearMonth(m, -1))}
+              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
+            >
+              Mes anterior
+            </button>
+            <button
+              type="button"
+              onClick={() => setMonth((m) => addMonthsToYearMonth(m, 1))}
+              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
+            >
+              Mes siguiente
+            </button>
+            <button
+              type="button"
+              onClick={() => setMonth(getMxDateString().slice(0, 7))}
+              className="bg-oc-red hover:bg-oc-red-deep text-white px-3 py-1.5 rounded text-sm"
+            >
+              Mes actual
+            </button>
+          </div>
+          <p className="text-sm text-gray-300 mb-3">
+            Consultando:{' '}
+            <span className="text-white font-medium">{formatYearMonthEs(month)}</span>
+            {month === getMxDateString().slice(0, 7) && (
+              <span className="text-oc-red text-xs font-semibold ml-2">mes en curso</span>
+            )}
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <label className="text-sm text-gray-400">Ir a mes:</label>
+            <input
+              type="month"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="bg-oc-dark border border-gray-700 rounded px-3 py-1.5 text-white text-sm"
+            />
+          </div>
         </div>
       </div>
 
