@@ -7,87 +7,114 @@ export default function Landing() {
     <div className="min-h-screen bg-oc-dark text-oc-light">
       <PublicNav />
 
-      {/* Hero: composición para wordmark horizontal + jerarquía clara (desktop / tablet / móvil) */}
-      <section className="pt-8 pb-16 sm:pt-12 sm:pb-20 px-4 sm:px-6 lg:px-8 lg:min-h-[calc(100vh-5rem)] flex items-center">
-        <div className="max-w-7xl mx-auto w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-16 items-center">
-            {/* Copy principal */}
-            <div className="lg:col-span-7 space-y-6 order-2 lg:order-1">
-              <div className="space-y-3 sm:space-y-4">
-                <p className="text-oc-red font-bold text-xs sm:text-sm uppercase tracking-[0.22em]">
-                  Elite Training Community
+      {/* Hero rediseñado: marca como pilar (no tarjeta); copy y CTAs en columna propia */}
+      <section className="oc-landing-hero relative border-b border-oc-border">
+        <div className="oc-landing-hero__glow" aria-hidden />
+        <div className="oc-landing-hero__grain" aria-hidden />
+
+        <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 lg:items-stretch min-h-0 lg:min-h-[calc(100vh-6.5rem)]">
+            {/* Columna marca: protagonismo real del logo, integrado al fondo de marca */}
+            <div className="relative flex flex-col justify-center items-center lg:items-start pt-10 pb-8 lg:py-16 lg:pr-10 xl:pr-14 order-1">
+              <div
+                className="absolute top-6 left-0 lg:left-2 oc-landing-hero__chevrons text-2xl sm:text-3xl font-black select-none hidden sm:block"
+                aria-hidden
+              >
+                &gt;&gt;&gt;
+              </div>
+              <div className="w-full flex flex-col items-center lg:items-start gap-4 lg:gap-5">
+                <p className="text-center lg:text-left text-[11px] sm:text-xs font-bold uppercase tracking-[0.32em] text-oc-red">
+                  OC-CLUB
                 </p>
-                <p className="text-oc-muted text-sm font-medium">Club exclusivo · Alto rendimiento · CDMX</p>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-[3.5rem] font-bold leading-[1.08] tracking-tight">
-                  <span className="text-oc-light">Desafía tus límites,</span>
-                  <br />
-                  <span className="text-oc-red">nada es imposible</span>
+                <div className="w-full flex justify-center lg:justify-start">
+                  <OcClubLogo
+                    variant="heroFeature"
+                    priority
+                    className="drop-shadow-[0_0_40px_rgba(210,31,45,0.25)] lg:translate-x-0"
+                  />
+                </div>
+                <div className="text-center lg:text-left space-y-1 max-w-md">
+                  <p className="text-sm sm:text-base font-semibold uppercase tracking-[0.26em] text-oc-light/95">
+                    Elite Training Community
+                  </p>
+                  <p className="text-oc-muted text-sm">Club exclusivo · Tlalpan, CDMX</p>
+                </div>
+              </div>
+              <div className="hidden lg:block absolute right-0 top-[12%] bottom-[12%] w-px bg-gradient-to-b from-transparent via-oc-border to-transparent" aria-hidden />
+            </div>
+
+            {/* Columna narrativa */}
+            <div className="flex flex-col justify-center pb-12 lg:py-16 lg:pl-10 xl:pl-16 order-2 border-t border-oc-border/80 lg:border-t-0 pt-10 lg:pt-0">
+              <div className="space-y-5 sm:space-y-6 max-w-xl lg:max-w-none">
+                <div className="inline-flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-oc-muted">
+                  <span className="text-oc-red">Alto rendimiento</span>
+                  <span className="text-oc-border text-lg leading-none" aria-hidden>
+                    |
+                  </span>
+                  <span>Comunidad</span>
+                  <span className="text-oc-border text-lg leading-none" aria-hidden>
+                    |
+                  </span>
+                  <span>Estándar de club</span>
+                </div>
+
+                <h1 className="text-[2.1rem] leading-[1.05] sm:text-5xl lg:text-[3.25rem] xl:text-[3.65rem] font-bold tracking-tight">
+                  <span className="block text-oc-light">Entrenamiento de élite</span>
+                  <span className="block text-oc-red mt-1 lg:mt-2">con identidad de club.</span>
                 </h1>
-                <p className="text-lg sm:text-xl text-oc-muted leading-relaxed max-w-xl">
-                  Un club de alto rendimiento enfocado en <strong className="text-oc-red">Calistenia</strong>,{' '}
-                  <strong className="text-oc-red">Powerlifting</strong> y <strong className="text-oc-red">Spartan</strong>.
+
+                <p className="text-base sm:text-lg text-oc-muted leading-relaxed">
+                  En <strong className="text-oc-light font-semibold">OC-CLUB</strong> combinamos método, comunidad y exigencia real.
+                  Somos un club de alto rendimiento con foco en{' '}
+                  <strong className="text-oc-red">Calistenia</strong>, <strong className="text-oc-red">Powerlifting</strong> y{' '}
+                  <strong className="text-oc-red">Spartan</strong> — disciplinas complementarias bajo un mismo estándar.
                 </p>
-                <p className="text-base sm:text-lg text-oc-muted max-w-xl">
-                  Entrena con estructura, comunidad y estándares profesionales.
+                <p className="text-sm sm:text-base text-oc-muted/90 leading-relaxed">
+                  Clases por horario · coaching profesional · ambiente ordenado y competitivo.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <Link
                   to="/membresias"
-                  className="text-center px-8 py-3.5 rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold transition-all hover:shadow-lg hover:shadow-oc-red/50"
+                  className="text-center px-8 py-4 rounded-sm bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold uppercase tracking-wider transition-all ring-1 ring-white/10 hover:shadow-lg hover:shadow-oc-red/40"
                 >
-                  Ver Membresías
+                  Membresías
                 </Link>
                 <Link
                   to="/clases"
-                  className="text-center px-8 py-3.5 rounded-full border-2 border-oc-red text-oc-red hover:bg-oc-red/10 font-semibold transition-all"
+                  className="text-center px-8 py-4 rounded-sm border-2 border-oc-red/90 text-oc-light hover:bg-oc-red/10 text-sm font-bold uppercase tracking-wider transition-colors"
                 >
-                  Explorar Clases
+                  Horarios y clases
                 </Link>
               </div>
 
-              <div className="pt-4 sm:pt-6 border-l-4 border-oc-red pl-5 sm:pl-6">
-                <p className="text-lg sm:text-xl italic text-oc-light/95 leading-snug">
-                  &ldquo;Cuando logres despertar tu impulso fitness, tu vida cambiará para siempre&rdquo;
-                </p>
-                <p className="text-sm text-oc-muted mt-2 tracking-wide">— OC-CLUB</p>
-              </div>
-            </div>
-
-            {/* Marca: más aire, sin altura mínima forzada; evita ahogar el wordmark */}
-            <div className="lg:col-span-5 order-1 lg:order-2 w-full">
-              <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
-                <div className="relative min-h-[220px] sm:min-h-[260px] lg:min-h-[300px] rounded-2xl border border-oc-border/90 bg-gradient-to-b from-oc-metal via-oc-panel to-oc-dark p-6 sm:p-8 lg:p-10 shadow-2xl shadow-oc-red/25 flex items-center justify-center">
-                  <div className="w-full flex flex-col items-center justify-center gap-3">
-                    <OcClubLogo variant="hero" priority className="drop-shadow-[0_0_28px_rgba(210,31,45,0.2)]" />
-                    <p className="text-center text-[10px] sm:text-xs font-semibold uppercase tracking-[0.28em] text-oc-muted">
-                      Elite Training Community
-                    </p>
-                  </div>
-                </div>
-                <div className="absolute -inset-3 sm:-inset-4 bg-oc-red/15 blur-3xl rounded-3xl -z-10 pointer-events-none" aria-hidden />
-              </div>
+              <figure className="mt-10 pl-4 border-l-2 border-oc-red/80 bg-oc-metal/25 py-4 pr-4 rounded-r-md">
+                <blockquote className="text-base sm:text-lg italic text-oc-light/90 leading-snug">
+                  &ldquo;Cuando logres despertar tu impulso fitness, tu vida cambiará para siempre.&rdquo;
+                </blockquote>
+                <figcaption className="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-oc-muted">OC-CLUB</figcaption>
+              </figure>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Quick Info Bar */}
-      <section className="py-6 px-4 bg-oc-metal border-y border-oc-border">
+      {/* Franja de señales rápidas (tratamiento de marca) */}
+      <section className="oc-landing-strip py-7 px-4 sm:px-6 lg:px-10">
         <div className="max-w-7xl mx-auto">
-          <div className="grid sm:grid-cols-3 gap-6 text-center sm:text-left">
-            <div>
-              <p className="text-xs text-oc-muted uppercase tracking-wider mb-1">Ubicación</p>
-              <p className="text-sm text-oc-light font-medium">San Andrés Totoltepec, Tlalpan · CDMX</p>
+          <div className="grid sm:grid-cols-3 gap-8 sm:gap-6 text-center sm:text-left">
+            <div className="sm:border-r sm:border-oc-border/60 sm:pr-6">
+              <p className="text-xs text-oc-red font-bold uppercase tracking-[0.2em] mb-2">Ubicación</p>
+              <p className="text-sm text-oc-light font-medium leading-snug">San Andrés Totoltepec, Tlalpan · CDMX</p>
+            </div>
+            <div className="sm:border-r sm:border-oc-border/60 sm:pr-6">
+              <p className="text-xs text-oc-red font-bold uppercase tracking-[0.2em] mb-2">Enfoque</p>
+              <p className="text-sm text-oc-light font-medium leading-snug">Alto rendimiento · comunidad · exigencia</p>
             </div>
             <div>
-              <p className="text-xs text-oc-muted uppercase tracking-wider mb-1">Enfoque</p>
-              <p className="text-sm text-oc-light font-medium">Alto rendimiento + comunidad</p>
-            </div>
-            <div>
-              <p className="text-xs text-oc-muted uppercase tracking-wider mb-1">Formato</p>
-              <p className="text-sm text-oc-light font-medium">Clases por horario</p>
+              <p className="text-xs text-oc-red font-bold uppercase tracking-[0.2em] mb-2">Formato</p>
+              <p className="text-sm text-oc-light font-medium leading-snug">Clases por horario · cupos controlados</p>
             </div>
           </div>
         </div>
@@ -99,7 +126,7 @@ export default function Landing() {
           <div className="text-center mb-12">
             <p className="text-oc-red font-semibold text-sm uppercase tracking-wider mb-2">Perfil del club</p>
             <h2 className="text-3xl sm:text-4xl font-bold text-oc-light mb-4">¿Quiénes somos?</h2>
-            <p className="text-oc-muted text-sm uppercase">Presentación institucional</p>
+            <p className="text-oc-muted text-sm uppercase tracking-wider">Elite Training Community · filosofía de club</p>
           </div>
 
           <div className="space-y-6 text-lg text-oc-light leading-relaxed">

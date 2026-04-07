@@ -1,9 +1,11 @@
 import type { ImgHTMLAttributes } from 'react'
 
-const variantClass: Record<'nav' | 'hero' | 'footer' | 'app' | 'auth', string> = {
-  nav: 'h-11 sm:h-12 w-auto max-w-[min(100%,300px)] object-contain object-left',
+const variantClass: Record<'nav' | 'hero' | 'heroFeature' | 'footer' | 'app' | 'auth', string> = {
+  nav: 'h-[3.35rem] sm:h-14 md:h-[3.85rem] w-auto max-w-[min(100%,min(420px,62vw))] object-contain object-left',
   hero: 'w-full max-w-[min(100%,520px)] h-auto max-h-[min(55vh,420px)] object-contain object-center',
-  footer: 'h-14 sm:h-16 w-auto max-w-[min(100%,300px)] object-contain object-left',
+  heroFeature:
+    'w-full max-w-[min(100%,min(92vw,700px))] lg:max-w-[min(100%,760px)] h-auto object-contain object-center lg:object-left',
+  footer: 'h-14 sm:h-16 w-auto max-w-[min(100%,320px)] object-contain object-left',
   app: 'h-8 sm:h-9 w-auto max-w-[min(100%,200px)] object-contain object-left',
   auth: 'h-auto w-full max-w-[min(100%,300px)] mx-auto object-contain',
 }
@@ -23,7 +25,7 @@ export default function OcClubLogo({ variant, className = '', priority = false, 
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
       {...imgProps}
-      src="/OC-CLUB.PNG"
+      src="/OC-CLUB.png"
       onError={(e) => {
         const target = e.currentTarget
         if (target.src.includes('oc-club-logo.svg')) return
