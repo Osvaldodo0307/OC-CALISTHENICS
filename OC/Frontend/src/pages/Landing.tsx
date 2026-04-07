@@ -2,432 +2,455 @@ import { Link } from 'react-router-dom'
 import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
 
-const HERO_PANEL_ROWS: { label: string; value: string }[] = [
-  { label: 'Ubicación', value: 'San Andrés Totoltepec, Tlalpan · CDMX' },
-  { label: 'Formato', value: 'Clases grupales · 60 min · cupos controlados' },
-  { label: 'Disciplinas', value: 'Calistenia · Powerlifting · Spartan' },
-  { label: 'Enfoque', value: 'Estructura · comunidad · alto rendimiento' },
+/** Visuales de stock (Unsplash) — reemplazar por fotografía real del club cuando exista. */
+const IMG_HERO =
+  'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=2400&q=85'
+const IMG_CLUB_INTERIOR =
+  'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1600&q=82'
+
+const DISCIPLINES: {
+  slug: string
+  title: string
+  blurb: string
+  image: string
+}[] = [
+  {
+    slug: 'calistenia',
+    title: 'Calistenia',
+    blurb: 'Fuerza y control con el peso corporal. Progresiones claras.',
+    image:
+      'https://images.unsplash.com/photo-1599058945522-734bedebfa09?auto=format&fit=crop&w=900&q=82',
+  },
+  {
+    slug: 'powerlifting',
+    title: 'Powerlifting',
+    blurb: 'Bases sólidas: técnica, líneas de fuerza y seguridad.',
+    image:
+      'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=82',
+  },
+  {
+    slug: 'spartan',
+    title: 'Spartan',
+    blurb: 'Resistencia y mentalidad. Entrenamiento que exige constancia.',
+    image:
+      'https://images.unsplash.com/photo-1552674605-db6ffd1643d5?auto=format&fit=crop&w=900&q=82',
+  },
+  {
+    slug: 'marcial',
+    title: 'Artes marciales / defensa',
+    blurb: 'Movimiento, coordinación y aplicación práctica según programación.',
+    image:
+      'https://images.unsplash.com/photo-1549714876-bbe2cc9efad1?auto=format&fit=crop&w=900&q=82',
+  },
 ]
 
-const HERO_BULLETS = [
-  'Coaching en piso — sin depender solo de máquinas.',
-  'Progresión clara para todos los niveles.',
-  'Ambiente de club: orden, respeto y exigencia.',
+const WHY_US: { title: string; text: string }[] = [
+  {
+    title: 'Estructura real',
+    text: 'Clases por horario, niveles y progresión. No es un piso suelto sin rumbo.',
+  },
+  {
+    title: 'Comunidad que empuja',
+    text: 'Exigencia sana: entrenas con gente que compite contigo, no contra ti.',
+  },
+  {
+    title: 'Coaching en el piso',
+    text: 'Corrección técnica y seguimiento; no solo “entrar y hacer máquinas”.',
+  },
+  {
+    title: 'Cupos y foco',
+    text: 'Aforo controlado para que el staff vea tu progreso de verdad.',
+  },
+]
+
+/** Placeholders — validar con dirección del club */
+const PLACEHOLDER_METRICS: { label: string; value: string; placeholder?: boolean }[] = [
+  { label: 'Años en Tlalpan', value: '[validar]', placeholder: true },
+  { label: 'Clases por semana (referencia)', value: 'Programación viva', placeholder: false },
+  { label: 'Socios activos', value: '[validar]', placeholder: true },
+  { label: 'Staff coaching', value: 'Certificado / en formación continua', placeholder: false },
+]
+
+const TESTIMONIALS_PLACEHOLDER: { quote: string; author: string }[] = [
+  {
+    quote: 'Aquí va un testimonio real de socio cuando lo tengan.',
+    author: '[Nombre — placeholder]',
+  },
+  {
+    quote: 'Segundo testimonio corto sobre resultados o ambiente.',
+    author: '[Nombre — placeholder]',
+  },
 ]
 
 export default function Landing() {
   return (
-    <div className="oc-landing-page min-h-screen text-oc-light">
+    <div className="oc-home min-h-screen bg-oc-carbon text-oc-light">
       <PublicNav />
 
-      {/* Hero editorial: wordmark + contenido + panel de datos (sin cartel dominante) */}
-      <section className="oc-landing-hero relative border-b border-white/[0.06]">
-        <div className="oc-landing-hero__glow" aria-hidden />
-        <div className="oc-landing-hero__grain" aria-hidden />
-        <div className="oc-landing-hero__mesh" aria-hidden />
+      {/* 1 · Hero alto impacto: full-bleed imagen + overlay + contenido comercial */}
+      <section className="relative min-h-[min(92vh,900px)] flex flex-col justify-end overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img
+            src={IMG_HERO}
+            alt=""
+            className="h-full w-full object-cover object-center scale-105 sm:scale-100"
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-r from-black via-black/88 to-black/45 sm:to-black/35"
+            aria-hidden
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/70" aria-hidden />
+          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-oc-carbon to-transparent" aria-hidden />
+        </div>
 
-        <div className="relative z-10 landing-container">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 lg:items-stretch pt-9 pb-11 lg:py-12 xl:py-14 min-h-0 lg:min-h-[calc(100vh-4rem)]">
-            <div className="lg:col-span-7 flex flex-col justify-center">
-              <OcClubLogo variant="heroMark" priority />
-              <p className="mt-5 landing-overline-soft">
-                Elite Training Community · Club deportivo · Tlalpan, CDMX
-              </p>
-
-              <h1 className="mt-6 landing-hero-display">
-                <span className="block">Entrenamiento de élite</span>
-                <span className="block landing-hero-accent mt-1">con identidad de club.</span>
-              </h1>
-
-              <p className="mt-6 landing-hero-lead">
-                En <strong className="text-oc-light font-semibold">OC-CLUB</strong> unimos método, comunidad y estándares
-                profesionales. Foco en{' '}
-                <strong className="text-oc-red font-semibold">Calistenia</strong>,{' '}
-                <strong className="text-oc-red font-semibold">Powerlifting</strong> y{' '}
-                <strong className="text-oc-red font-semibold">Spartan</strong> — una misma exigencia, disciplinas
-                complementarias.
-              </p>
-
-              <ul className="mt-5 landing-hero-bullets">
-                {HERO_BULLETS.map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ul>
-
-              <div className="mt-9 flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Link to="/membresias" className="landing-btn-primary text-center">
-                  Membresías
-                </Link>
-                <Link to="/clases" className="landing-btn-outline text-center">
-                  Horarios y clases
-                </Link>
-              </div>
-
-              <blockquote className="landing-hero-quote mt-10">
-                &ldquo;Cuando logres despertar tu impulso fitness, tu vida cambiará para siempre.&rdquo;
-                <cite className="not-italic block mt-3 text-xs text-oc-muted tracking-wide">— OC-CLUB</cite>
-              </blockquote>
+        <div className="relative z-10 mx-auto w-full max-w-[80rem] px-4 pb-14 pt-28 sm:px-6 lg:px-10 lg:pb-20">
+          <div className="max-w-3xl">
+            <OcClubLogo variant="heroMark" priority className="opacity-95" />
+            <p className="mt-5 text-sm font-medium text-white/75 tracking-wide">
+              Elite Training Community · <span className="text-white">Tlalpan, CDMX</span>
+            </p>
+            <h1 className="mt-6 font-hero text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.95] text-white uppercase tracking-tight">
+              Entrena con método.
+              <span className="block text-oc-red mt-1">Compite contigo.</span>
+            </h1>
+            <p className="mt-6 text-lg sm:text-xl text-white/85 font-medium leading-snug max-w-xl">
+              Club de alto rendimiento: calistenia, powerlifting y spartan en un mismo estándar. Más
+              disciplinas según tu plan. <span className="text-white">Te guiamos en el piso.</span>
+            </p>
+            <div className="mt-9 flex flex-wrap gap-3 sm:gap-4">
+              <Link
+                to="/membresias"
+                className="inline-flex items-center justify-center px-8 py-3.5 bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold tracking-wide rounded-sm border border-white/10 transition-colors shadow-lg shadow-black/40"
+              >
+                Ver membresías
+              </Link>
+              <Link
+                to="/clases"
+                className="inline-flex items-center justify-center px-8 py-3.5 border border-white/25 text-white hover:bg-white/10 text-sm font-semibold rounded-sm transition-colors"
+              >
+                Horarios y clases
+              </Link>
             </div>
-
-            <aside className="lg:col-span-5 flex flex-col justify-center">
-              <div className="landing-hero-panel">
-                <p className="landing-hero-panel__head">Datos del club</p>
-                {HERO_PANEL_ROWS.map((row) => (
-                  <div key={row.label} className="landing-hero-panel__row">
-                    <span className="landing-hero-panel__label">{row.label}</span>
-                    <span className="landing-hero-panel__value">{row.value}</span>
-                  </div>
-                ))}
-              </div>
-            </aside>
           </div>
-        </div>
-      </section>
 
-      {/* ¿Quiénes somos? — dos columnas + aside */}
-      <section id="club" className="landing-section landing-section--dense landing-surface-base relative">
-        <span className="landing-section__rule" aria-hidden />
-        <div className="landing-section-shell landing-section-shell--narrow">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-            <div className="lg:col-span-7">
-              <header className="mb-6 text-left">
-                <p className="landing-eyebrow">Perfil del club</p>
-                <h2 className="landing-heading-section">¿Quiénes somos?</h2>
-                <p className="landing-subtitle !mx-0 !text-left !max-w-none mt-2">
-                  Comunidad de entrenamiento con filosofía de club.
-                </p>
-              </header>
-              <div className="landing-body space-y-4 text-[0.98rem]">
-                <p>
-                  <strong className="text-oc-red font-semibold">OC-CLUB</strong> mejora la calidad de vida con entrenamiento
-                  basado en peso corporal y disciplinas complementarias: pérdida de grasa, masa muscular y estética funcional,
-                  con enfoque profesional y seguimiento cercano.
-                </p>
-              </div>
-              <div className="mt-8 flex flex-wrap gap-2">
-                {['Calistenia', 'Powerlifting', 'Spartan', 'Artes marciales', 'Defensa personal'].map((discipline) => (
-                  <span key={discipline} className="landing-tag">
-                    {discipline}
-                  </span>
-                ))}
-              </div>
+          <dl className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-4xl border-t border-white/15 pt-10">
+            <div>
+              <dt className="text-xs text-white/50 font-medium">Clases</dt>
+              <dd className="mt-1 text-lg font-hero text-white tracking-wide">60 min</dd>
+              <dd className="text-xs text-white/55 mt-0.5">Grupales estructuradas</dd>
             </div>
-            <aside className="lg:col-span-5">
-              <div className="landing-card landing-card--compact">
-                <h3 className="landing-aside-title !mb-3">Por qué club</h3>
-                <ul className="space-y-3 text-sm text-oc-muted leading-snug">
-                  <li className="border-l border-oc-red/40 pl-3">Cupos y horarios definidos — no es “piso libre” anónimo.</li>
-                  <li className="border-l border-white/10 pl-3">Coaching y progresión; técnica antes que volumen arbitrario.</li>
-                  <li className="border-l border-white/10 pl-3">Cultura de constancia y respeto entre miembros.</li>
-                </ul>
+            <div>
+              <dt className="text-xs text-white/50 font-medium">Zona</dt>
+              <dd className="mt-1 text-lg font-hero text-white tracking-wide">Tlalpan</dd>
+              <dd className="text-xs text-white/55 mt-0.5">San Andrés Totoltepec</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-white/50 font-medium">Formato</dt>
+              <dd className="mt-1 text-lg font-hero text-white tracking-wide">Cupos</dd>
+              <dd className="text-xs text-white/55 mt-0.5">Seguimiento real</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-white/50 font-medium">Enfoque</dt>
+              <dd className="mt-1 text-lg font-hero text-oc-red tracking-wide">Técnica</dd>
+              <dd className="text-xs text-white/55 mt-0.5">Progresión y orden</dd>
+            </div>
+          </dl>
+
+          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/80 max-w-2xl">
+            <li className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-sm bg-oc-red shrink-0" aria-hidden />
+              Progresión por niveles
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-sm bg-oc-red shrink-0" aria-hidden />
+              Coach en el piso
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-sm bg-oc-red shrink-0" aria-hidden />
+              Ambiente de club
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* 2 · Por qué OC-CLUB */}
+      <section id="por-que" className="scroll-mt-24 border-t border-oc-red/25 bg-[#0c0c0c] py-16 md:py-20">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
+          <div className="max-w-2xl mb-12 md:mb-14">
+            <h2 className="font-hero text-4xl sm:text-5xl text-oc-red uppercase tracking-tight">
+              Por qué OC-CLUB
+            </h2>
+            <p className="mt-4 text-lg text-white/70 leading-relaxed">
+              No es solo un gym: es un club con reglas claras, comunidad y coaching que te mira entrenar.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {WHY_US.map((item) => (
+              <div
+                key={item.title}
+                className="relative pl-4 border-l-2 border-oc-red/70 hover:border-oc-red transition-colors"
+              >
+                <h3 className="font-display text-lg font-semibold text-white tracking-tight">{item.title}</h3>
+                <p className="mt-2 text-sm text-white/65 leading-relaxed">{item.text}</p>
               </div>
-            </aside>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Misión / Visión */}
-      <section className="landing-section landing-section--dense landing-surface-elevated relative">
-        <span className="landing-section__rule" aria-hidden />
-        <div className="landing-section-shell landing-section-shell--narrow">
-          <div className="grid md:grid-cols-2 gap-4 md:gap-5">
-            <article className="landing-card landing-card--compact">
-              <h3 className="landing-card-title landing-card-title--sm">Misión</h3>
-              <p className="landing-card-body text-[0.9375rem]">
-                Entrenamiento personalizado y efectivo para hombres y mujeres, impulsando actividad física y cambio de hábitos
-                con distintas disciplinas; priorizamos reducción de grasa, aumento de masa muscular y prevención de lesiones.
+      {/* 3 · Disciplinas / oferta */}
+      <section className="py-16 md:py-24 bg-oc-carbon border-t border-white/[0.06]">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-12">
+            <div>
+              <h2 className="font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">Qué entrenas</h2>
+              <p className="mt-3 text-white/65 max-w-xl leading-relaxed">
+                Oferta clara por disciplina. Cada bloque tiene su lenguaje; el club unifica estándar y respeto.
               </p>
-            </article>
-            <article className="landing-card landing-card--compact">
-              <h3 className="landing-card-title landing-card-title--sm">Visión</h3>
-              <p className="landing-card-body text-[0.9375rem]">
-                Ser referente en Tlalpan por resultados, comunidad y estándares profesionales, con una identidad OC-CLUB
-                reconocible por constancia y mentalidad competitiva sana.
-              </p>
-            </article>
+            </div>
+            <Link
+              to="/clases"
+              className="shrink-0 text-sm font-semibold text-oc-red hover:text-white transition-colors self-start md:self-auto"
+            >
+              Ver todas las clases →
+            </Link>
           </div>
-        </div>
-      </section>
-
-      {/* Valores — grid compacto */}
-      <section className="landing-section landing-section--dense landing-surface-base relative">
-        <span className="landing-section__rule" aria-hidden />
-        <div className="landing-section-shell landing-section-shell--narrow">
-          <header className="landing-section-header !mb-8 lg:!mb-10">
-            <p className="landing-eyebrow">Cultura</p>
-            <h2 className="landing-title">Valores</h2>
-            <p className="landing-subtitle">Lo que sostiene al club día a día</p>
-          </header>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
-            {[
-              {
-                title: 'Compromiso con calidad',
-                desc: 'Mejora continua y camino hacia la excelencia en el servicio.',
-              },
-              {
-                title: 'Orientación al cliente',
-                desc: 'Tiempo para entender necesidades y cumplir expectativas con claridad.',
-              },
-              {
-                title: 'Profesionalidad',
-                desc: 'Equipo certificado; rigor, empatía y formación constante.',
-              },
-              {
-                title: 'Transparencia',
-                desc: 'Procesos visibles y comunicación honesta, especialmente con el cliente.',
-              },
-              {
-                title: 'Bienestar social',
-                desc: 'Programación que fortalece salud y vínculos entre miembros.',
-              },
-            ].map((valor) => (
-              <article key={valor.title} className="landing-card landing-card--compact">
-                <h3 className="landing-card-title landing-card-title--sm !mb-2">{valor.title}</h3>
-                <p className="landing-card-body-muted !text-[0.8125rem] !leading-relaxed !mt-0">{valor.desc}</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {DISCIPLINES.map((d) => (
+              <article
+                key={d.slug}
+                className="group relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden rounded-lg bg-zinc-900"
+              >
+                <img
+                  src={d.image}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/10"
+                  aria-hidden
+                />
+                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6">
+                  <h3 className="font-display text-xl font-bold text-white tracking-tight">{d.title}</h3>
+                  <p className="mt-2 text-sm text-white/75 leading-snug">{d.blurb}</p>
+                </div>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Ventajas — layout en dos columnas */}
-      <section className="landing-section landing-section--dense landing-surface-elevated relative">
-        <span className="landing-section__rule" aria-hidden />
-        <div className="landing-section-shell landing-section-shell--narrow">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-            <div className="lg:col-span-4">
-              <p className="landing-eyebrow">Diferencia</p>
-              <h2 className="landing-heading-section text-left">Ventajas competitivas</h2>
-              <p className="landing-subtitle !mx-0 !text-left !max-w-none mt-2 text-sm">
-                Entrenamiento con peso corporal y accesorios, con enfoque técnico.
-              </p>
-            </div>
-            <div className="lg:col-span-8 space-y-4">
-              <article className="landing-card landing-card--compact">
-                <p className="landing-card-body text-[0.9375rem] mb-0">
-                  Metodología <strong className="text-oc-red font-semibold">innovadora y exigente</strong> usando el peso
-                  corporal como base, con progresiones que mantienen el entrenamiento efectivo y entretenido.
-                </p>
-              </article>
-              <article className="landing-card landing-card--compact">
-                <p className="landing-card-body text-[0.9375rem]">
-                  <strong className="text-oc-red font-semibold">Accesorios especializados</strong> (bosu, TRX, barras,
-                  etc.) para trabajar el cuerpo completo y reducir riesgos frente a rutinas solo en máquinas o peso libre sin
-                  asesoría.
-                </p>
-                <p className="landing-card-body-muted !text-[0.8125rem] !mt-3">
-                  Menos dependencia de aparatos integrados mal guiados; más control técnico y prevención.
-                </p>
-              </article>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Clases — fila editorial */}
-      <section id="clases" className="landing-section landing-section--dense landing-surface-base relative">
-        <span className="landing-section__rule" aria-hidden />
-        <div className="landing-section-shell">
-          <div className="grid lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-5">
-              <p className="landing-eyebrow">Servicio</p>
-              <h2 className="landing-heading-section text-left">Clases y horarios</h2>
-              <p className="landing-subtitle !mx-0 !text-left !max-w-none mt-2">
-                Grupales 60 min · todos los niveles · estructura por bloques
-              </p>
-            </div>
-            <div className="lg:col-span-7 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
-              <p className="text-sm text-oc-muted max-w-md sm:text-right">
-                Consulta disciplinas, niveles y cupos en la página de clases.
-              </p>
-              <Link to="/clases" className="landing-btn-outline shrink-0">
-                Ver detalle →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Membresías · Convenios · Equipo — tres columnas compactas */}
-      <section className="landing-section landing-section--dense landing-surface-base relative pb-6 sm:pb-8">
-        <span className="landing-section__rule" aria-hidden />
-        <div className="landing-section-shell landing-section-shell--narrow">
-          <div className="grid md:grid-cols-3 gap-4 md:gap-5">
-            <article id="precios" className="landing-card landing-card--compact scroll-mt-28">
-              <h3 className="landing-card-title landing-card-title--sm">Membresías</h3>
-              <p className="landing-card-body-muted !text-[0.8125rem] !mb-4">Planes y paquetes según tu objetivo.</p>
-              <Link to="/membresias" className="landing-btn-outline w-full text-center !py-2.5 !text-[0.6875rem]">
-                Ver planes
-              </Link>
-            </article>
-            <article id="convenios" className="landing-card landing-card--compact scroll-mt-28">
-              <h3 className="landing-card-title landing-card-title--sm">Convenios</h3>
-              <p className="landing-card-body-muted !text-[0.8125rem] !mb-4">Aliados y beneficios para socios.</p>
-              <Link to="/convenios" className="landing-btn-outline w-full text-center !py-2.5 !text-[0.6875rem]">
-                Ver aliados
-              </Link>
-            </article>
-            <article className="landing-card landing-card--compact scroll-mt-28">
-              <h3 className="landing-card-title landing-card-title--sm">Equipo</h3>
-              <p className="landing-card-body-muted !text-[0.8125rem] !mb-4">Staff, testimonios y comunidad.</p>
-              <Link to="/equipo-comunidad" className="landing-btn-outline w-full text-center !py-2.5 !text-[0.6875rem]">
-                Conocer equipo
-              </Link>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* Contacto */}
-      <section id="contacto" className="landing-section landing-surface-elevated relative">
-        <span className="landing-section__rule" aria-hidden />
-        <div className="landing-section-shell landing-section-shell--narrow">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-10">
-            <div className="lg:col-span-5">
-              <header className="text-left mb-6">
-                <p className="landing-eyebrow">Visítanos</p>
-                <h2 className="landing-heading-section">Contacto</h2>
-                <p className="landing-subtitle !mx-0 !text-left !max-w-none mt-2">Agenda, dudas e informes</p>
-              </header>
-              <div className="space-y-5">
-                <div>
-                  <h3 className="landing-card-title !mb-2">OC-CLUB · Elite Training</h3>
-                  <p className="landing-body text-[0.9375rem]">
-                    Segunda Cda. de Cedral 2, San Andrés Totoltepec, Tlalpan, 14640 Ciudad de México, CDMX
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="landing-eyebrow mb-1">Teléfono</p>
-                    <p className="text-oc-light font-semibold">55 6786 9589</p>
-                  </div>
-                  <div>
-                    <p className="landing-eyebrow mb-1">Horario</p>
-                    <p className="text-oc-light/95">L–V 7–10, 17–21 · Sáb 7–10</p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2.5 pt-1">
-                  <a href="https://wa.me/525567869589" target="_blank" rel="noopener noreferrer" className="landing-btn-primary">
-                    WhatsApp: 55 6786 9589
-                  </a>
-                  <a
-                    href="https://instagram.com/oc_calisthenics"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="landing-btn-outline"
-                  >
-                    Instagram: @oc_calisthenics
-                  </a>
-                  <a
-                    href="https://www.facebook.com/Oc_Calisthenics"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="landing-btn-outline border-white/15 hover:border-oc-red/50"
-                  >
-                    Facebook: Oc_Calisthenics
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="lg:col-span-7 landing-card !p-0 overflow-hidden min-h-[320px] lg:min-h-[380px]">
-              <iframe
-                src="https://www.google.com/maps?q=Segunda+Cda.+de+Cedral+2,+San+Andrés+Totoltepec,+Tlalpan,+14640+Ciudad+de+México,+CDMX&output=embed"
-                width="100%"
-                height="100%"
-                style={{ minHeight: '320px', border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="w-full min-h-[320px] lg:min-h-full"
-                title="Ubicación OC-CLUB"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="landing-section landing-surface-accent relative py-10 sm:py-12">
-        <div className="landing-section-shell landing-section-shell--narrow text-center max-w-2xl">
-          <h2 className="landing-heading-section">¿Listo para entrenar como club?</h2>
-          <p className="landing-body mt-3 mb-7 text-oc-muted text-[0.9375rem]">
-            Pide informes por WhatsApp o entra al sistema (demo).
+      {/* 4 · Credibilidad + testimonios (placeholders marcados) */}
+      <section className="py-16 md:py-20 bg-[#111] border-y border-white/[0.05]">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-amber-400/90 mb-8">
+            Datos numéricos pendientes de validación con dirección
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="https://wa.me/525567869589" target="_blank" rel="noopener noreferrer" className="landing-btn-primary">
-              Pedir info
-            </a>
-            <Link to="/app/login" className="landing-btn-outline">
-              Entrar al sistema
-            </Link>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16 md:mb-20">
+            {PLACEHOLDER_METRICS.map((m) => (
+              <div key={m.label}>
+                <p className="text-xs text-white/45">{m.label}</p>
+                <p
+                  className={`mt-2 font-display text-2xl font-bold tracking-tight ${m.placeholder ? 'text-white/50' : 'text-white'}`}
+                >
+                  {m.value}
+                </p>
+              </div>
+            ))}
+          </div>
+          <h2 className="font-hero text-3xl sm:text-4xl text-white uppercase tracking-tight mb-8">Voces del club</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {TESTIMONIALS_PLACEHOLDER.map((t, i) => (
+              <figure
+                key={i}
+                className="rounded-lg border border-white/[0.08] bg-black/40 p-6 md:p-8"
+              >
+                <blockquote className="text-white/85 leading-relaxed italic">&ldquo;{t.quote}&rdquo;</blockquote>
+                <figcaption className="mt-4 text-sm text-oc-muted not-italic">— {t.author}</figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>
 
-      <footer className="landing-footer">
-        <div className="landing-section-shell landing-section-shell--narrow">
-          <div className="landing-footer__rule" />
-          <div className="grid sm:grid-cols-3 gap-8 lg:gap-10 mb-10">
+      {/* 5 · Filosofía / club — corto */}
+      <section id="club" className="scroll-mt-24 py-16 md:py-24 bg-oc-carbon">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <h2 className="font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">El club</h2>
+              <p className="mt-6 text-lg text-white/75 leading-relaxed">
+                <strong className="text-white font-semibold">OC-CLUB</strong> existe para que entrenes con orden y
+                resultados: peso corporal, fuerza y disciplinas que se complementan. Aquí se entiende el esfuerzo como
+                hábito, no como moda pasajera.
+              </p>
+              <p className="mt-4 text-white/60 leading-relaxed">
+                Somos humanos, profesionales y exigentes. Si buscas pasar desapercibido en un rincón, probablemente no
+                encajes.
+              </p>
+            </div>
+            <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[320px] rounded-lg overflow-hidden border border-white/[0.07]">
+              <img
+                src={IMG_CLUB_INTERIOR}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/60 to-transparent" aria-hidden />
+              <p className="absolute bottom-4 left-4 right-4 text-xs text-white/60">
+                Imagen de referencia (gimnasio) — sustituir por foto del espacio OC-CLUB.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6 · Membresías / CTA cierre */}
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-oc-red-deep/90 via-oc-black to-oc-carbon"
+          aria-hidden
+        />
+        <div className="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_top_right,_rgba(210,31,45,0.35),_transparent_50%)]" aria-hidden />
+        <div className="relative z-10 mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10 text-center">
+          <h2 className="font-hero text-4xl sm:text-6xl text-white uppercase tracking-tight max-w-3xl mx-auto">
+            Tu siguiente paso
+          </h2>
+          <p className="mt-5 text-lg text-white/85 max-w-xl mx-auto">
+            Elige cómo empezar: revisa planes, mira horarios o escríbenos por WhatsApp.
+          </p>
+          <ol className="mt-12 grid sm:grid-cols-3 gap-8 max-w-3xl mx-auto text-left">
+            <li className="flex gap-4">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-lg font-hero text-white">
+                1
+              </span>
+              <div>
+                <p className="font-semibold text-white">Revisa membresías</p>
+                <p className="text-sm text-white/65 mt-1">Planes y beneficios alineados a tu objetivo.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-lg font-hero text-white">
+                2
+              </span>
+              <div>
+                <p className="font-semibold text-white">Confirma clase</p>
+                <p className="text-sm text-white/65 mt-1">Horarios, disciplinas y cupos en la página de clases.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-lg font-hero text-white">
+                3
+              </span>
+              <div>
+                <p className="font-semibold text-white">Contacto directo</p>
+                <p className="text-sm text-white/65 mt-1">WhatsApp para dudas y agenda.</p>
+              </div>
+            </li>
+          </ol>
+          <div className="mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-4">
+            <Link
+              to="/membresias"
+              className="inline-flex items-center justify-center px-10 py-4 bg-white text-oc-red font-bold text-sm rounded-sm hover:bg-white/90 transition-colors"
+            >
+              Ver membresías
+            </Link>
+            <Link
+              to="/clases"
+              className="inline-flex items-center justify-center px-10 py-4 border-2 border-white/80 text-white font-semibold text-sm rounded-sm hover:bg-white/10 transition-colors"
+            >
+              Ver clases y horarios
+            </Link>
+            <a
+              href="https://wa.me/525567869589"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-10 py-4 border border-white/25 text-white font-semibold text-sm rounded-sm hover:bg-white/10 transition-colors"
+            >
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer simple */}
+      <footer id="contacto" className="scroll-mt-24 border-t border-white/[0.08] bg-black py-12 md:py-14">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
             <div>
               <OcClubLogo variant="footer" />
-              <p className="landing-support mt-4 leading-relaxed">
+              <p className="mt-4 text-sm text-white/55 leading-relaxed">
                 Elite Training Community
                 <br />
-                <span className="text-oc-muted/85">Alto rendimiento · CDMX</span>
+                Tlalpan, CDMX
               </p>
             </div>
             <div>
-              <h4 className="landing-aside-title">Enlaces</h4>
-              <div className="space-y-1.5">
-                <button
-                  type="button"
-                  onClick={() => document.getElementById('club')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="block landing-support hover:text-oc-red transition-colors text-left w-full"
-                >
-                  Club
-                </button>
-                <Link to="/clases" className="block landing-support hover:text-oc-red transition-colors">
-                  Clases
-                </Link>
-                <Link to="/membresias" className="block landing-support hover:text-oc-red transition-colors">
-                  Membresías
-                </Link>
-                <Link to="/convenios" className="block landing-support hover:text-oc-red transition-colors">
-                  Convenios
-                </Link>
-              </div>
+              <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">Navegación</p>
+              <ul className="space-y-2 text-sm text-white/65">
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => document.getElementById('club')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="hover:text-oc-red transition-colors text-left"
+                  >
+                    El club
+                  </button>
+                </li>
+                <li>
+                  <Link to="/clases" className="hover:text-oc-red transition-colors">
+                    Clases
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/membresias" className="hover:text-oc-red transition-colors">
+                    Membresías
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/convenios" className="hover:text-oc-red transition-colors">
+                    Convenios
+                  </Link>
+                </li>
+              </ul>
             </div>
             <div>
-              <h4 className="landing-aside-title">Contacto</h4>
-              <div className="space-y-1.5 landing-support text-sm">
-                <p>Tel: 55 6786 9589</p>
-                <p>WhatsApp disponible</p>
-                <div className="flex flex-wrap gap-3 pt-2">
-                  <a href="https://wa.me/525567869589" target="_blank" rel="noopener noreferrer" className="text-oc-red hover:text-oc-light transition-colors">
-                    WhatsApp
-                  </a>
-                  <a
-                    href="https://instagram.com/oc_calisthenics"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-oc-muted hover:text-oc-red transition-colors"
-                  >
-                    Instagram
-                  </a>
-                  <a
-                    href="https://www.facebook.com/Oc_Calisthenics"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-oc-muted hover:text-oc-red transition-colors"
-                  >
-                    Facebook
-                  </a>
-                </div>
+              <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">Contacto</p>
+              <p className="text-sm text-white/70">55 6786 9589</p>
+              <p className="text-sm text-white/55 mt-2">Segunda Cda. de Cedral 2, San Andrés Totoltepec, Tlalpan</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">Redes</p>
+              <div className="flex flex-wrap gap-4 text-sm">
+                <a href="https://wa.me/525567869589" className="text-white/65 hover:text-oc-red transition-colors" target="_blank" rel="noopener noreferrer">
+                  WhatsApp
+                </a>
+                <a
+                  href="https://instagram.com/oc_calisthenics"
+                  className="text-white/65 hover:text-oc-red transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Instagram
+                </a>
+                <a
+                  href="https://www.facebook.com/Oc_Calisthenics"
+                  className="text-white/65 hover:text-oc-red transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Facebook
+                </a>
               </div>
             </div>
           </div>
-          <div className="border-t border-white/[0.06] pt-8 text-center">
-            <p className="landing-support text-sm">© {new Date().getFullYear()} OC-CLUB. Todos los derechos reservados.</p>
-          </div>
+          <p className="mt-12 pt-8 border-t border-white/[0.06] text-center text-xs text-white/40">
+            © {new Date().getFullYear()} OC-CLUB. Todos los derechos reservados.
+          </p>
         </div>
       </footer>
     </div>

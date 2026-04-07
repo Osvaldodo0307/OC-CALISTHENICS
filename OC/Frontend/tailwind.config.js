@@ -28,6 +28,8 @@ export default {
       fontFamily: {
         sans: ['Montserrat', 'system-ui', 'sans-serif'],
         display: ['Oswald', 'Impact', 'Arial Narrow', 'system-ui', 'sans-serif'],
+        /** Titulares homepage comerciales */
+        hero: ['Bebas Neue', 'Oswald', 'Impact', 'system-ui', 'sans-serif'],
       },
     },
   },
