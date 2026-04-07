@@ -46,33 +46,27 @@ export default function PublicNav() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-oc-carbon/93 backdrop-blur-xl shadow-[0_12px_40px_-20px_rgba(0,0,0,0.85)]">
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-oc-red/22 to-transparent" aria-hidden />
-      <nav className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="flex items-center justify-between gap-3 sm:gap-6 min-h-[5.5rem] lg:min-h-[6.25rem] py-3">
+    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-oc-carbon/95 backdrop-blur-md">
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-oc-red/18 to-transparent" aria-hidden />
+      <nav className="landing-container flex flex-col" aria-label="Principal">
+        <div className="flex items-center justify-between gap-4 min-h-[4rem] py-2">
           <Link
             to="/"
-            className="flex shrink-0 items-center gap-2 sm:gap-4 min-w-0 max-w-[min(78vw,340px)] sm:max-w-[min(52vw,380px)] md:max-w-none group"
+            className="flex shrink-0 items-center min-w-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-oc-red/50 rounded-sm"
           >
-            <span
-              className="oc-landing-hero__chevrons hidden sm:block text-xl sm:text-2xl font-black leading-none select-none"
-              aria-hidden
-            >
-              &gt;&gt;&gt;
-            </span>
-            <OcClubLogo variant="nav" priority className="drop-shadow-[0_0_24px_rgba(210,31,45,0.15)]" />
+            <OcClubLogo variant="nav" priority />
           </Link>
 
-          <div className="hidden lg:flex flex-1 min-w-0 items-center justify-end gap-1 xl:gap-2">
+          <div className="hidden lg:flex flex-1 min-w-0 items-center justify-end gap-0.5 xl:gap-1">
             {NAV_LINKS.map((link) => (
               <button
                 key={link.label}
                 type="button"
                 onClick={() => handleNavClick(link.to, link.hash)}
-                className={`px-3 xl:px-4 py-2.5 rounded-sm text-[11px] xl:text-xs font-semibold uppercase tracking-[0.18em] transition-colors border border-transparent ${
+                className={`px-3 xl:px-3.5 py-2 rounded-sm text-[11px] xl:text-[12px] font-semibold tracking-wide transition-colors border border-transparent ${
                   isActive(link.to, link.hash)
-                    ? 'text-oc-red bg-white/[0.04] border-white/[0.08]'
-                    : 'text-oc-light/90 hover:text-oc-red hover:bg-white/[0.03]'
+                    ? 'text-oc-light bg-white/[0.05] border-white/[0.07]'
+                    : 'text-oc-muted hover:text-oc-light hover:bg-white/[0.03]'
                 }`}
               >
                 {link.label}
@@ -80,7 +74,7 @@ export default function PublicNav() {
             ))}
             <Link
               to="/app/login"
-              className="ml-3 xl:ml-5 inline-flex items-center justify-center px-6 xl:px-8 py-2.5 rounded-sm bg-oc-red hover:bg-oc-red-deep text-white text-xs font-bold uppercase tracking-[0.14em] transition-all border border-white/10 hover:shadow-[0_10px_32px_-12px_rgba(210,31,45,0.45)]"
+              className="ml-4 xl:ml-6 inline-flex items-center justify-center px-5 py-2 rounded-sm bg-oc-red hover:bg-oc-red-deep text-white text-[11px] font-bold uppercase tracking-wider transition-colors border border-white/10"
             >
               Entrar
             </Link>
@@ -89,9 +83,9 @@ export default function PublicNav() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden shrink-0 p-2.5 rounded-sm text-oc-light hover:text-oc-red hover:bg-white/[0.04] border border-white/[0.08] transition-colors"
+            className="lg:hidden shrink-0 p-2 rounded-sm text-oc-light hover:bg-white/[0.05] border border-white/[0.08] transition-colors"
             aria-expanded={mobileMenuOpen}
-            aria-label="Abrir menú"
+            aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileMenuOpen ? (
@@ -104,18 +98,16 @@ export default function PublicNav() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="lg:hidden pb-5 pt-1 border-t border-white/[0.06]">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-oc-muted px-1 pt-3 pb-2">Navegación</p>
-            <div className="flex flex-col gap-1">
+          <div className="lg:hidden pb-4 pt-1 border-t border-white/[0.06]">
+            <p className="text-[10px] uppercase tracking-wider text-oc-muted px-0.5 pt-3 pb-2">Menú</p>
+            <div className="flex flex-col gap-0.5">
               {NAV_LINKS.map((link) => (
                 <button
                   key={link.label}
                   type="button"
                   onClick={() => handleNavClick(link.to, link.hash)}
-                  className={`px-4 py-3 text-left rounded-sm text-sm font-semibold uppercase tracking-wider transition-colors border border-transparent ${
-                    isActive(link.to, link.hash)
-                      ? 'text-oc-red bg-white/[0.04] border-white/[0.08]'
-                      : 'text-oc-light hover:bg-white/[0.03]'
+                  className={`px-3 py-2.5 text-left rounded-sm text-sm font-medium tracking-wide transition-colors ${
+                    isActive(link.to, link.hash) ? 'text-oc-light bg-white/[0.05]' : 'text-oc-muted hover:text-oc-light'
                   }`}
                 >
                   {link.label}
@@ -124,7 +116,7 @@ export default function PublicNav() {
               <Link
                 to="/app/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mt-3 text-center px-4 py-3.5 rounded-sm bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold uppercase tracking-wider border border-white/10"
+                className="mt-3 text-center px-3 py-3 rounded-sm bg-oc-red hover:bg-oc-red-deep text-white text-sm font-semibold border border-white/10"
               >
                 Entrar al sistema
               </Link>
