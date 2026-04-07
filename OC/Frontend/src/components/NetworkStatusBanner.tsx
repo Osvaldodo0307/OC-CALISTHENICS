@@ -42,7 +42,7 @@ export default function NetworkStatusBanner() {
   if (online) return null
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-[100] bg-yellow-500 px-4 py-2 text-center text-sm font-semibold text-black">
+    <div className="fixed left-0 right-0 top-0 z-[100] bg-oc-red px-4 py-2 text-center text-sm font-semibold text-white">
       Sin conexion a internet. Algunas funciones pueden no estar disponibles.
     </div>
   )

@@ -1,0 +1,34 @@
+import type { ImgHTMLAttributes } from 'react'
+
+const variantClass: Record<'nav' | 'hero' | 'footer' | 'app' | 'auth', string> = {
+  nav: 'h-11 sm:h-12 w-auto max-w-[min(100%,300px)] object-contain object-left',
+  hero: 'w-full max-w-[min(100%,520px)] h-auto max-h-[min(55vh,420px)] object-contain object-center',
+  footer: 'h-14 sm:h-16 w-auto max-w-[min(100%,300px)] object-contain object-left',
+  app: 'h-8 sm:h-9 w-auto max-w-[min(100%,200px)] object-contain object-left',
+  auth: 'h-auto w-full max-w-[min(100%,300px)] mx-auto object-contain',
+}
+
+type Props = {
+  variant: keyof typeof variantClass
+  className?: string
+  /** Above-the-fold: evita lazy load y mejora LCP */
+  priority?: boolean
+} & Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt' | 'className'>
+
+export default function OcClubLogo({ variant, className = '', priority = false, ...imgProps }: Props) {
+  return (
+    <img
+      alt="OC-CLUB — Elite Training Community"
+      className={`${variantClass[variant]} ${className}`.trim()}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+      {...imgProps}
+      src="/OC-CLUB.PNG"
+      onError={(e) => {
+        const target = e.currentTarget
+        if (target.src.includes('oc-club-logo.svg')) return
+        target.src = '/oc-club-logo.svg'
+      }}
+    />
+  )
+}

@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useCallback } from 'react'
+import OcClubLogo from './brand/OcClubLogo'
 
 const NAV_LINKS = [
   { label: 'Club', to: '/', hash: 'club' },
@@ -45,30 +46,17 @@ export default function PublicNav() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-oc-dark/95 backdrop-blur-sm border-b border-oc-border">
+    <header className="sticky top-0 z-50 bg-oc-dark/95 backdrop-blur-md border-b border-oc-border">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <img
-              src="/logo-oc.jpg"
-              alt="OC Calisthenics"
-              className="h-10 w-10 object-contain transition-transform group-hover:scale-105"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement
-                target.src = '/oc-logo.png'
-              }}
-            />
-            <div className="leading-tight">
-              <span className="text-oc-red font-bold text-xl tracking-tight">OC</span>
-              <span className="text-oc-light block text-xs tracking-[0.2em] font-medium">
-                CALISTHENICS
-              </span>
-            </div>
+        <div className="flex justify-between items-center gap-3 min-h-[4.5rem] sm:min-h-[5rem] py-2">
+          <Link
+            to="/"
+            className="flex shrink-0 items-center min-w-0 max-w-[55%] sm:max-w-none group transition-transform group-hover:scale-[1.01]"
+          >
+            <OcClubLogo variant="nav" priority className="transition-opacity group-hover:opacity-95" />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end gap-1 lg:gap-2">
             {NAV_LINKS.map((link) => (
               <button
                 key={link.label}

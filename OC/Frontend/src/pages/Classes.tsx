@@ -161,7 +161,7 @@ export default function Classes() {
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={() => navigateDate(-1)}
-          className="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-oc-metal transition-colors"
+          className="text-oc-muted hover:text-white p-2 rounded-lg hover:bg-oc-metal transition-colors"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -175,7 +175,7 @@ export default function Classes() {
 
         <button
           onClick={() => navigateDate(1)}
-          className="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-oc-metal transition-colors"
+          className="text-oc-muted hover:text-white p-2 rounded-lg hover:bg-oc-metal transition-colors"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -186,7 +186,7 @@ export default function Classes() {
         <button
           onClick={() => fetchClasses()}
           disabled={loading}
-          className="touch-target px-3 py-2 rounded-lg border border-gray-700 text-gray-300 text-sm hover:text-white hover:border-oc-red disabled:opacity-50"
+          className="touch-target px-3 py-2 rounded-lg border border-oc-border text-oc-light/90 text-sm hover:text-white hover:border-oc-red disabled:opacity-50"
         >
           Actualizar
         </button>
@@ -209,10 +209,10 @@ export default function Classes() {
               disabled={disabled}
               className={`flex-shrink-0 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                 disabled
-                  ? 'bg-gray-800/50 text-gray-600 cursor-not-allowed border border-gray-800'
+                  ? 'bg-oc-panel/50 text-oc-muted cursor-not-allowed border border-oc-border'
                   : isSelected
                     ? 'bg-oc-red text-white'
-                    : 'bg-oc-metal text-gray-400 hover:text-white border border-gray-700'
+                    : 'bg-oc-metal text-oc-muted hover:text-white border border-oc-border'
               }`}
             >
               <div>{DAYS_ES[ymdWeekday(dateStr)].slice(0, 3)}</div>
@@ -228,13 +228,13 @@ export default function Classes() {
         <div className="text-center py-16">
           <div className="text-5xl mb-4">🏖️</div>
           <p className="text-white text-lg font-semibold mb-2">Día de descanso</p>
-          <p className="text-gray-500">No hay clases los domingos</p>
+          <p className="text-oc-muted">No hay clases los domingos</p>
         </div>
       ) : dayIsPast ? (
         <div className="text-center py-16">
           <div className="text-5xl mb-4">🔒</div>
           <p className="text-white text-lg font-semibold mb-2">Día cerrado</p>
-          <p className="text-gray-500">Las reservas para este día ya cerraron</p>
+          <p className="text-oc-muted">Las reservas para este día ya cerraron</p>
         </div>
       ) : loading ? (
         <LoadingState message="Cargando clases..." />
@@ -267,8 +267,8 @@ export default function Classes() {
                 key={cls.id}
                 className={`bg-oc-metal rounded-xl border overflow-hidden transition-all ${
                   isBooked
-                    ? 'border-green-500/50 shadow-lg shadow-green-500/10'
-                    : 'border-gray-700/50'
+                    ? 'border-oc-red/40 shadow-lg shadow-oc-red/15'
+                    : 'border-oc-border/80'
                 }`}
               >
                 <button
@@ -277,25 +277,25 @@ export default function Classes() {
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
-                      isBooked ? 'bg-green-500' : 'bg-oc-red'
+                      isBooked ? 'bg-oc-red' : 'bg-oc-red'
                     }`} />
                     <div>
                       <h3 className={`font-bold text-base ${
-                        isBooked ? 'text-green-400' : 'text-white'
+                        isBooked ? 'text-oc-light' : 'text-white'
                       }`}>
                         {cls.title}
                       </h3>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-oc-muted">
                         {isBooked ? '✓ Ya tienes reserva' : 'Toca para elegir horario'}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     {cls.bookings_count > 0 && (
-                      <span className="text-gray-500 text-sm">{cls.bookings_count} 👤</span>
+                      <span className="text-oc-muted text-sm">{cls.bookings_count} 👤</span>
                     )}
                     <svg
-                      className={`w-5 h-5 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                      className={`w-5 h-5 text-oc-muted transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                       fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -304,8 +304,8 @@ export default function Classes() {
                 </button>
 
                 {isExpanded && (
-                  <div className="border-t border-gray-700/50 p-4">
-                    <p className="text-gray-400 text-xs mb-3">
+                  <div className="border-t border-oc-border/80 p-4">
+                    <p className="text-oc-muted text-xs mb-3">
                       Selecciona la hora a la que planeas asistir:
                     </p>
                     <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
@@ -316,10 +316,10 @@ export default function Classes() {
                           disabled={actionLoading === cls.id || isBooked}
                           className={`py-2 px-1 rounded-lg text-sm font-medium transition-colors ${
                             isBooked && selectedHour === hour
-                              ? 'bg-green-600/20 text-green-400 border border-green-600/30 cursor-default'
+                              ? 'bg-oc-red/15 text-oc-light border border-oc-red/35 cursor-default'
                               : isBooked
-                                ? 'bg-oc-dark/60 border border-gray-700 text-gray-500 cursor-default'
-                              : 'bg-oc-dark border border-gray-700 text-white hover:border-oc-red hover:bg-oc-red/10 active:bg-oc-red active:text-white'
+                                ? 'bg-oc-dark/60 border border-oc-border text-oc-muted cursor-default'
+                              : 'bg-oc-dark border border-oc-border text-white hover:border-oc-red hover:bg-oc-red/10 active:bg-oc-red active:text-white'
                           }`}
                         >
                           {hour.toString().padStart(2, '0')}:00
@@ -327,7 +327,7 @@ export default function Classes() {
                       ))}
                     </div>
                     {isBooked && selectedHour != null && (
-                      <p className="text-xs text-green-400 mt-2">
+                      <p className="text-xs text-oc-light mt-2">
                         Tu horario registrado es: {selectedHour.toString().padStart(2, '0')}:00
                       </p>
                     )}
@@ -335,7 +335,7 @@ export default function Classes() {
                       <button
                         onClick={() => handleCancel(cls.my_booking_id!)}
                         disabled={actionLoading === cls.my_booking_id}
-                        className="mt-3 w-full py-2 rounded-lg bg-red-900/30 border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-900/50 transition-colors"
+                        className="mt-3 w-full py-2 rounded-lg bg-oc-red/15 border border-oc-red/40 text-oc-light text-sm font-medium hover:bg-oc-red/25 transition-colors"
                       >
                         {actionLoading === cls.my_booking_id ? 'Cancelando...' : 'Cancelar reserva'}
                       </button>
@@ -349,9 +349,9 @@ export default function Classes() {
           {/* Separator */}
           {!isSaturday && specialClasses.length > 0 && regularClasses.length > 0 && (
             <div className="flex items-center gap-3 py-2">
-              <div className="flex-1 h-px bg-gray-700" />
-              <span className="text-gray-500 text-xs uppercase tracking-wide">Clases del día</span>
-              <div className="flex-1 h-px bg-gray-700" />
+              <div className="flex-1 h-px bg-oc-panel" />
+              <span className="text-oc-muted text-xs uppercase tracking-wide">Clases del día</span>
+              <div className="flex-1 h-px bg-oc-panel" />
             </div>
           )}
 
@@ -365,24 +365,24 @@ export default function Classes() {
                 key={cls.id}
                 className={`bg-oc-metal rounded-xl border transition-all ${
                   isBooked
-                    ? 'border-green-500/50 shadow-lg shadow-green-500/10'
-                    : 'border-gray-700/50 hover:border-oc-red/30'
+                    ? 'border-oc-red/40 shadow-lg shadow-oc-red/15'
+                    : 'border-oc-border/80 hover:border-oc-red/30'
                 }`}
               >
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
-                        isBooked ? 'bg-green-500' : 'bg-gray-600'
+                        isBooked ? 'bg-oc-red' : 'bg-oc-border'
                       }`} />
                       <h3 className={`font-bold text-base truncate ${
-                        isBooked ? 'text-green-400' : 'text-white'
+                        isBooked ? 'text-oc-light' : 'text-white'
                       }`}>
                         {cls.title}
                       </h3>
                     </div>
                     {cls.bookings_count > 0 && (
-                      <span className="text-gray-500 text-sm ml-2 flex-shrink-0">
+                      <span className="text-oc-muted text-sm ml-2 flex-shrink-0">
                         {cls.bookings_count} 👤
                       </span>
                     )}
@@ -392,7 +392,7 @@ export default function Classes() {
                     <button
                       onClick={() => cls.my_booking_id && handleCancel(cls.my_booking_id)}
                       disabled={isProcessing}
-                      className="w-full py-2.5 rounded-lg bg-green-600 hover:bg-red-600 text-white text-sm font-semibold transition-colors disabled:opacity-50"
+                      className="w-full py-2.5 rounded-lg bg-oc-red hover:bg-oc-red-deep text-white text-sm font-semibold transition-colors disabled:opacity-50"
                     >
                       {isProcessing ? 'Cancelando...' : '✓ Agendado — toca para cancelar'}
                     </button>
@@ -407,10 +407,10 @@ export default function Classes() {
                   )}
 
                   {cls.bookings_count > 0 && (
-                    <div className="mt-3 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                    <div className="mt-3 h-1.5 bg-oc-panel rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all ${
-                          isBooked ? 'bg-green-500' : 'bg-oc-red'
+                          isBooked ? 'bg-oc-red' : 'bg-oc-red'
                         }`}
                         style={{
                           width: `${Math.min((cls.bookings_count / Math.max(cls.capacity || 20, 1)) * 100, 100)}%`,
@@ -427,13 +427,13 @@ export default function Classes() {
       )}
 
       {/* Legend */}
-      <div className="mt-8 flex items-center justify-center gap-6 text-xs text-gray-500">
+      <div className="mt-8 flex items-center justify-center gap-6 text-xs text-oc-muted">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-green-500" />
+          <div className="w-3 h-3 rounded-full bg-oc-red" />
           <span>Agendado</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-gray-600" />
+          <div className="w-3 h-3 rounded-full bg-oc-border" />
           <span>Disponible</span>
         </div>
       </div>

@@ -79,8 +79,8 @@ export default function MiPlan() {
 
       <div className="bg-oc-metal p-6 rounded-lg border border-oc-red/20 mb-6">
         <h2 className="text-2xl font-semibold text-oc-red mb-2">{plan.title}</h2>
-        {plan.goal && <p className="text-gray-300 mb-4">{plan.goal}</p>}
-        <div className="flex gap-4 text-sm text-gray-400">
+        {plan.goal && <p className="text-oc-light/90 mb-4">{plan.goal}</p>}
+        <div className="flex gap-4 text-sm text-oc-muted">
           <span>
             Inicio: {format(new Date(plan.start_date), "dd/MM/yyyy")}
           </span>
@@ -100,32 +100,32 @@ export default function MiPlan() {
           <h3 className="text-xl font-bold text-oc-red mb-4">Semana {week}</h3>
           <div className="space-y-4">
             {items.map((item) => (
-              <div key={item.id} className="bg-oc-dark p-4 rounded border border-gray-700">
+              <div key={item.id} className="bg-oc-dark p-4 rounded border border-oc-border">
                 <h4 className="text-lg font-semibold text-white mb-2">{item.day_label}</h4>
                 {item.warmup && (
                   <div className="mb-2">
                     <span className="text-oc-red font-semibold">Calentamiento:</span>
-                    <p className="text-gray-300 text-sm ml-2">{item.warmup}</p>
+                    <p className="text-oc-light/90 text-sm ml-2">{item.warmup}</p>
                   </div>
                 )}
                 <div className="mb-2">
                   <span className="text-oc-red font-semibold">Principal:</span>
-                  <p className="text-gray-300 text-sm ml-2">{item.main}</p>
+                  <p className="text-oc-light/90 text-sm ml-2">{item.main}</p>
                 </div>
                 {item.accessories && (
                   <div className="mb-2">
                     <span className="text-oc-red font-semibold">Accesorios:</span>
-                    <p className="text-gray-300 text-sm ml-2">{item.accessories}</p>
+                    <p className="text-oc-light/90 text-sm ml-2">{item.accessories}</p>
                   </div>
                 )}
                 {item.cooldown && (
                   <div className="mb-2">
                     <span className="text-oc-red font-semibold">Enfriamiento:</span>
-                    <p className="text-gray-300 text-sm ml-2">{item.cooldown}</p>
+                    <p className="text-oc-light/90 text-sm ml-2">{item.cooldown}</p>
                   </div>
                 )}
                 {item.notes && (
-                  <p className="text-gray-400 text-xs italic mt-2">{item.notes}</p>
+                  <p className="text-oc-muted text-xs italic mt-2">{item.notes}</p>
                 )}
               </div>
             ))}

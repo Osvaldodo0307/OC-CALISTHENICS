@@ -57,28 +57,28 @@ export default function DashboardSocio() {
     <div className="px-4 max-w-2xl mx-auto space-y-4">
       <div>
         <h1 className="text-2xl font-bold text-white">Inicio</h1>
-        <p className="text-sm text-gray-400 mt-1">Resumen rapido de tu cuenta.</p>
+        <p className="text-sm text-oc-muted mt-1">Resumen rapido de tu cuenta.</p>
       </div>
 
       {error && <ErrorState message={error} onRetry={loadData} />}
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-oc-metal border border-gray-700 rounded-xl p-4">
-          <p className="text-gray-400 text-xs">Reservas activas</p>
+        <div className="bg-oc-metal border border-oc-border rounded-xl p-4">
+          <p className="text-oc-muted text-xs">Reservas activas</p>
           <p className="text-white text-2xl font-bold mt-1">{activeBookings}</p>
         </div>
-        <div className="bg-oc-metal border border-gray-700 rounded-xl p-4">
-          <p className="text-gray-400 text-xs">Membresia</p>
+        <div className="bg-oc-metal border border-oc-border rounded-xl p-4">
+          <p className="text-oc-muted text-xs">Membresia</p>
           <p className="text-white text-lg font-semibold mt-2">{membershipStatus}</p>
         </div>
       </div>
 
       <div className="bg-oc-metal border border-oc-red/20 rounded-xl p-4">
-        <p className="text-sm text-gray-300 mb-3">Accesos rapidos</p>
+        <p className="text-sm text-oc-light/90 mb-3">Accesos rapidos</p>
         <div className="flex flex-wrap gap-2">
           <Link className="touch-target px-3 py-2 rounded-lg bg-oc-red text-white text-sm font-medium" to="/app/clases">Clases</Link>
-          <Link className="touch-target px-3 py-2 rounded-lg border border-gray-600 text-gray-200 text-sm font-medium" to="/app/reservas">Reservas</Link>
-          <Link className="touch-target px-3 py-2 rounded-lg border border-gray-600 text-gray-200 text-sm font-medium" to="/app/mi-plan">Mi plan</Link>
+          <Link className="touch-target px-3 py-2 rounded-lg border border-oc-border text-oc-light text-sm font-medium" to="/app/reservas">Reservas</Link>
+          <Link className="touch-target px-3 py-2 rounded-lg border border-oc-border text-oc-light text-sm font-medium" to="/app/mi-plan">Mi plan</Link>
         </div>
       </div>
     </div>

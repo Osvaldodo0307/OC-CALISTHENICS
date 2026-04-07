@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import PublicNav from '../components/PublicNav'
+import OcClubLogo from '../components/brand/OcClubLogo'
 
 export default function EquipoComunidad() {
   return (
@@ -14,7 +15,7 @@ export default function EquipoComunidad() {
             <span className="text-oc-red">Comunidad</span>
           </h1>
           <p className="text-xl text-oc-muted mb-8">
-            Conoce a nuestro equipo y la comunidad OC-CALISTHENICS
+            Conoce a nuestro equipo y la comunidad OC-CLUB
           </p>
         </div>
       </section>
@@ -186,7 +187,7 @@ export default function EquipoComunidad() {
             ¿Quieres formar parte de nuestra comunidad?
           </h2>
           <p className="text-oc-muted text-lg mb-8">
-            Únete a OC-CALISTHENICS y comienza tu transformación
+            Únete a OC-CLUB y comienza tu transformación
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -212,23 +213,11 @@ export default function EquipoComunidad() {
         <div className="max-w-6xl mx-auto">
           <div className="grid sm:grid-cols-3 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-3 mb-4">
-                <img
-                  src="/logo-plano.jpg"
-                  alt="OC Calisthenics"
-                  className="h-12 w-12 object-contain"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement
-                    target.src = '/oc-logo.png'
-                  }}
-                />
-                <div>
-                  <span className="text-oc-red font-bold text-xl">OC</span>
-                  <span className="text-oc-light block text-xs tracking-wider">CALISTHENICS</span>
-                </div>
+              <div className="mb-4">
+                <OcClubLogo variant="footer" />
               </div>
               <p className="text-oc-muted text-sm">
-                Club exclusivo de alto rendimiento
+                Elite Training Community · Alto rendimiento
               </p>
             </div>
             <div>
@@ -263,7 +252,7 @@ export default function EquipoComunidad() {
           </div>
           <div className="border-t border-oc-border pt-8 text-center">
             <p className="text-oc-muted text-sm">
-              © 2024 OC-CALISTHENICS. Todos los derechos reservados.
+              © {new Date().getFullYear()} OC-CLUB. Todos los derechos reservados.
             </p>
           </div>
         </div>

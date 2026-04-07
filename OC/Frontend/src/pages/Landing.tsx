@@ -1,72 +1,73 @@
 import { Link } from 'react-router-dom'
 import PublicNav from '../components/PublicNav'
+import OcClubLogo from '../components/brand/OcClubLogo'
 
 export default function Landing() {
   return (
     <div className="min-h-screen bg-oc-dark text-oc-light">
       <PublicNav />
 
-      {/* Hero Section - Imagen derecha, copy izquierda */}
-      <section className="pt-12 pb-20 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-5rem)] flex items-center">
+      {/* Hero: composición para wordmark horizontal + jerarquía clara (desktop / tablet / móvil) */}
+      <section className="pt-8 pb-16 sm:pt-12 sm:pb-20 px-4 sm:px-6 lg:px-8 lg:min-h-[calc(100vh-5rem)] flex items-center">
         <div className="max-w-7xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Copy izquierda */}
-            <div className="space-y-6">
-              <div className="space-y-4">
-                <p className="text-oc-red font-semibold text-sm uppercase tracking-wider">Club exclusivo · Alto rendimiento</p>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-16 items-center">
+            {/* Copy principal */}
+            <div className="lg:col-span-7 space-y-6 order-2 lg:order-1">
+              <div className="space-y-3 sm:space-y-4">
+                <p className="text-oc-red font-bold text-xs sm:text-sm uppercase tracking-[0.22em]">
+                  Elite Training Community
+                </p>
+                <p className="text-oc-muted text-sm font-medium">Club exclusivo · Alto rendimiento · CDMX</p>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-[3.5rem] font-bold leading-[1.08] tracking-tight">
                   <span className="text-oc-light">Desafía tus límites,</span>
                   <br />
                   <span className="text-oc-red">nada es imposible</span>
                 </h1>
-                <p className="text-lg sm:text-xl text-oc-muted leading-relaxed">
-                  Un club de alto rendimiento enfocado en <strong className="text-oc-red">Calistenia</strong>, <strong className="text-oc-red">Powerlifting</strong> y <strong className="text-oc-red">Spartan</strong>.
+                <p className="text-lg sm:text-xl text-oc-muted leading-relaxed max-w-xl">
+                  Un club de alto rendimiento enfocado en <strong className="text-oc-red">Calistenia</strong>,{' '}
+                  <strong className="text-oc-red">Powerlifting</strong> y <strong className="text-oc-red">Spartan</strong>.
                 </p>
-                <p className="text-base sm:text-lg text-oc-muted">
+                <p className="text-base sm:text-lg text-oc-muted max-w-xl">
                   Entrena con estructura, comunidad y estándares profesionales.
                 </p>
               </div>
 
-                              {/* CTA Buttons */}
-                              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                                <Link
-                                  to="/membresias"
-                                  className="px-8 py-3 rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold transition-all hover:shadow-lg hover:shadow-oc-red/50"
-                                >
-                                  Ver Membresías
-                                </Link>
-                                <Link
-                                  to="/clases"
-                                  className="px-8 py-3 rounded-full border-2 border-oc-red text-oc-red hover:bg-oc-red/10 font-semibold transition-all inline-block"
-                                >
-                                  Explorar Clases
-                                </Link>
-                              </div>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+                <Link
+                  to="/membresias"
+                  className="text-center px-8 py-3.5 rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold transition-all hover:shadow-lg hover:shadow-oc-red/50"
+                >
+                  Ver Membresías
+                </Link>
+                <Link
+                  to="/clases"
+                  className="text-center px-8 py-3.5 rounded-full border-2 border-oc-red text-oc-red hover:bg-oc-red/10 font-semibold transition-all"
+                >
+                  Explorar Clases
+                </Link>
+              </div>
 
-              {/* Quote */}
-              <div className="pt-6 border-l-4 border-oc-red pl-6">
-                <p className="text-xl italic text-oc-light">
-                  "Cuando logres despertar tu impulso fitness, tu vida cambiará para siempre"
+              <div className="pt-4 sm:pt-6 border-l-4 border-oc-red pl-5 sm:pl-6">
+                <p className="text-lg sm:text-xl italic text-oc-light/95 leading-snug">
+                  &ldquo;Cuando logres despertar tu impulso fitness, tu vida cambiará para siempre&rdquo;
                 </p>
-                <p className="text-sm text-oc-muted mt-2">~OC-CALISTHENICS</p>
+                <p className="text-sm text-oc-muted mt-2 tracking-wide">— OC-CLUB</p>
               </div>
             </div>
 
-            {/* Imagen derecha */}
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden border border-oc-border shadow-2xl shadow-oc-red/20">
-                <img
-                  src="/hero-oc.png"
-                  alt="OC-CALISTHENICS"
-                  className="w-full h-auto object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement
-                    target.src = '/logo-slogan.jpg'
-                  }}
-                />
+            {/* Marca: más aire, sin altura mínima forzada; evita ahogar el wordmark */}
+            <div className="lg:col-span-5 order-1 lg:order-2 w-full">
+              <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
+                <div className="relative min-h-[220px] sm:min-h-[260px] lg:min-h-[300px] rounded-2xl border border-oc-border/90 bg-gradient-to-b from-oc-metal via-oc-panel to-oc-dark p-6 sm:p-8 lg:p-10 shadow-2xl shadow-oc-red/25 flex items-center justify-center">
+                  <div className="w-full flex flex-col items-center justify-center gap-3">
+                    <OcClubLogo variant="hero" priority className="drop-shadow-[0_0_28px_rgba(210,31,45,0.2)]" />
+                    <p className="text-center text-[10px] sm:text-xs font-semibold uppercase tracking-[0.28em] text-oc-muted">
+                      Elite Training Community
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute -inset-3 sm:-inset-4 bg-oc-red/15 blur-3xl rounded-3xl -z-10 pointer-events-none" aria-hidden />
               </div>
-              {/* Glow effect */}
-              <div className="absolute -inset-4 bg-oc-red/20 blur-3xl rounded-full -z-10"></div>
             </div>
           </div>
         </div>
@@ -103,7 +104,7 @@ export default function Landing() {
 
           <div className="space-y-6 text-lg text-oc-light leading-relaxed">
             <p>
-              <strong className="text-oc-red">OC-CALISTHENICS</strong> es una empresa dedicada a mejorar la calidad de vida de nuestros clientes con entrenamientos basados en su propio peso corporal, promoviendo la pérdida de grasa corporal, el aumento de masa muscular y la obtención de un cuerpo estético, con diferentes disciplinas de entrenamiento.
+              <strong className="text-oc-red">OC-CLUB</strong> es una empresa dedicada a mejorar la calidad de vida de nuestros clientes con entrenamientos basados en su propio peso corporal, promoviendo la pérdida de grasa corporal, el aumento de masa muscular y la obtención de un cuerpo estético, con diferentes disciplinas de entrenamiento.
             </p>
           </div>
 
@@ -137,7 +138,7 @@ export default function Landing() {
             <div className="bg-oc-dark/50 p-8 rounded-2xl border border-oc-border hover:border-oc-red/50 transition-all hover:shadow-lg hover:shadow-oc-red/20">
               <h3 className="text-2xl font-bold text-oc-red mb-4">Visión</h3>
               <p className="text-oc-light leading-relaxed">
-                Ser el club referente en Tlalpan por resultados, comunidad y estándares profesionales, creando una identidad OC reconocible por su constancia y mentalidad ganadora.
+                Ser el club referente en Tlalpan por resultados, comunidad y estándares profesionales, creando una identidad OC-CLUB reconocible por su constancia y mentalidad ganadora.
               </p>
             </div>
           </div>
@@ -274,7 +275,7 @@ export default function Landing() {
             {/* Información de contacto */}
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-oc-red mb-4">OC-CALISTHENICS · Club</h3>
+                <h3 className="text-xl font-bold text-oc-red mb-4">OC-CLUB · Elite Training</h3>
                 <p className="text-oc-light mb-6">
                   Segunda Cda. de Cedral 2, San Andrés Totoltepec, Tlalpan, 14640 Ciudad de México, CDMX
                 </p>
@@ -296,7 +297,7 @@ export default function Landing() {
                   href="https://wa.me/525567869589"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-semibold transition-all hover:shadow-lg flex items-center gap-2"
+                  className="px-6 py-3 rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold transition-all hover:shadow-lg flex items-center gap-2"
                 >
                   <span>WhatsApp: 55 6786 9589</span>
                 </a>
@@ -304,7 +305,7 @@ export default function Landing() {
                   href="https://instagram.com/oc_calisthenics"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-full border-2 border-pink-500 text-pink-500 hover:bg-pink-500/10 font-semibold transition-all flex items-center gap-2"
+                  className="px-6 py-3 rounded-full border-2 border-oc-red text-oc-red hover:bg-oc-red/10 font-semibold transition-all flex items-center gap-2"
                 >
                   <span>Instagram: @oc_calisthenics</span>
                 </a>
@@ -312,7 +313,7 @@ export default function Landing() {
                   href="https://www.facebook.com/Oc_Calisthenics"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-full border-2 border-blue-500 text-blue-500 hover:bg-blue-500/10 font-semibold transition-all flex items-center gap-2"
+                  className="px-6 py-3 rounded-full border-2 border-oc-border text-oc-light hover:border-oc-red hover:text-oc-red font-semibold transition-all flex items-center gap-2"
                 >
                   <span>Facebook: Oc_Calisthenics</span>
                 </a>
@@ -330,7 +331,7 @@ export default function Landing() {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="w-full"
-                title="Ubicación OC-CALISTHENICS"
+                title="Ubicación OC-CLUB"
               ></iframe>
             </div>
           </div>
@@ -371,23 +372,13 @@ export default function Landing() {
           <div className="grid sm:grid-cols-3 gap-8 mb-8">
             {/* Logo y marca */}
             <div>
-              <div className="flex items-center gap-3 mb-4">
-                <img
-                  src="/logo-plano.jpg"
-                  alt="OC Calisthenics"
-                  className="h-12 w-12 object-contain"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement
-                    target.src = '/oc-logo.png'
-                  }}
-                />
-                <div>
-                  <span className="text-oc-red font-bold text-xl">OC</span>
-                  <span className="text-oc-light block text-xs tracking-wider">CALISTHENICS</span>
-                </div>
+              <div className="mb-4">
+                <OcClubLogo variant="footer" />
               </div>
-              <p className="text-oc-muted text-sm">
-                Club exclusivo de alto rendimiento
+              <p className="text-oc-muted text-sm leading-relaxed">
+                Elite Training Community
+                <br />
+                <span className="text-oc-muted/80">Alto rendimiento · CDMX</span>
               </p>
             </div>
 
@@ -417,13 +408,13 @@ export default function Landing() {
                 <p>Tel: 55 6786 9589</p>
                 <p>WhatsApp disponible</p>
                 <div className="flex gap-4 pt-2">
-                  <a href="https://wa.me/525567869589" target="_blank" rel="noopener noreferrer" className="text-green-500 hover:text-green-400 transition-colors">
+                  <a href="https://wa.me/525567869589" target="_blank" rel="noopener noreferrer" className="text-oc-red hover:text-oc-light transition-colors">
                     WhatsApp
                   </a>
-                  <a href="https://instagram.com/oc_calisthenics" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:text-pink-400 transition-colors">
+                  <a href="https://instagram.com/oc_calisthenics" target="_blank" rel="noopener noreferrer" className="text-oc-muted hover:text-oc-red transition-colors">
                     Instagram
                   </a>
-                  <a href="https://www.facebook.com/Oc_Calisthenics" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-400 transition-colors">
+                  <a href="https://www.facebook.com/Oc_Calisthenics" target="_blank" rel="noopener noreferrer" className="text-oc-muted hover:text-oc-red transition-colors">
                     Facebook
                   </a>
                 </div>
@@ -433,7 +424,7 @@ export default function Landing() {
 
           <div className="border-t border-oc-border pt-8 text-center">
             <p className="text-oc-muted text-sm">
-              © 2024 OC-CALISTHENICS. Todos los derechos reservados.
+              © {new Date().getFullYear()} OC-CLUB. Todos los derechos reservados.
             </p>
           </div>
         </div>

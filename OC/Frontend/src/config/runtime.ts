@@ -15,7 +15,7 @@ if (isProduction && (!envApiUrl || !resolvedApiBaseUrl)) {
 }
 
 export const runtime = {
-  appName: 'OC Calisthenics',
+  appName: 'OC-CLUB',
   appVersion: import.meta.env.VITE_APP_VERSION || '1.0.0',
   env: import.meta.env.MODE,
   isDevelopment: import.meta.env.DEV,

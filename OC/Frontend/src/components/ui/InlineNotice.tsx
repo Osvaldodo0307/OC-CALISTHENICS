@@ -4,9 +4,9 @@ interface InlineNoticeProps {
 }
 
 const styles: Record<InlineNoticeProps['type'], string> = {
-  success: 'bg-green-700/20 border-green-500/40 text-green-100',
-  error: 'bg-red-700/20 border-red-500/40 text-red-100',
-  info: 'bg-blue-700/20 border-blue-500/40 text-blue-100',
+  success: 'bg-oc-red/15 border-oc-red/40 text-oc-light',
+  error: 'bg-oc-red/25 border-oc-red/55 text-oc-light',
+  info: 'bg-oc-panel border-oc-border text-oc-muted',
 }
 
 export default function InlineNotice({ type, message }: InlineNoticeProps) {
@@ -16,4 +16,3 @@ export default function InlineNotice({ type, message }: InlineNoticeProps) {
     </div>
   )
 }
-

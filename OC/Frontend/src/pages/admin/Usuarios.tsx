@@ -211,74 +211,74 @@ export default function AdminUsuarios() {
           <form onSubmit={handleCreateUser} className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Usuario <span className="text-red-400">*</span>
+                <label className="block text-sm font-medium text-oc-light/90 mb-2">
+                  Usuario <span className="text-oc-red">*</span>
                 </label>
                 <input
                   type="text"
                   value={newUser.username}
                   onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
                   required
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                  className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
                   placeholder="usuario123"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Nombre Completo <span className="text-red-400">*</span>
+                <label className="block text-sm font-medium text-oc-light/90 mb-2">
+                  Nombre Completo <span className="text-oc-red">*</span>
                 </label>
                 <input
                   type="text"
                   value={newUser.name}
                   onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
                   required
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                  className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
                   placeholder="Juan Pérez"
                 />
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Contraseña <span className="text-red-400">*</span>
+                <label className="block text-sm font-medium text-oc-light/90 mb-2">
+                  Contraseña <span className="text-oc-red">*</span>
                 </label>
                 <input
                   type="password"
                   value={newUser.password}
                   onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                   required
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                  className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
                   placeholder="••••••••"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-oc-light/90 mb-2">
                   Teléfono
                 </label>
                 <input
                   type="text"
                   value={newUser.phone}
                   onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
-                  className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                  className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
                   placeholder="5512345678"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Rol <span className="text-red-400">*</span>
+              <label className="block text-sm font-medium text-oc-light/90 mb-2">
+                Rol <span className="text-oc-red">*</span>
               </label>
               <select
                 value={newUser.role}
                 onChange={(e) => setNewUser({ ...newUser, role: e.target.value as User['role'] })}
-                className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
               >
                 <option value="socio">Socio (Alumno)</option>
                 <option value="coach">Coach</option>
                 <option value="admin">Administrador</option>
               </select>
               {newUser.role === 'socio' && (
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-oc-muted mt-1">
                   Se creará automáticamente una membresía inactiva. Actívala después desde la gestión de membresías.
                 </p>
               )}
@@ -302,7 +302,7 @@ export default function AdminUsuarios() {
                     phone: ''
                   })
                 }}
-                className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded font-semibold"
+                className="bg-oc-border hover:bg-oc-panel text-white px-6 py-2 rounded font-semibold"
               >
                 Cancelar
               </button>
@@ -315,14 +315,14 @@ export default function AdminUsuarios() {
         <h2 className="text-2xl font-semibold text-oc-red mb-4">Asignar Alumno a Coach</h2>
         <div className="grid md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Alumno</label>
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">Alumno</label>
             <select
               value={selectedStudent || ''}
               onChange={(e) => {
                 const value = e.target.value
                 setSelectedStudent(value ? Number(value) : null)
               }}
-              className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+              className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
             >
               <option value="">Seleccionar alumno</option>
               {socios.map((socio) => (
@@ -333,14 +333,14 @@ export default function AdminUsuarios() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Coach</label>
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">Coach</label>
             <select
               value={selectedCoach || ''}
               onChange={(e) => {
                 const value = e.target.value
                 setSelectedCoach(value ? Number(value) : null)
               }}
-              className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+              className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
             >
               <option value="">Seleccionar coach</option>
               {coaches.map((coach) => (
@@ -364,21 +364,21 @@ export default function AdminUsuarios() {
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-gray-600">
-                <th className="pb-2 text-gray-300">Nombre</th>
-                <th className="pb-2 text-gray-300">Usuario</th>
-                <th className="pb-2 text-gray-300">Rol</th>
-                <th className="pb-2 text-gray-300">Teléfono</th>
-                <th className="pb-2 text-gray-300">Acciones</th>
+              <tr className="border-b border-oc-border">
+                <th className="pb-2 text-oc-light/90">Nombre</th>
+                <th className="pb-2 text-oc-light/90">Usuario</th>
+                <th className="pb-2 text-oc-light/90">Rol</th>
+                <th className="pb-2 text-oc-light/90">Teléfono</th>
+                <th className="pb-2 text-oc-light/90">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id} className="border-b border-gray-700">
+                <tr key={user.id} className="border-b border-oc-border">
                   <td className="py-2 text-white">{user.name}</td>
-                  <td className="py-2 text-gray-300">{user.username}</td>
-                  <td className="py-2 text-gray-300 capitalize">{user.role}</td>
-                  <td className="py-2 text-gray-300">{user.phone || '-'}</td>
+                  <td className="py-2 text-oc-light/90">{user.username}</td>
+                  <td className="py-2 text-oc-light/90 capitalize">{user.role}</td>
+                  <td className="py-2 text-oc-light/90">{user.phone || '-'}</td>
                   <td className="py-2">
                     <div className="flex flex-wrap gap-2 relative">
                       {user.role === 'socio' && (
@@ -389,7 +389,7 @@ export default function AdminUsuarios() {
                               e.stopPropagation()
                               setShowMembershipMenu(showMembershipMenu === user.id ? null : user.id)
                             }}
-                            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm"
+                            className="bg-oc-red hover:bg-oc-red-deep text-white px-3 py-1 rounded text-sm"
                           >
                             Membresía ▼
                           </button>
@@ -404,7 +404,7 @@ export default function AdminUsuarios() {
                                     handleActivateMembership(user.id, 1)
                                     setShowMembershipMenu(null)
                                   }}
-                                  className="w-full text-left bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs"
+                                  className="w-full text-left bg-oc-red hover:bg-oc-red-deep text-white px-3 py-1 rounded text-xs"
                                 >
                                   1 Mes
                                 </button>
@@ -413,7 +413,7 @@ export default function AdminUsuarios() {
                                     handleActivateMembership(user.id, 3)
                                     setShowMembershipMenu(null)
                                   }}
-                                  className="w-full text-left bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs"
+                                  className="w-full text-left bg-oc-red hover:bg-oc-red-deep text-white px-3 py-1 rounded text-xs"
                                 >
                                   3 Meses
                                 </button>
@@ -422,7 +422,7 @@ export default function AdminUsuarios() {
                                     handleActivateMembership(user.id, 6)
                                     setShowMembershipMenu(null)
                                   }}
-                                  className="w-full text-left bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs"
+                                  className="w-full text-left bg-oc-red hover:bg-oc-red-deep text-white px-3 py-1 rounded text-xs"
                                 >
                                   6 Meses
                                 </button>
@@ -431,7 +431,7 @@ export default function AdminUsuarios() {
                                     handleActivateMembership(user.id, 12)
                                     setShowMembershipMenu(null)
                                   }}
-                                  className="w-full text-left bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs"
+                                  className="w-full text-left bg-oc-red hover:bg-oc-red-deep text-white px-3 py-1 rounded text-xs"
                                 >
                                   1 Año
                                 </button>

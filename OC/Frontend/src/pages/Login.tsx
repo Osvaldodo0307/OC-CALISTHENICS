@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { Link } from 'react-router-dom'
 import { runtime } from '../config/runtime'
 import InlineNotice from '../components/ui/InlineNotice'
+import OcClubLogo from '../components/brand/OcClubLogo'
 import { toUserMessage } from '../services/api/errorMessages'
 
 export default function Login() {
@@ -39,27 +40,22 @@ export default function Login() {
     <div className="min-h-screen bg-oc-dark flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-oc-metal p-8 rounded-lg border border-oc-red/20">
         <div className="text-center mb-8">
-          <Link to={runtime.isAppMode ? '/app/login' : '/'} className="inline-flex flex-col items-center gap-2">
-            <img
-              src="/oc-logo.png"
-              alt="OC Calisthenics"
-              className="h-20 w-20 object-contain"
-            />
-            <span className="text-white text-sm tracking-widest">CALISTHENICS</span>
+          <Link to={runtime.isAppMode ? '/app/login' : '/'} className="inline-flex flex-col items-center gap-2 w-full">
+            <OcClubLogo variant="auth" priority />
           </Link>
-          <p className="text-gray-400 mt-2">Iniciar Sesión</p>
+          <p className="text-oc-muted mt-2">Iniciar Sesión</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {authError && <InlineNotice type="error" message={authError} />}
           {error && (
-            <div className="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded">
+            <div className="bg-oc-red/20 border border-oc-red/50 text-oc-light px-4 py-3 rounded">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">
               Usuario
             </label>
             <input
@@ -67,13 +63,13 @@ export default function Login() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white focus:outline-none focus:border-oc-red"
+              className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white focus:outline-none focus:border-oc-red"
               placeholder="admin"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">
               Contraseña
             </label>
             <input
@@ -81,7 +77,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white focus:outline-none focus:border-oc-red"
+              className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white focus:outline-none focus:border-oc-red"
               placeholder="••••••••"
             />
           </div>
@@ -95,7 +91,7 @@ export default function Login() {
           </button>
         </form>
 
-        <div className="mt-6 text-sm text-gray-500 text-center">
+        <div className="mt-6 text-sm text-oc-muted text-center">
           <p>Ingresa con tu usuario y contraseña proporcionados.</p>
         </div>
 

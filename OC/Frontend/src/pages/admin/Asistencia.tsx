@@ -323,16 +323,16 @@ export default function AdminAsistencia() {
   return (
     <div className="px-4 max-w-6xl mx-auto">
       <h1 className="text-2xl font-bold text-white mb-1">Asistencia</h1>
-      <p className="text-gray-500 text-sm mb-4">Reportes por periodo y registro de lista por clase</p>
+      <p className="text-oc-muted text-sm mb-4">Reportes por periodo y registro de lista por clase</p>
 
-      <div className="flex flex-wrap gap-2 mb-6 border-b border-gray-700 pb-1">
+      <div className="flex flex-wrap gap-2 mb-6 border-b border-oc-border pb-1">
         <button
           type="button"
           onClick={() => setActiveTab('reportes')}
           className={`px-4 py-2 rounded-t-lg text-sm font-semibold transition-colors ${
             activeTab === 'reportes'
-              ? 'bg-oc-metal text-oc-red border border-b-0 border-gray-700 -mb-px'
-              : 'text-gray-400 hover:text-white'
+              ? 'bg-oc-metal text-oc-red border border-b-0 border-oc-border -mb-px'
+              : 'text-oc-muted hover:text-white'
           }`}
         >
           Reportes (semanal y mensual)
@@ -342,8 +342,8 @@ export default function AdminAsistencia() {
           onClick={() => setActiveTab('registrar')}
           className={`px-4 py-2 rounded-t-lg text-sm font-semibold transition-colors ${
             activeTab === 'registrar'
-              ? 'bg-oc-metal text-oc-red border border-b-0 border-gray-700 -mb-px'
-              : 'text-gray-400 hover:text-white'
+              ? 'bg-oc-metal text-oc-red border border-b-0 border-oc-border -mb-px'
+              : 'text-oc-muted hover:text-white'
           }`}
         >
           Registrar asistencia por clase
@@ -354,18 +354,18 @@ export default function AdminAsistencia() {
         <>
       <h2 className="text-lg font-semibold text-white mb-4">Histórico</h2>
       <div className="grid lg:grid-cols-2 gap-4 mb-6">
-        <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
+        <div className="bg-oc-metal rounded-xl border border-oc-border/80 p-4">
           <h2 className="text-white font-semibold mb-3">Vista semanal</h2>
           <div className="flex items-center gap-2 mb-3">
             <button
               onClick={() => setWeekStart(addDaysToYmd(weekStart, -7))}
-              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
+              className="bg-oc-panel hover:bg-oc-border text-white px-3 py-1.5 rounded text-sm"
             >
               Semana anterior
             </button>
             <button
               onClick={() => setWeekStart(addDaysToYmd(weekStart, 7))}
-              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
+              className="bg-oc-panel hover:bg-oc-border text-white px-3 py-1.5 rounded text-sm"
             >
               Semana siguiente
             </button>
@@ -376,23 +376,23 @@ export default function AdminAsistencia() {
               Semana actual
             </button>
           </div>
-          <p className="text-sm text-gray-300">Rango: {weekStart} a {weekEnd}</p>
+          <p className="text-sm text-oc-light/90">Rango: {weekStart} a {weekEnd}</p>
         </div>
 
-        <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
+        <div className="bg-oc-metal rounded-xl border border-oc-border/80 p-4">
           <h2 className="text-white font-semibold mb-3">Resumen mensual</h2>
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <button
               type="button"
               onClick={() => setMonth((m) => addMonthsToYearMonth(m, -1))}
-              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
+              className="bg-oc-panel hover:bg-oc-border text-white px-3 py-1.5 rounded text-sm"
             >
               Mes anterior
             </button>
             <button
               type="button"
               onClick={() => setMonth((m) => addMonthsToYearMonth(m, 1))}
-              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-sm"
+              className="bg-oc-panel hover:bg-oc-border text-white px-3 py-1.5 rounded text-sm"
             >
               Mes siguiente
             </button>
@@ -404,7 +404,7 @@ export default function AdminAsistencia() {
               Mes actual
             </button>
           </div>
-          <p className="text-sm text-gray-300 mb-3">
+          <p className="text-sm text-oc-light/90 mb-3">
             Consultando:{' '}
             <span className="text-white font-medium">{formatYearMonthEs(month)}</span>
             {month === getMxDateString().slice(0, 7) && (
@@ -412,40 +412,40 @@ export default function AdminAsistencia() {
             )}
           </p>
           <div className="flex flex-wrap items-center gap-2">
-            <label className="text-sm text-gray-400">Ir a mes:</label>
+            <label className="text-sm text-oc-muted">Ir a mes:</label>
             <input
               type="month"
               value={month}
               onChange={(e) => setMonth(e.target.value)}
-              className="bg-oc-dark border border-gray-700 rounded px-3 py-1.5 text-white text-sm"
+              className="bg-oc-dark border border-oc-border rounded px-3 py-1.5 text-white text-sm"
             />
           </div>
         </div>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6 mb-8">
-        <section className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
+        <section className="bg-oc-metal rounded-xl border border-oc-border/80 p-4">
           <h3 className="text-oc-red font-semibold mb-3">Detalle semanal</h3>
           {loadingWeek ? (
-            <p className="text-gray-400 text-sm">Cargando asistencia semanal...</p>
+            <p className="text-oc-muted text-sm">Cargando asistencia semanal...</p>
           ) : !weekData ? (
-            <p className="text-gray-400 text-sm">No se pudo cargar la semana.</p>
+            <p className="text-oc-muted text-sm">No se pudo cargar la semana.</p>
           ) : (
             <>
-              <p className="text-sm text-gray-300 mb-3">Reservas registradas: {weekData.total_records}</p>
+              <p className="text-sm text-oc-light/90 mb-3">Reservas registradas: {weekData.total_records}</p>
               <div className="overflow-x-auto mb-4">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 text-gray-300">Alumno</th>
-                      <th className="text-left py-2 text-gray-300">Total</th>
+                    <tr className="border-b border-oc-border">
+                      <th className="text-left py-2 text-oc-light/90">Alumno</th>
+                      <th className="text-left py-2 text-oc-light/90">Total</th>
                     </tr>
                   </thead>
                   <tbody>
                     {weekData.students.map((student) => (
-                      <tr key={student.user_id} className="border-b border-gray-800">
+                      <tr key={student.user_id} className="border-b border-oc-border">
                         <td className="py-2 text-white">{student.name}</td>
-                        <td className="py-2 text-gray-300">{student.total}</td>
+                        <td className="py-2 text-oc-light/90">{student.total}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -454,7 +454,7 @@ export default function AdminAsistencia() {
               <div className="space-y-2">
                 {weekData.daily_totals.map((row) => (
                   <div key={row.date} className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">{row.date}</span>
+                    <span className="text-oc-muted">{row.date}</span>
                     <span className="text-white font-semibold">{row.count}</span>
                   </div>
                 ))}
@@ -463,28 +463,28 @@ export default function AdminAsistencia() {
           )}
         </section>
 
-        <section className="bg-oc-metal rounded-xl border border-gray-700/50 p-4">
+        <section className="bg-oc-metal rounded-xl border border-oc-border/80 p-4">
           <h3 className="text-oc-red font-semibold mb-3">Resumen mensual</h3>
           {loadingMonth ? (
-            <p className="text-gray-400 text-sm">Cargando resumen mensual...</p>
+            <p className="text-oc-muted text-sm">Cargando resumen mensual...</p>
           ) : !monthData ? (
-            <p className="text-gray-400 text-sm">No se pudo cargar el mes.</p>
+            <p className="text-oc-muted text-sm">No se pudo cargar el mes.</p>
           ) : (
             <>
-              <p className="text-sm text-gray-300 mb-3">Reservas registradas: {monthData.total_records}</p>
+              <p className="text-sm text-oc-light/90 mb-3">Reservas registradas: {monthData.total_records}</p>
               <div className="overflow-x-auto mb-4">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 text-gray-300">Alumno</th>
-                      <th className="text-left py-2 text-gray-300">Total</th>
+                    <tr className="border-b border-oc-border">
+                      <th className="text-left py-2 text-oc-light/90">Alumno</th>
+                      <th className="text-left py-2 text-oc-light/90">Total</th>
                     </tr>
                   </thead>
                   <tbody>
                     {monthData.students.map((student) => (
-                      <tr key={student.user_id} className="border-b border-gray-800">
+                      <tr key={student.user_id} className="border-b border-oc-border">
                         <td className="py-2 text-white">{student.name}</td>
-                        <td className="py-2 text-gray-300">{student.total}</td>
+                        <td className="py-2 text-oc-light/90">{student.total}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -494,7 +494,7 @@ export default function AdminAsistencia() {
               <div className="space-y-2">
                 {monthData.discipline_totals.map((row) => (
                   <div key={row.discipline} className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">{row.discipline}</span>
+                    <span className="text-oc-muted">{row.discipline}</span>
                     <span className="text-white font-semibold">{row.count}</span>
                   </div>
                 ))}
@@ -508,29 +508,29 @@ export default function AdminAsistencia() {
 
       {activeTab === 'registrar' && (
       <>
-      <section className="bg-oc-metal rounded-xl border border-gray-700/50 p-4 mb-8">
+      <section className="bg-oc-metal rounded-xl border border-oc-border/80 p-4 mb-8">
         <h2 className="text-white font-semibold mb-1">Pasar lista por clase</h2>
-        <p className="text-gray-500 text-sm mb-4">
+        <p className="text-oc-muted text-sm mb-4">
           Elige fecha y clase. Los que ya reservaron aparecen solos; si no usan la app, usa{' '}
-          <strong className="text-gray-300">Todos los socios</strong> para añadirlos y marcar asistencia.
+          <strong className="text-oc-light/90">Todos los socios</strong> para añadirlos y marcar asistencia.
         </p>
 
         <div className="flex flex-wrap items-end gap-3 mb-4">
           <div>
-            <label className="block text-xs text-gray-400 mb-1">Fecha</label>
+            <label className="block text-xs text-oc-muted mb-1">Fecha</label>
             <input
               type="date"
               value={rollDate}
               onChange={(e) => setRollDate(e.target.value)}
-              className="bg-oc-dark border border-gray-700 rounded px-3 py-1.5 text-white text-sm"
+              className="bg-oc-dark border border-oc-border rounded px-3 py-1.5 text-white text-sm"
             />
           </div>
           <div className="min-w-[200px] flex-1">
-            <label className="block text-xs text-gray-400 mb-1">Clase</label>
+            <label className="block text-xs text-oc-muted mb-1">Clase</label>
             <select
               value={selectedClassId === '' ? '' : String(selectedClassId)}
               onChange={(e) => setSelectedClassId(e.target.value ? Number(e.target.value) : '')}
-              className="w-full bg-oc-dark border border-gray-700 rounded px-3 py-1.5 text-white text-sm"
+              className="w-full bg-oc-dark border border-oc-border rounded px-3 py-1.5 text-white text-sm"
               disabled={loadingDayClasses || dayClasses.length === 0}
             >
               <option value="">
@@ -546,12 +546,12 @@ export default function AdminAsistencia() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 mb-4">
-          <span className="text-sm text-gray-400">Lista para:</span>
+          <span className="text-sm text-oc-muted">Lista para:</span>
           <button
             type="button"
             onClick={() => setRollRole('socio')}
             className={`px-3 py-1.5 rounded text-sm ${
-              rollRole === 'socio' ? 'bg-oc-red text-white' : 'bg-gray-700 text-gray-200 hover:bg-gray-600'
+              rollRole === 'socio' ? 'bg-oc-red text-white' : 'bg-oc-panel text-oc-light hover:bg-oc-border'
             }`}
           >
             Alumno
@@ -560,7 +560,7 @@ export default function AdminAsistencia() {
             type="button"
             onClick={() => setRollRole('coach')}
             className={`px-3 py-1.5 rounded text-sm ${
-              rollRole === 'coach' ? 'bg-oc-red text-white' : 'bg-gray-700 text-gray-200 hover:bg-gray-600'
+              rollRole === 'coach' ? 'bg-oc-red text-white' : 'bg-oc-panel text-oc-light hover:bg-oc-border'
             }`}
           >
             Coach
@@ -569,7 +569,7 @@ export default function AdminAsistencia() {
             <button
               type="button"
               onClick={() => void openSociosModal()}
-              className="ml-1 px-3 py-1.5 rounded text-sm bg-emerald-900/50 text-emerald-300 border border-emerald-700/50 hover:bg-emerald-900/70"
+              className="ml-1 px-3 py-1.5 rounded text-sm bg-oc-red/15 text-oc-light border border-oc-red/40 hover:bg-oc-red/25"
             >
               Todos los socios
             </button>
@@ -577,13 +577,13 @@ export default function AdminAsistencia() {
         </div>
 
         {rollMessage && (
-          <p className={`text-sm mb-3 ${rollMessage.startsWith('No ') ? 'text-amber-400' : 'text-green-400'}`}>
+          <p className={`text-sm mb-3 ${rollMessage.startsWith('No ') ? 'text-oc-muted' : 'text-oc-light'}`}>
             {rollMessage}
           </p>
         )}
 
         {selectedClassId !== '' && loadingRoster && (
-          <p className="text-gray-400 text-sm">Cargando lista…</p>
+          <p className="text-oc-muted text-sm">Cargando lista…</p>
         )}
 
         {selectedClassId !== '' && !loadingRoster && rollRole === 'socio' && (
@@ -591,24 +591,24 @@ export default function AdminAsistencia() {
             <div className="overflow-x-auto mb-3">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-700">
-                    <th className="text-left py-2 text-gray-300">ID</th>
-                    <th className="text-left py-2 text-gray-300">Nombre</th>
-                    <th className="text-left py-2 text-gray-300">Asistencia</th>
+                  <tr className="border-b border-oc-border">
+                    <th className="text-left py-2 text-oc-light/90">ID</th>
+                    <th className="text-left py-2 text-oc-light/90">Nombre</th>
+                    <th className="text-left py-2 text-oc-light/90">Asistencia</th>
                   </tr>
                 </thead>
                 <tbody>
                   {socioEntries.length === 0 ? (
                     <tr>
-                      <td colSpan={3} className="py-3 text-gray-500">
-                        No hay reservas en esta clase. Pulsa <strong className="text-gray-400">Todos los socios</strong>{' '}
+                      <td colSpan={3} className="py-3 text-oc-muted">
+                        No hay reservas en esta clase. Pulsa <strong className="text-oc-muted">Todos los socios</strong>{' '}
                         para añadir alumnos y pasar lista aunque no hayan reservado.
                       </td>
                     </tr>
                   ) : (
                     socioEntries.map((row) => (
-                      <tr key={row.booking_id} className="border-b border-gray-800">
-                        <td className="py-2 text-gray-300 font-mono">{row.user_id}</td>
+                      <tr key={row.booking_id} className="border-b border-oc-border">
+                        <td className="py-2 text-oc-light/90 font-mono">{row.user_id}</td>
                         <td className="py-2 text-white">{row.name}</td>
                         <td className="py-2">
                           <select
@@ -619,7 +619,7 @@ export default function AdminAsistencia() {
                                 [row.booking_id]: e.target.value as RollMark,
                               }))
                             }
-                            className="bg-oc-dark border border-gray-700 rounded px-2 py-1 text-white text-sm"
+                            className="bg-oc-dark border border-oc-border rounded px-2 py-1 text-white text-sm"
                           >
                             <option value="clear">Sin marcar</option>
                             <option value="present">Presente</option>
@@ -646,27 +646,27 @@ export default function AdminAsistencia() {
         {selectedClassId !== '' && !loadingRoster && rollRole === 'coach' && (
           <>
             {!coachRoster?.coach ? (
-              <p className="text-gray-500 text-sm mb-3">Esta clase no tiene coach asignado.</p>
+              <p className="text-oc-muted text-sm mb-3">Esta clase no tiene coach asignado.</p>
             ) : (
               <>
                 <div className="overflow-x-auto mb-3">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-700">
-                        <th className="text-left py-2 text-gray-300">ID</th>
-                        <th className="text-left py-2 text-gray-300">Nombre</th>
-                        <th className="text-left py-2 text-gray-300">Asistencia</th>
+                      <tr className="border-b border-oc-border">
+                        <th className="text-left py-2 text-oc-light/90">ID</th>
+                        <th className="text-left py-2 text-oc-light/90">Nombre</th>
+                        <th className="text-left py-2 text-oc-light/90">Asistencia</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-gray-800">
-                        <td className="py-2 text-gray-300 font-mono">{coachRoster.coach.user_id}</td>
+                      <tr className="border-b border-oc-border">
+                        <td className="py-2 text-oc-light/90 font-mono">{coachRoster.coach.user_id}</td>
                         <td className="py-2 text-white">{coachRoster.coach.name}</td>
                         <td className="py-2">
                           <select
                             value={coachMark}
                             onChange={(e) => setCoachMark(e.target.value as RollMark)}
-                            className="bg-oc-dark border border-gray-700 rounded px-2 py-1 text-white text-sm"
+                            className="bg-oc-dark border border-oc-border rounded px-2 py-1 text-white text-sm"
                           >
                             <option value="clear">Sin marcar</option>
                             <option value="present">Presente</option>
@@ -700,36 +700,36 @@ export default function AdminAsistencia() {
           onClick={() => setSociosModalOpen(false)}
         >
           <div
-            className="bg-oc-metal border border-gray-600 rounded-xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-xl"
+            className="bg-oc-metal border border-oc-border rounded-xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-oc-border">
               <h3 id="socios-modal-title" className="text-white font-semibold text-sm">
                 Socios registrados — añadir a esta clase
               </h3>
               <button
                 type="button"
                 onClick={() => setSociosModalOpen(false)}
-                className="text-gray-400 hover:text-white p-1 rounded"
+                className="text-oc-muted hover:text-white p-1 rounded"
                 aria-label="Cerrar"
               >
                 ✕
               </button>
             </div>
-            <div className="px-4 py-3 border-b border-gray-700">
+            <div className="px-4 py-3 border-b border-oc-border">
               <input
                 type="search"
                 value={sociosFilter}
                 onChange={(e) => setSociosFilter(e.target.value)}
                 placeholder="Buscar por nombre, usuario o ID…"
-                className="w-full bg-oc-dark border border-gray-700 rounded px-3 py-2 text-white text-sm"
+                className="w-full bg-oc-dark border border-oc-border rounded px-3 py-2 text-white text-sm"
               />
             </div>
             <div className="overflow-y-auto flex-1 px-2 py-2 min-h-[200px]">
               {sociosModalLoading ? (
-                <p className="text-gray-400 text-sm text-center py-8">Cargando socios…</p>
+                <p className="text-oc-muted text-sm text-center py-8">Cargando socios…</p>
               ) : filteredSociosForModal.length === 0 ? (
-                <p className="text-gray-500 text-sm text-center py-8">Sin resultados.</p>
+                <p className="text-oc-muted text-sm text-center py-8">Sin resultados.</p>
               ) : (
                 <ul className="space-y-1">
                   {filteredSociosForModal.map((s) => {
@@ -737,16 +737,16 @@ export default function AdminAsistencia() {
                     return (
                       <li
                         key={s.id}
-                        className="flex items-center justify-between gap-2 px-2 py-2 rounded-lg bg-gray-800/40 border border-gray-700/50"
+                        className="flex items-center justify-between gap-2 px-2 py-2 rounded-lg bg-oc-panel/60 border border-oc-border/80"
                       >
                         <div className="min-w-0">
                           <p className="text-white text-sm font-medium truncate">{s.name}</p>
-                          <p className="text-gray-500 text-xs font-mono">
+                          <p className="text-oc-muted text-xs font-mono">
                             ID {s.id} · @{s.username}
                           </p>
                         </div>
                         {onRoster ? (
-                          <span className="text-xs text-gray-500 flex-shrink-0">Ya en lista</span>
+                          <span className="text-xs text-oc-muted flex-shrink-0">Ya en lista</span>
                         ) : (
                           <button
                             type="button"
@@ -763,7 +763,7 @@ export default function AdminAsistencia() {
                 </ul>
               )}
             </div>
-            <p className="px-4 py-2 text-[11px] text-gray-500 border-t border-gray-700">
+            <p className="px-4 py-2 text-[11px] text-oc-muted border-t border-oc-border">
               Se crea una reserva en el sistema para poder guardar la asistencia (sin límite de cupo por decisión del admin).
             </p>
           </div>
