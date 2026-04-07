@@ -46,8 +46,8 @@ export default function PublicNav() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b-2 border-oc-red/35 bg-oc-black/92 backdrop-blur-xl shadow-[0_14px_48px_-16px_rgba(0,0,0,0.9)]">
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-oc-red/50 to-transparent" aria-hidden />
+    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-oc-carbon/93 backdrop-blur-xl shadow-[0_12px_40px_-20px_rgba(0,0,0,0.85)]">
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-oc-red/22 to-transparent" aria-hidden />
       <nav className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
         <div className="flex items-center justify-between gap-3 sm:gap-6 min-h-[5.5rem] lg:min-h-[6.25rem] py-3">
           <Link
@@ -69,10 +69,10 @@ export default function PublicNav() {
                 key={link.label}
                 type="button"
                 onClick={() => handleNavClick(link.to, link.hash)}
-                className={`px-3 xl:px-4 py-2.5 rounded-md text-[11px] xl:text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${
+                className={`px-3 xl:px-4 py-2.5 rounded-sm text-[11px] xl:text-xs font-semibold uppercase tracking-[0.18em] transition-colors border border-transparent ${
                   isActive(link.to, link.hash)
-                    ? 'text-oc-red bg-oc-metal/70 ring-1 ring-oc-red/35'
-                    : 'text-oc-light/90 hover:text-oc-red hover:bg-oc-metal/40'
+                    ? 'text-oc-red bg-white/[0.04] border-white/[0.08]'
+                    : 'text-oc-light/90 hover:text-oc-red hover:bg-white/[0.03]'
                 }`}
               >
                 {link.label}
@@ -80,7 +80,7 @@ export default function PublicNav() {
             ))}
             <Link
               to="/app/login"
-              className="ml-3 xl:ml-5 inline-flex items-center justify-center px-6 xl:px-8 py-2.5 rounded-sm bg-oc-red hover:bg-oc-red-deep text-white text-xs font-bold uppercase tracking-[0.14em] transition-all ring-1 ring-white/10 hover:ring-oc-red/60 hover:shadow-lg hover:shadow-oc-red/30"
+              className="ml-3 xl:ml-5 inline-flex items-center justify-center px-6 xl:px-8 py-2.5 rounded-sm bg-oc-red hover:bg-oc-red-deep text-white text-xs font-bold uppercase tracking-[0.14em] transition-all border border-white/10 hover:shadow-[0_10px_32px_-12px_rgba(210,31,45,0.45)]"
             >
               Entrar
             </Link>
@@ -89,7 +89,7 @@ export default function PublicNav() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden shrink-0 p-2.5 rounded-md text-oc-light hover:text-oc-red hover:bg-oc-metal/50 border border-oc-border transition-colors"
+            className="lg:hidden shrink-0 p-2.5 rounded-sm text-oc-light hover:text-oc-red hover:bg-white/[0.04] border border-white/[0.08] transition-colors"
             aria-expanded={mobileMenuOpen}
             aria-label="Abrir menú"
           >
@@ -104,7 +104,7 @@ export default function PublicNav() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="lg:hidden pb-5 pt-1 border-t border-oc-border/90">
+          <div className="lg:hidden pb-5 pt-1 border-t border-white/[0.06]">
             <p className="text-[10px] uppercase tracking-[0.28em] text-oc-muted px-1 pt-3 pb-2">Navegación</p>
             <div className="flex flex-col gap-1">
               {NAV_LINKS.map((link) => (
@@ -112,10 +112,10 @@ export default function PublicNav() {
                   key={link.label}
                   type="button"
                   onClick={() => handleNavClick(link.to, link.hash)}
-                  className={`px-4 py-3 text-left rounded-md text-sm font-semibold uppercase tracking-wider transition-colors ${
+                  className={`px-4 py-3 text-left rounded-sm text-sm font-semibold uppercase tracking-wider transition-colors border border-transparent ${
                     isActive(link.to, link.hash)
-                      ? 'text-oc-red bg-oc-metal/70 ring-1 ring-oc-red/30'
-                      : 'text-oc-light hover:bg-oc-metal/50'
+                      ? 'text-oc-red bg-white/[0.04] border-white/[0.08]'
+                      : 'text-oc-light hover:bg-white/[0.03]'
                   }`}
                 >
                   {link.label}
@@ -124,7 +124,7 @@ export default function PublicNav() {
               <Link
                 to="/app/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mt-3 text-center px-4 py-3.5 rounded-sm bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold uppercase tracking-wider"
+                className="mt-3 text-center px-4 py-3.5 rounded-sm bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold uppercase tracking-wider border border-white/10"
               >
                 Entrar al sistema
               </Link>
