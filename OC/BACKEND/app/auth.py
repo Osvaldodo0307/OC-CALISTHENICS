@@ -35,7 +35,11 @@ def authenticate_user(db: Session, username: str, password: str) -> Optional[Use
     except Exception:
         # Compatibilidad con esquemas legacy sin columna is_active
         pass
-    if not verify_password(password, user.password_hash):
+    try:
+        if not verify_password(password, user.password_hash):
+            return None
+    except Exception:
+        # Hash legacy/corrupto no debe romper el endpoint de login.
         return None
     return user
 
