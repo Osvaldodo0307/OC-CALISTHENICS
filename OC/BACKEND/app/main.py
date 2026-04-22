@@ -30,6 +30,33 @@ from app.routes import (
 # =========================
 # Crear tablas y seeds al iniciar
 # =========================
+def run_compat_schema_patches(db: Session):
+    """
+    Compatibilidad para entornos productivos con tablas preexistentes.
+    Estas sentencias son idempotentes: solo agregan columnas/indices faltantes.
+    """
+    compat_statements = [
+        "ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT TRUE",
+        "ALTER TABLE users ADD COLUMN deactivated_at TIMESTAMP",
+        "ALTER TABLE users ADD COLUMN deactivated_by INTEGER",
+        "ALTER TABLE users ADD COLUMN deactivation_reason TEXT",
+        "ALTER TABLE membership_cycles ADD COLUMN renewed_from_cycle_id INTEGER",
+        "ALTER TABLE membership_cycles ADD COLUMN created_by INTEGER",
+        "ALTER TABLE membership_cycles ADD COLUMN updated_by INTEGER",
+        "ALTER TABLE membership_payments ADD COLUMN idempotency_key VARCHAR(120)",
+        "ALTER TABLE membership_payments ADD COLUMN reversed_at TIMESTAMP",
+        "ALTER TABLE membership_payments ADD COLUMN reversed_by INTEGER",
+        "ALTER TABLE membership_payments ADD COLUMN reversal_reason TEXT",
+        "CREATE UNIQUE INDEX IF NOT EXISTS ux_membership_payments_cycle_idempotency ON membership_payments (membership_cycle_id, idempotency_key)",
+    ]
+    for stmt in compat_statements:
+        try:
+            db.execute(text(stmt))
+            db.commit()
+        except Exception:
+            db.rollback()
+
+
 def init_database():
     try:
         Base.metadata.create_all(bind=engine)
@@ -40,10 +67,11 @@ def init_database():
 
     db = SessionLocal()
     try:
-        # Nota: las mutaciones de esquema deben ejecutarse via migraciones SQL versionadas.
-        # init_database solo verifica conectividad, crea tablas faltantes y aplica seed no destructivo.
+        # Idealmente usar migraciones SQL versionadas. Este fallback evita caidas en prod
+        # cuando existen tablas antiguas sin columnas nuevas.
         db.execute(text("SELECT 1"))
         db.commit()
+        run_compat_schema_patches(db)
 
         existing_admin = db.query(User).filter(User.username == "octavio").first()
         if not existing_admin:
