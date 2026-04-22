@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, JSON, Date, Float
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, deferred
 from sqlalchemy.sql import func
 from app.database import Base
 
@@ -10,17 +10,17 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     username = Column(String(60), unique=True, index=True, nullable=False)
-    gym_code = Column(String(50), unique=True, index=True, nullable=True)
+    gym_code = deferred(Column(String(50), unique=True, index=True, nullable=True))
     name = Column(String(120), nullable=False)
 
     password_hash = Column(String(255), nullable=False)
 
     role = Column(String(20), nullable=False)  # admin, socio, coach
     phone = Column(String(20), nullable=True)
-    is_active = Column(Boolean, nullable=False, default=True)
-    deactivated_at = Column(DateTime(timezone=True), nullable=True)
-    deactivated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
-    deactivation_reason = Column(Text, nullable=True)
+    is_active = deferred(Column(Boolean, nullable=False, default=True))
+    deactivated_at = deferred(Column(DateTime(timezone=True), nullable=True))
+    deactivated_by = deferred(Column(Integer, ForeignKey("users.id"), nullable=True))
+    deactivation_reason = deferred(Column(Text, nullable=True))
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
