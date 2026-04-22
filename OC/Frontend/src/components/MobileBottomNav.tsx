@@ -21,7 +21,7 @@ export default function MobileBottomNav() {
               <Link
                 to={tab.to}
                 className={`flex h-14 items-center justify-center text-xs font-medium ${
-                  isActive ? 'text-oc-red' : 'text-gray-300'
+                  isActive ? 'text-oc-red' : 'text-oc-light/90'
                 }`}
               >
                 {tab.label}

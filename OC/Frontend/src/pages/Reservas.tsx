@@ -115,7 +115,7 @@ export default function Reservas() {
             setLoading(true)
             void fetchBookings()
           }}
-          className="touch-target px-3 py-2 rounded-lg border border-gray-700 text-gray-300 text-sm hover:text-white hover:border-oc-red disabled:opacity-50"
+          className="touch-target px-3 py-2 rounded-lg border border-oc-border text-oc-light/90 text-sm hover:text-white hover:border-oc-red disabled:opacity-50"
         >
           Actualizar
         </button>
@@ -129,7 +129,7 @@ export default function Reservas() {
       {/* Active bookings */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-oc-red mb-4 flex items-center gap-2">
-          <div className="w-2.5 h-2.5 bg-green-500 rounded-full" />
+          <div className="w-2.5 h-2.5 bg-oc-red rounded-full" />
           Activas ({activeBookings.length})
         </h2>
 
@@ -145,7 +145,7 @@ export default function Reservas() {
             {activeBookings.map((booking) => (
               <div
                 key={booking.id}
-                className="bg-oc-metal rounded-xl border border-green-500/30 p-4"
+                className="bg-oc-metal rounded-xl border border-oc-red/30 p-4"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
@@ -153,7 +153,7 @@ export default function Reservas() {
                       {booking.class_title || `Clase #${booking.class_id}`}
                     </h3>
                     {booking.class_datetime && (
-                      <p className="text-sm text-gray-400 mt-1">
+                      <p className="text-sm text-oc-muted mt-1">
                         {booking.preferred_hour != null
                           ? `${formatDateTime(booking.class_datetime).split(' — ')[0]} — ${booking.preferred_hour.toString().padStart(2, '0')}:00`
                           : formatDateTime(booking.class_datetime)}
@@ -163,7 +163,7 @@ export default function Reservas() {
                   <button
                     onClick={() => handleCancel(booking.id)}
                     disabled={cancelingId === booking.id}
-                    className="text-red-400 hover:text-red-300 hover:bg-red-900/30 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors border border-red-500/30 disabled:opacity-50 ml-3"
+                    className="text-oc-red hover:text-oc-light hover:bg-oc-red/20 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors border border-oc-red/35 disabled:opacity-50 ml-3"
                   >
                     {cancelingId === booking.id ? '...' : 'Cancelar'}
                   </button>
@@ -177,20 +177,20 @@ export default function Reservas() {
       {/* Canceled bookings */}
       {pastBookings.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-gray-500 mb-4">
+          <h2 className="text-lg font-semibold text-oc-muted mb-4">
             Canceladas ({pastBookings.length})
           </h2>
           <div className="space-y-2">
             {pastBookings.map((booking) => (
               <div
                 key={booking.id}
-                className="bg-oc-metal/50 rounded-xl border border-gray-700/30 p-4 opacity-60"
+                className="bg-oc-metal/50 rounded-xl border border-oc-border/30 p-4 opacity-60"
               >
-                <h3 className="font-medium text-gray-400 truncate">
+                <h3 className="font-medium text-oc-muted truncate">
                   {booking.class_title || `Clase #${booking.class_id}`}
                 </h3>
                 {booking.class_datetime && (
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-oc-muted mt-1">
                     {formatDateTime(booking.class_datetime)}
                   </p>
                 )}

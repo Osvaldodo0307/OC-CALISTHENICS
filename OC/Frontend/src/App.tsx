@@ -30,6 +30,7 @@ const AdminUsuarios = lazy(() => import('./pages/admin/Usuarios'))
 const AdminClases = lazy(() => import('./pages/admin/Clases'))
 const CoachesAlumnos = lazy(() => import('./pages/admin/CoachesAlumnos'))
 const AdminAsistencia = lazy(() => import('./pages/admin/Asistencia'))
+const AdminMembresiasControl = lazy(() => import('./pages/admin/MembresiasControl'))
 const CoachDashboard = lazy(() => import('./pages/coach/Dashboard'))
 const CoachAlumnos = lazy(() => import('./pages/coach/Alumnos'))
 const CoachAlumno = lazy(() => import('./pages/coach/Alumno'))
@@ -133,6 +134,10 @@ function App() {
             <Route
               path="admin/coaches-alumnos"
               element={<ProtectedRoute requiredRole="admin"><CoachesAlumnos /></ProtectedRoute>}
+            />
+            <Route
+              path="admin/membresias"
+              element={<ProtectedRoute requiredRole="admin"><AdminMembresiasControl /></ProtectedRoute>}
             />
             <Route
               path="coach/dashboard"

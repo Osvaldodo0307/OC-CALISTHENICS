@@ -266,7 +266,7 @@ export default function CoachesAlumnos() {
 
       {/* Debug info */}
       {import.meta.env.DEV && (
-        <div className="mb-4 p-2 bg-oc-metal rounded text-xs text-gray-400">
+        <div className="mb-4 p-2 bg-oc-metal rounded text-xs text-oc-muted">
           Debug: Coaches={coaches.length}, Alumnos={students.length}
         </div>
       )}
@@ -282,7 +282,7 @@ export default function CoachesAlumnos() {
           className={`px-6 py-2 font-semibold ${
             activeTab === 'coaches'
               ? 'text-oc-red border-b-2 border-oc-red'
-              : 'text-gray-400 hover:text-white'
+              : 'text-oc-muted hover:text-white'
           }`}
         >
           Coaches ({coaches.length})
@@ -296,7 +296,7 @@ export default function CoachesAlumnos() {
           className={`px-6 py-2 font-semibold ${
             activeTab === 'students'
               ? 'text-oc-red border-b-2 border-oc-red'
-              : 'text-gray-400 hover:text-white'
+              : 'text-oc-muted hover:text-white'
           }`}
         >
           Alumnos ({students.length})
@@ -308,17 +308,17 @@ export default function CoachesAlumnos() {
         <div className="space-y-6">
           {loading ? (
             <div className="bg-oc-metal p-8 rounded-lg border border-oc-red/20 text-center">
-              <p className="text-gray-400">Cargando coaches...</p>
+              <p className="text-oc-muted">Cargando coaches...</p>
             </div>
           ) : coaches.length === 0 ? (
             <div className="bg-oc-metal p-8 rounded-lg border border-oc-red/20 text-center">
-              <p className="text-gray-400">No hay coaches registrados</p>
-              <p className="text-gray-500 text-sm mt-2">Los coaches aparecerán aquí cuando se creen usuarios con rol "coach"</p>
+              <p className="text-oc-muted">No hay coaches registrados</p>
+              <p className="text-oc-muted text-sm mt-2">Los coaches aparecerán aquí cuando se creen usuarios con rol "coach"</p>
             </div>
           ) : (
             <>
               <div className="mb-4">
-                <p className="text-gray-400 text-sm">
+                <p className="text-oc-muted text-sm">
                   Total de coaches: <span className="text-white font-semibold">{coaches.length}</span>
                 </p>
               </div>
@@ -329,26 +329,26 @@ export default function CoachesAlumnos() {
                     className="bg-oc-metal p-6 rounded-lg border border-oc-red/20"
                   >
                     <h3 className="text-xl font-bold text-oc-red mb-2">{coach.name}</h3>
-                    <p className="text-gray-400 text-sm mb-4">@{coach.username}</p>
+                    <p className="text-oc-muted text-sm mb-4">@{coach.username}</p>
                     <div className="space-y-2 mb-4">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">Alumnos:</span>
+                        <span className="text-oc-muted">Alumnos:</span>
                         <span className="text-white font-semibold">{coach.students_count}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">Progresos registrados:</span>
+                        <span className="text-oc-muted">Progresos registrados:</span>
                         <span className="text-white font-semibold">{coach.progress_entries_count}</span>
                       </div>
                       {coach.phone && (
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-400">Teléfono:</span>
+                          <span className="text-oc-muted">Teléfono:</span>
                           <span className="text-white">{coach.phone}</span>
                         </div>
                       )}
                     </div>
                     {coach.students.length > 0 && (
                       <div className="mb-4">
-                        <p className="text-sm text-gray-400 mb-2">Alumnos asignados:</p>
+                        <p className="text-sm text-oc-muted mb-2">Alumnos asignados:</p>
                         <div className="space-y-1">
                           {coach.students.map((student) => (
                             <p key={student.id} className="text-sm text-white">
@@ -382,40 +382,40 @@ export default function CoachesAlumnos() {
                             setSelectedCoach(null)
                             setCoachDetails(null)
                           }}
-                          className="text-gray-400 hover:text-white text-2xl"
+                          className="text-oc-muted hover:text-white text-2xl"
                         >
                           ×
                         </button>
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        <div className="bg-oc-dark p-4 rounded border border-gray-700">
+                        <div className="bg-oc-dark p-4 rounded border border-oc-border">
                           <h3 className="text-lg font-semibold text-white mb-2">Información Personal</h3>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-gray-400">Usuario:</span>
+                              <span className="text-oc-muted">Usuario:</span>
                               <span className="text-white">@{coachDetails.coach.username}</span>
                             </div>
                             {coachDetails.coach.phone && (
                               <div className="flex justify-between">
-                                <span className="text-gray-400">Teléfono:</span>
+                                <span className="text-oc-muted">Teléfono:</span>
                                 <span className="text-white">{coachDetails.coach.phone}</span>
                               </div>
                             )}
                           </div>
                         </div>
 
-                        <div className="bg-oc-dark p-4 rounded border border-gray-700">
+                        <div className="bg-oc-dark p-4 rounded border border-oc-border">
                           <h3 className="text-lg font-semibold text-white mb-2">Estadísticas</h3>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-gray-400">Total Alumnos:</span>
+                              <span className="text-oc-muted">Total Alumnos:</span>
                               <span className="text-white font-semibold">
                                 {coachDetails.statistics.total_students}
                               </span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-400">Progresos Registrados:</span>
+                              <span className="text-oc-muted">Progresos Registrados:</span>
                               <span className="text-white font-semibold">
                                 {coachDetails.statistics.total_progress_entries}
                               </span>
@@ -424,40 +424,40 @@ export default function CoachesAlumnos() {
                         </div>
                       </div>
 
-                      <div className="bg-oc-dark p-4 rounded border border-gray-700">
+                      <div className="bg-oc-dark p-4 rounded border border-oc-border">
                         <h3 className="text-lg font-semibold text-white mb-4">Alumnos Asignados</h3>
                         {coachDetails.students.length === 0 ? (
-                          <p className="text-gray-400">No tiene alumnos asignados</p>
+                          <p className="text-oc-muted">No tiene alumnos asignados</p>
                         ) : (
                           <div className="overflow-x-auto">
                             <table className="w-full text-left">
                               <thead>
-                                <tr className="border-b border-gray-600">
-                                  <th className="pb-2 text-gray-300">Nombre</th>
-                                  <th className="pb-2 text-gray-300">Usuario</th>
-                                  <th className="pb-2 text-gray-300">Membresía</th>
-                                  <th className="pb-2 text-gray-300">Progresos</th>
-                                  <th className="pb-2 text-gray-300">Último Progreso</th>
+                                <tr className="border-b border-oc-border">
+                                  <th className="pb-2 text-oc-light/90">Nombre</th>
+                                  <th className="pb-2 text-oc-light/90">Usuario</th>
+                                  <th className="pb-2 text-oc-light/90">Membresía</th>
+                                  <th className="pb-2 text-oc-light/90">Progresos</th>
+                                  <th className="pb-2 text-oc-light/90">Último Progreso</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {coachDetails.students.map((student) => (
-                                  <tr key={student.id} className="border-b border-gray-700">
+                                  <tr key={student.id} className="border-b border-oc-border">
                                     <td className="py-2 text-white">{student.name}</td>
-                                    <td className="py-2 text-gray-300">@{student.username}</td>
+                                    <td className="py-2 text-oc-light/90">@{student.username}</td>
                                     <td className="py-2">
                                       <span
                                         className={`text-xs px-2 py-1 rounded ${
                                           student.membership_status === 'active'
-                                            ? 'bg-green-600 text-white'
+                                            ? 'bg-oc-red text-white'
                                             : 'bg-oc-red text-white'
                                         }`}
                                       >
                                         {student.membership_status || 'N/A'}
                                       </span>
                                     </td>
-                                    <td className="py-2 text-gray-300">{student.progress_count}</td>
-                                    <td className="py-2 text-gray-300 text-sm">
+                                    <td className="py-2 text-oc-light/90">{student.progress_count}</td>
+                                    <td className="py-2 text-oc-light/90 text-sm">
                                       {student.last_progress_date
                                         ? new Date(student.last_progress_date).toLocaleDateString()
                                         : 'N/A'}
@@ -483,17 +483,17 @@ export default function CoachesAlumnos() {
         <div className="space-y-6">
           {loading ? (
             <div className="bg-oc-metal p-8 rounded-lg border border-oc-red/20 text-center">
-              <p className="text-gray-400">Cargando alumnos...</p>
+              <p className="text-oc-muted">Cargando alumnos...</p>
             </div>
           ) : students.length === 0 ? (
             <div className="bg-oc-metal p-8 rounded-lg border border-oc-red/20 text-center">
-              <p className="text-gray-400">No hay alumnos registrados</p>
-              <p className="text-gray-500 text-sm mt-2">Los alumnos aparecerán aquí cuando se creen usuarios con rol "socio"</p>
+              <p className="text-oc-muted">No hay alumnos registrados</p>
+              <p className="text-oc-muted text-sm mt-2">Los alumnos aparecerán aquí cuando se creen usuarios con rol "socio"</p>
             </div>
           ) : (
             <>
               <div className="mb-4">
-                <p className="text-gray-400 text-sm">
+                <p className="text-oc-muted text-sm">
                   Total de alumnos: <span className="text-white font-semibold">{students.length}</span>
                 </p>
               </div>
@@ -501,55 +501,55 @@ export default function CoachesAlumnos() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="border-b border-gray-600">
-                        <th className="pb-2 text-gray-300">Nombre</th>
-                        <th className="pb-2 text-gray-300">Usuario</th>
-                        <th className="pb-2 text-gray-300">Membresía</th>
-                        <th className="pb-2 text-gray-300">Coach</th>
-                        <th className="pb-2 text-gray-300">Progresos</th>
-                        <th className="pb-2 text-gray-300">Reservas Activas</th>
-                        <th className="pb-2 text-gray-300">Acciones</th>
+                      <tr className="border-b border-oc-border">
+                        <th className="pb-2 text-oc-light/90">Nombre</th>
+                        <th className="pb-2 text-oc-light/90">Usuario</th>
+                        <th className="pb-2 text-oc-light/90">Membresía</th>
+                        <th className="pb-2 text-oc-light/90">Coach</th>
+                        <th className="pb-2 text-oc-light/90">Progresos</th>
+                        <th className="pb-2 text-oc-light/90">Reservas Activas</th>
+                        <th className="pb-2 text-oc-light/90">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       {students.map((student) => (
-                        <tr key={student.id} className="border-b border-gray-700">
+                        <tr key={student.id} className="border-b border-oc-border">
                           <td className="py-2 text-white">{student.name || 'Sin nombre'}</td>
-                          <td className="py-2 text-gray-300">@{student.username || 'sin_usuario'}</td>
+                          <td className="py-2 text-oc-light/90">@{student.username || 'sin_usuario'}</td>
                           <td className="py-2">
                             {student.membership ? (
                               <div>
                                 <span
                                   className={`text-xs px-2 py-1 rounded ${
                                     student.membership.status === 'active'
-                                      ? 'bg-green-600 text-white'
+                                      ? 'bg-oc-red text-white'
                                       : 'bg-oc-red text-white'
                                   }`}
                                 >
                                   {student.membership.status === 'active' ? 'Activa' : 'Vencida'}
                                 </span>
-                                <p className="text-xs text-gray-400 mt-1">
+                                <p className="text-xs text-oc-muted mt-1">
                                   Plan: {student.membership.plan}
                                 </p>
                                 {student.membership.expires_at && (
-                                  <p className="text-xs text-gray-400">
+                                  <p className="text-xs text-oc-muted">
                                     Vence: {new Date(student.membership.expires_at).toLocaleDateString()}
                                   </p>
                                 )}
                               </div>
                             ) : (
-                              <span className="text-gray-400 text-sm">Sin membresía</span>
+                              <span className="text-oc-muted text-sm">Sin membresía</span>
                             )}
                           </td>
-                          <td className="py-2 text-gray-300">
+                          <td className="py-2 text-oc-light/90">
                             {student.coach ? (
                               <span>{student.coach.name}</span>
                             ) : (
-                              <span className="text-gray-500">Sin asignar</span>
+                              <span className="text-oc-muted">Sin asignar</span>
                             )}
                           </td>
-                          <td className="py-2 text-gray-300">{student.progress_count}</td>
-                          <td className="py-2 text-gray-300">{student.active_bookings}</td>
+                          <td className="py-2 text-oc-light/90">{student.progress_count}</td>
+                          <td className="py-2 text-oc-light/90">{student.active_bookings}</td>
                           <td className="py-2">
                             <button
                               onClick={() => handleViewStudentDetails(student.id)}
@@ -579,52 +579,52 @@ export default function CoachesAlumnos() {
                             setSelectedStudent(null)
                             setStudentDetails(null)
                           }}
-                          className="text-gray-400 hover:text-white text-2xl"
+                          className="text-oc-muted hover:text-white text-2xl"
                         >
                           ×
                         </button>
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-6 mb-6">
-                        <div className="bg-oc-dark p-4 rounded border border-gray-700">
+                        <div className="bg-oc-dark p-4 rounded border border-oc-border">
                           <h3 className="text-lg font-semibold text-white mb-2">Información Personal</h3>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-gray-400">Usuario:</span>
+                              <span className="text-oc-muted">Usuario:</span>
                               <span className="text-white">@{studentDetails.student.username}</span>
                             </div>
                             {studentDetails.student.phone && (
                               <div className="flex justify-between">
-                                <span className="text-gray-400">Teléfono:</span>
+                                <span className="text-oc-muted">Teléfono:</span>
                                 <span className="text-white">{studentDetails.student.phone}</span>
                               </div>
                             )}
                           </div>
                         </div>
 
-                        <div className="bg-oc-dark p-4 rounded border border-gray-700">
+                        <div className="bg-oc-dark p-4 rounded border border-oc-border">
                           <h3 className="text-lg font-semibold text-white mb-2">Membresía</h3>
                           {studentDetails.membership ? (
                             <div className="space-y-2 text-sm mb-4">
                               <div className="flex justify-between">
-                                <span className="text-gray-400">Estado:</span>
+                                <span className="text-oc-muted">Estado:</span>
                                 <span
                                   className={`font-semibold ${
                                     studentDetails.membership.status === 'active'
-                                      ? 'text-green-400'
-                                      : 'text-red-400'
+                                      ? 'text-oc-light'
+                                      : 'text-oc-red'
                                   }`}
                                 >
                                   {studentDetails.membership.status === 'active' ? 'Activa' : 'Vencida'}
                                 </span>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-gray-400">Plan:</span>
+                                <span className="text-oc-muted">Plan:</span>
                                 <span className="text-white capitalize">{studentDetails.membership.plan}</span>
                               </div>
                               {studentDetails.membership.created_at && (
                                 <div className="flex justify-between">
-                                  <span className="text-gray-400">Creada:</span>
+                                  <span className="text-oc-muted">Creada:</span>
                                   <span className="text-white">
                                     {new Date(studentDetails.membership.created_at).toLocaleDateString()}
                                   </span>
@@ -632,7 +632,7 @@ export default function CoachesAlumnos() {
                               )}
                               {studentDetails.membership.expires_at && (
                                 <div className="flex justify-between">
-                                  <span className="text-gray-400">Vence:</span>
+                                  <span className="text-oc-muted">Vence:</span>
                                   <span className="text-white">
                                     {new Date(studentDetails.membership.expires_at).toLocaleDateString()}
                                   </span>
@@ -640,32 +640,32 @@ export default function CoachesAlumnos() {
                               )}
                             </div>
                           ) : (
-                            <p className="text-gray-400 text-sm mb-4">Sin membresía</p>
+                            <p className="text-oc-muted text-sm mb-4">Sin membresía</p>
                           )}
-                          <div className="border-t border-gray-700 pt-3">
-                            <p className="text-xs text-gray-400 mb-2">Activar membresía:</p>
+                          <div className="border-t border-oc-border pt-3">
+                            <p className="text-xs text-oc-muted mb-2">Activar membresía:</p>
                             <div className="grid grid-cols-2 gap-2 mb-3">
                               <button
                                 onClick={() => handleActivateMembership(studentDetails.student.id, 1)}
-                                className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-xs font-semibold"
+                                className="bg-oc-red hover:bg-oc-red-deep text-white px-3 py-2 rounded text-xs font-semibold"
                               >
                                 1 Mes
                               </button>
                               <button
                                 onClick={() => handleActivateMembership(studentDetails.student.id, 3)}
-                                className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-xs font-semibold"
+                                className="bg-oc-red hover:bg-oc-red-deep text-white px-3 py-2 rounded text-xs font-semibold"
                               >
                                 3 Meses
                               </button>
                               <button
                                 onClick={() => handleActivateMembership(studentDetails.student.id, 6)}
-                                className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-xs font-semibold"
+                                className="bg-oc-red hover:bg-oc-red-deep text-white px-3 py-2 rounded text-xs font-semibold"
                               >
                                 6 Meses
                               </button>
                               <button
                                 onClick={() => handleActivateMembership(studentDetails.student.id, 12)}
-                                className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-xs font-semibold"
+                                className="bg-oc-red hover:bg-oc-red-deep text-white px-3 py-2 rounded text-xs font-semibold"
                               >
                                 1 Año
                               </button>
@@ -681,35 +681,35 @@ export default function CoachesAlumnos() {
                           </div>
                         </div>
 
-                        <div className="bg-oc-dark p-4 rounded border border-gray-700">
+                        <div className="bg-oc-dark p-4 rounded border border-oc-border">
                           <h3 className="text-lg font-semibold text-white mb-2">Coach Asignado</h3>
                           {studentDetails.coach ? (
                             <div className="text-sm">
                               <p className="text-white">{studentDetails.coach.name}</p>
-                              <p className="text-gray-400">@{studentDetails.coach.username}</p>
+                              <p className="text-oc-muted">@{studentDetails.coach.username}</p>
                             </div>
                           ) : (
-                            <p className="text-gray-400 text-sm">Sin coach asignado</p>
+                            <p className="text-oc-muted text-sm">Sin coach asignado</p>
                           )}
                         </div>
 
-                        <div className="bg-oc-dark p-4 rounded border border-gray-700">
+                        <div className="bg-oc-dark p-4 rounded border border-oc-border">
                           <h3 className="text-lg font-semibold text-white mb-2">Estadísticas</h3>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-gray-400">Total Progresos:</span>
+                              <span className="text-oc-muted">Total Progresos:</span>
                               <span className="text-white font-semibold">
                                 {studentDetails.statistics.total_progress_entries}
                               </span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-400">Total Reservas:</span>
+                              <span className="text-oc-muted">Total Reservas:</span>
                               <span className="text-white font-semibold">
                                 {studentDetails.statistics.total_bookings}
                               </span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-400">Reservas Activas:</span>
+                              <span className="text-oc-muted">Reservas Activas:</span>
                               <span className="text-white font-semibold">
                                 {studentDetails.statistics.active_bookings}
                               </span>
@@ -719,23 +719,23 @@ export default function CoachesAlumnos() {
                       </div>
 
                       {studentDetails.recent_progress.length > 0 && (
-                        <div className="bg-oc-dark p-4 rounded border border-gray-700 mb-6">
+                        <div className="bg-oc-dark p-4 rounded border border-oc-border mb-6">
                           <h3 className="text-lg font-semibold text-white mb-4">Últimos Progresos</h3>
                           <div className="space-y-2">
                             {studentDetails.recent_progress.map((progress) => (
                               <div
                                 key={progress.id}
-                                className="bg-oc-metal p-3 rounded border border-gray-700"
+                                className="bg-oc-metal p-3 rounded border border-oc-border"
                               >
                                 <div className="flex justify-between items-start">
                                   <div>
                                     <p className="text-white font-semibold">{progress.metric_type}</p>
                                     <p className="text-oc-red text-lg font-bold">{progress.value}</p>
                                     {progress.notes && (
-                                      <p className="text-gray-400 text-sm mt-1">{progress.notes}</p>
+                                      <p className="text-oc-muted text-sm mt-1">{progress.notes}</p>
                                     )}
                                   </div>
-                                  <span className="text-gray-400 text-sm">
+                                  <span className="text-oc-muted text-sm">
                                     {new Date(progress.date).toLocaleDateString()}
                                   </span>
                                 </div>
@@ -746,13 +746,13 @@ export default function CoachesAlumnos() {
                       )}
 
                       {studentDetails.recent_bookings.length > 0 && (
-                        <div className="bg-oc-dark p-4 rounded border border-gray-700">
+                        <div className="bg-oc-dark p-4 rounded border border-oc-border">
                           <h3 className="text-lg font-semibold text-white mb-4">Últimas Reservas</h3>
                           <div className="space-y-2">
                             {studentDetails.recent_bookings.map((booking) => (
                               <div
                                 key={booking.id}
-                                className="bg-oc-metal p-3 rounded border border-gray-700 flex justify-between items-center"
+                                className="bg-oc-metal p-3 rounded border border-oc-border flex justify-between items-center"
                               >
                                 <div>
                                   <p className="text-white font-semibold">{booking.class_title}</p>
@@ -764,14 +764,14 @@ export default function CoachesAlumnos() {
                                   <span
                                     className={`text-xs px-2 py-1 rounded ${
                                       booking.status === 'booked'
-                                        ? 'bg-green-600 text-white'
+                                        ? 'bg-oc-red text-white'
                                         : 'bg-oc-red text-white'
                                     }`}
                                   >
                                     {booking.status}
                                   </span>
                                 </div>
-                                <span className="text-gray-400 text-sm">
+                                <span className="text-oc-muted text-sm">
                                   {new Date(booking.created_at).toLocaleDateString()}
                                 </span>
                               </div>

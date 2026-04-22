@@ -7,9 +7,9 @@ interface EmptyStateProps {
 
 export default function EmptyState({ title, message, actionLabel, onAction }: EmptyStateProps) {
   return (
-    <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-6 text-center">
-      <h3 className="text-white font-semibold">{title}</h3>
-      <p className="text-gray-400 mt-2">{message}</p>
+    <div className="bg-oc-metal rounded-xl border border-oc-border/80 p-6 text-center">
+      <h3 className="text-oc-light font-semibold">{title}</h3>
+      <p className="text-oc-muted mt-2">{message}</p>
       {onAction && actionLabel && (
         <button
           onClick={onAction}

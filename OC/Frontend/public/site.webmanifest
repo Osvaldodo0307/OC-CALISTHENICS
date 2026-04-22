@@ -1,0 +1,17 @@
+{
+  "name": "OC-CLUB · Elite Training Community",
+  "short_name": "OC-CLUB",
+  "description": "Comunidad de entrenamiento de élite. Calistenia, fuerza y acondicionamiento.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#D21F2D",
+  "icons": [
+    {
+      "src": "/oc-club-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

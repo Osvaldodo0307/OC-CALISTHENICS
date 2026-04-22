@@ -210,7 +210,7 @@ export default function Rutinas() {
           className={`px-4 py-2 font-semibold ${
             activeTab === 'exercise'
               ? 'text-oc-red border-b-2 border-oc-red'
-              : 'text-gray-400 hover:text-white'
+              : 'text-oc-muted hover:text-white'
           }`}
         >
           Por Categorías y Nivel
@@ -220,7 +220,7 @@ export default function Rutinas() {
           className={`px-4 py-2 font-semibold ${
             activeTab === 'ai'
               ? 'text-oc-red border-b-2 border-oc-red'
-              : 'text-gray-400 hover:text-white'
+              : 'text-oc-muted hover:text-white'
           }`}
         >
           Con IA
@@ -231,7 +231,7 @@ export default function Rutinas() {
       {activeTab === 'exercise' && (
         <form onSubmit={handleExerciseSubmit} className="bg-oc-metal p-6 rounded-lg border border-oc-red/20 space-y-6 max-w-2xl">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Alumno</label>
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">Alumno</label>
             {loadingStudents ? (
               <LoadingState message="Cargando alumnos..." />
             ) : (
@@ -239,7 +239,7 @@ export default function Rutinas() {
                 value={exerciseFormData.student_id}
                 onChange={(e) => setExerciseFormData({ ...exerciseFormData, student_id: e.target.value })}
                 required
-                className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
               >
                 <option value="">Seleccionar alumno</option>
                 {students.map((student) => (
@@ -252,8 +252,8 @@ export default function Rutinas() {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Categorías de Entrenamiento <span className="text-red-400">*</span>
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">
+              Categorías de Entrenamiento <span className="text-oc-red">*</span>
             </label>
             <div className="grid grid-cols-2 gap-3">
               {categories.map((cat) => (
@@ -262,21 +262,21 @@ export default function Rutinas() {
                     type="checkbox"
                     checked={exerciseFormData.categories.includes(cat.value)}
                     onChange={() => handleCategoryToggle(cat.value)}
-                    className="mr-2 w-4 h-4 text-oc-red bg-oc-dark border-gray-600 rounded focus:ring-oc-red"
+                    className="mr-2 w-4 h-4 text-oc-red bg-oc-dark border-oc-border rounded focus:ring-oc-red"
                   />
                   <span>{cat.label}</span>
                 </label>
               ))}
             </div>
-            <p className="text-xs text-gray-400 mt-2">Selecciona al menos una categoría</p>
+            <p className="text-xs text-oc-muted mt-2">Selecciona al menos una categoría</p>
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Nivel</label>
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">Nivel</label>
             <select
               value={exerciseFormData.level}
               onChange={(e) => setExerciseFormData({ ...exerciseFormData, level: Number(e.target.value) })}
-              className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+              className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
             >
               {levels.map((level) => (
                 <option key={level.value} value={level.value}>
@@ -288,25 +288,25 @@ export default function Rutinas() {
           
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Días por Semana</label>
+              <label className="block text-sm font-medium text-oc-light/90 mb-2">Días por Semana</label>
               <input
                 type="number"
                 value={exerciseFormData.days_per_week}
                 onChange={(e) => setExerciseFormData({ ...exerciseFormData, days_per_week: Number(e.target.value) })}
                 min="1"
                 max="7"
-                className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Semanas</label>
+              <label className="block text-sm font-medium text-oc-light/90 mb-2">Semanas</label>
               <input
                 type="number"
                 value={exerciseFormData.weeks}
                 onChange={(e) => setExerciseFormData({ ...exerciseFormData, weeks: Number(e.target.value) })}
                 min="1"
                 max="12"
-                className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
               />
             </div>
           </div>
@@ -328,23 +328,23 @@ export default function Rutinas() {
 
       <form onSubmit={handleSubmit} className="bg-oc-metal p-6 rounded-lg border border-oc-red/20 space-y-6 max-w-2xl">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">ID del Alumno</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">ID del Alumno</label>
           <input
             type="number"
             value={formData.student_id}
             onChange={(e) => setFormData({ ...formData, student_id: e.target.value })}
             required
-            className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+            className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
             placeholder="Ej: 3"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Objetivo</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">Objetivo</label>
           <select
             value={formData.goal}
             onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
-            className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+            className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
           >
             <option value="fuerza">Fuerza</option>
             <option value="hipertrofia">Hipertrofia</option>
@@ -354,11 +354,11 @@ export default function Rutinas() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Nivel</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">Nivel</label>
           <select
             value={formData.level}
             onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-            className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+            className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
           >
             <option value="principiante">Principiante</option>
             <option value="intermedio">Intermedio</option>
@@ -368,35 +368,35 @@ export default function Rutinas() {
 
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Días por Semana</label>
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">Días por Semana</label>
             <input
               type="number"
               value={formData.days_per_week}
               onChange={(e) => setFormData({ ...formData, days_per_week: Number(e.target.value) })}
               min="1"
               max="7"
-              className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+              className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Duración Sesión (min)</label>
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">Duración Sesión (min)</label>
             <input
               type="number"
               value={formData.session_minutes}
               onChange={(e) => setFormData({ ...formData, session_minutes: Number(e.target.value) })}
               min="30"
               max="120"
-              className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+              className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Preferencia</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">Preferencia</label>
           <select
             value={formData.preference}
             onChange={(e) => setFormData({ ...formData, preference: e.target.value })}
-            className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+            className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
           >
             <option value="calistenia">Calistenia</option>
             <option value="powerlifting">Powerlifting</option>
@@ -405,7 +405,7 @@ export default function Rutinas() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Equipo Disponible</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">Equipo Disponible</label>
           <div className="grid grid-cols-2 gap-2">
             {Object.keys(formData.equipment_json).map((equipment) => (
               <label key={equipment} className="flex items-center text-white">

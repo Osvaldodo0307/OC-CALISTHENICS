@@ -111,13 +111,13 @@ export default function AdminDashboard() {
     return (
       <div className="text-center py-12">
         <div className="animate-spin w-8 h-8 border-2 border-oc-red border-t-transparent rounded-full mx-auto mb-4" />
-        <p className="text-gray-400">Cargando agenda semanal...</p>
+        <p className="text-oc-muted">Cargando agenda semanal...</p>
       </div>
     )
   }
 
   if (!weekData) {
-    return <div className="text-center py-12 text-gray-400">Error al cargar datos</div>
+    return <div className="text-center py-12 text-oc-muted">Error al cargar datos</div>
   }
 
   return (
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">Agenda Semanal</h1>
-          <p className="text-gray-500 text-sm">Reservas de alumnos por clase y día</p>
+          <p className="text-oc-muted text-sm">Reservas de alumnos por clase y día</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Link
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
           </Link>
           <Link
             to="/app/admin/clases"
-            className="inline-flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="inline-flex items-center justify-center bg-oc-panel hover:bg-oc-border text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
           >
             Gestión de clases
           </Link>
@@ -145,10 +145,10 @@ export default function AdminDashboard() {
       </div>
 
       {/* Week navigation */}
-      <div className="flex items-center justify-between mb-6 bg-oc-metal rounded-xl border border-gray-700/50 p-4">
+      <div className="flex items-center justify-between mb-6 bg-oc-metal rounded-xl border border-oc-border/80 p-4">
         <button
           onClick={() => setWeekOffset(weekOffset - 1)}
-          className="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
+          className="text-oc-muted hover:text-white p-2 rounded-lg hover:bg-oc-panel/50 transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -166,7 +166,7 @@ export default function AdminDashboard() {
 
         <button
           onClick={() => setWeekOffset(weekOffset + 1)}
-          className="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
+          className="text-oc-muted hover:text-white p-2 rounded-lg hover:bg-oc-panel/50 transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -176,13 +176,13 @@ export default function AdminDashboard() {
 
       {/* Week summary */}
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-4 text-center">
+        <div className="bg-oc-metal rounded-xl border border-oc-border/80 p-4 text-center">
           <p className="text-3xl font-bold text-oc-red">{weekData.total_bookings}</p>
-          <p className="text-xs text-gray-500 mt-1">Reservas totales</p>
+          <p className="text-xs text-oc-muted mt-1">Reservas totales</p>
         </div>
-        <div className="bg-oc-metal rounded-xl border border-gray-700/50 p-4 text-center">
+        <div className="bg-oc-metal rounded-xl border border-oc-border/80 p-4 text-center">
           <p className="text-3xl font-bold text-white">{weekData.total_unique_students}</p>
-          <p className="text-xs text-gray-500 mt-1">Alumnos activos</p>
+          <p className="text-xs text-oc-muted mt-1">Alumnos activos</p>
         </div>
       </div>
 
@@ -193,17 +193,17 @@ export default function AdminDashboard() {
           const dayNum = ymdDayOfMonth(day.date)
 
           return (
-            <div key={day.date} className="bg-oc-metal rounded-xl border border-gray-700/50 overflow-hidden">
+            <div key={day.date} className="bg-oc-metal rounded-xl border border-oc-border/80 overflow-hidden">
               {/* Day header */}
               <button
                 onClick={() => toggleDay(day.date)}
-                className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-700/30 transition-colors"
+                className="w-full px-4 py-3 flex items-center justify-between hover:bg-oc-panel/30 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold ${
                     day.is_today
                       ? 'bg-oc-red text-white'
-                      : 'bg-gray-700/50 text-gray-400'
+                      : 'bg-oc-panel/50 text-oc-muted'
                   }`}>
                     {dayNum}
                   </div>
@@ -212,7 +212,7 @@ export default function AdminDashboard() {
                       {day.day_name}
                       {day.is_today && <span className="text-xs ml-2 text-oc-red/70">HOY</span>}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-oc-muted">
                       {day.bookings_count} reserva{day.bookings_count !== 1 ? 's' : ''}
                     </p>
                   </div>
@@ -225,7 +225,7 @@ export default function AdminDashboard() {
                     </span>
                   )}
                   <svg
-                    className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 text-oc-muted transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                     fill="none" stroke="currentColor" viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -235,13 +235,13 @@ export default function AdminDashboard() {
 
               {/* Day classes */}
               {isExpanded && (
-                <div className="border-t border-gray-700/50">
+                <div className="border-t border-oc-border/80">
                   {day.classes.length === 0 ? (
-                    <p className="px-4 py-6 text-center text-gray-500 text-sm">
+                    <p className="px-4 py-6 text-center text-oc-muted text-sm">
                       Sin clases programadas
                     </p>
                   ) : (
-                    <div className="divide-y divide-gray-700/30">
+                    <div className="divide-y divide-oc-border/40">
                       {day.classes.map((cls) => {
                         const isClassExpanded = expandedClass === cls.id
                         const hasStudents = cls.bookings_count > 0
@@ -253,12 +253,12 @@ export default function AdminDashboard() {
                                 type="button"
                                 onClick={() => hasStudents && toggleClass(cls.id)}
                                 className={`flex-1 min-w-0 px-2 py-2 rounded-lg flex items-center justify-between ${
-                                  hasStudents ? 'hover:bg-gray-700/20 cursor-pointer' : 'cursor-default'
+                                  hasStudents ? 'hover:bg-oc-panel/20 cursor-pointer' : 'cursor-default'
                                 } transition-colors`}
                               >
                                 <div className="flex items-center gap-3 flex-1 min-w-0">
                                   <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                                    hasStudents ? 'bg-green-500' : 'bg-gray-600'
+                                    hasStudents ? 'bg-oc-red' : 'bg-oc-border'
                                   }`} />
                                   <span className="text-sm text-white truncate">{cls.title}</span>
                                 </div>
@@ -266,14 +266,14 @@ export default function AdminDashboard() {
                                 <div className="flex items-center gap-2 flex-shrink-0">
                                   {hasStudents && (
                                     <>
-                                      <div className="flex items-center gap-1 text-gray-400">
+                                      <div className="flex items-center gap-1 text-oc-muted">
                                         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                                           <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
                                         </svg>
                                         <span className="text-xs font-medium">{cls.bookings_count}</span>
                                       </div>
                                       <svg
-                                        className={`w-4 h-4 text-gray-500 transition-transform ${isClassExpanded ? 'rotate-180' : ''}`}
+                                        className={`w-4 h-4 text-oc-muted transition-transform ${isClassExpanded ? 'rotate-180' : ''}`}
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                       >
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -281,14 +281,14 @@ export default function AdminDashboard() {
                                     </>
                                   )}
                                   {!hasStudents && (
-                                    <span className="text-xs text-gray-600">0</span>
+                                    <span className="text-xs text-oc-muted">0</span>
                                   )}
                                 </div>
                               </button>
                               <Link
                                 to={`/app/admin/asistencia?date=${encodeURIComponent(day.date)}&classId=${cls.id}`}
                                 onClick={(e) => e.stopPropagation()}
-                                className="self-center bg-gray-700 hover:bg-gray-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap flex-shrink-0"
+                                className="self-center bg-oc-panel hover:bg-oc-border text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap flex-shrink-0"
                                 title="Registrar asistencia de alumnos"
                               >
                                 Asistencia
@@ -302,7 +302,7 @@ export default function AdminDashboard() {
                                   {cls.students.map((student) => (
                                     <div
                                       key={student.id}
-                                      className="flex items-center justify-between bg-gray-800/50 rounded-lg px-3 py-2"
+                                      className="flex items-center justify-between bg-oc-panel/50 rounded-lg px-3 py-2"
                                     >
                                       <div className="flex items-center gap-2">
                                         <div className="w-6 h-6 rounded-full bg-oc-red/30 flex items-center justify-center">
@@ -310,7 +310,7 @@ export default function AdminDashboard() {
                                             {student.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
                                           </span>
                                         </div>
-                                        <span className="text-sm text-gray-300">{student.name}</span>
+                                        <span className="text-sm text-oc-light/90">{student.name}</span>
                                         <span className="text-[11px] text-oc-red bg-oc-red/10 border border-oc-red/30 rounded px-1.5 py-0.5">
                                           Hora: {resolveAttendanceHour(student)}
                                         </span>
@@ -320,7 +320,7 @@ export default function AdminDashboard() {
                                           href={`https://wa.me/52${student.phone}`}
                                           target="_blank"
                                           rel="noopener noreferrer"
-                                          className="text-green-500 hover:text-green-400 transition-colors"
+                                          className="text-oc-red hover:text-oc-light transition-colors"
                                           onClick={(e) => e.stopPropagation()}
                                         >
                                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

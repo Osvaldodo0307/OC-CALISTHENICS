@@ -40,36 +40,11 @@ def init_database():
 
     db = SessionLocal()
     try:
-        db.execute(text("ALTER TABLE bookings ADD COLUMN preferred_hour INTEGER"))
+        # Nota: las mutaciones de esquema deben ejecutarse via migraciones SQL versionadas.
+        # init_database solo verifica conectividad, crea tablas faltantes y aplica seed no destructivo.
+        db.execute(text("SELECT 1"))
         db.commit()
-        print("[MIGRATION] Columna preferred_hour agregada a bookings.")
-    except Exception:
-        db.rollback()
-    try:
-        db.execute(text("ALTER TABLE users ADD COLUMN gym_code VARCHAR(50)"))
-        db.commit()
-        print("[MIGRATION] Columna gym_code agregada a users.")
-    except Exception:
-        db.rollback()
-    try:
-        db.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS ix_users_gym_code ON users (gym_code)"))
-        db.commit()
-        print("[MIGRATION] Indice unico ix_users_gym_code verificado.")
-    except Exception:
-        db.rollback()
-    try:
-        db.execute(text("ALTER TABLE bookings ADD COLUMN attended BOOLEAN"))
-        db.commit()
-        print("[MIGRATION] Columna attended agregada a bookings.")
-    except Exception:
-        db.rollback()
-    try:
-        db.execute(text("ALTER TABLE class_sessions ADD COLUMN coach_attended BOOLEAN"))
-        db.commit()
-        print("[MIGRATION] Columna coach_attended agregada a class_sessions.")
-    except Exception:
-        db.rollback()
-    try:
+
         existing_admin = db.query(User).filter(User.username == "octavio").first()
         if not existing_admin:
             admin_user = User(

@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
   appId: 'com.occalisthenics.app',
-  appName: 'OC Calisthenics',
+  appName: 'OC-CLUB',
   webDir: 'dist',
   android: {
     path: 'mobile/android',

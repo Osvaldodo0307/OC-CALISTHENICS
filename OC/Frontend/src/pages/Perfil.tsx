@@ -63,20 +63,20 @@ export default function Perfil() {
         <h2 className="text-2xl font-semibold text-oc-red mb-4">Información Personal</h2>
         <div className="space-y-2">
           <div className="flex justify-between">
-            <span className="text-gray-400">Nombre:</span>
+            <span className="text-oc-muted">Nombre:</span>
             <span className="text-white">{user.name || 'Sin nombre'}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Usuario:</span>
+            <span className="text-oc-muted">Usuario:</span>
             <span className="text-white">{user.username || 'Sin usuario'}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Rol:</span>
+            <span className="text-oc-muted">Rol:</span>
             <span className="text-white capitalize">{user.role}</span>
           </div>
           {user.phone && (
             <div className="flex justify-between">
-              <span className="text-gray-400">Teléfono:</span>
+              <span className="text-oc-muted">Teléfono:</span>
               <span className="text-white">{user.phone}</span>
             </div>
           )}
@@ -88,22 +88,22 @@ export default function Perfil() {
           <h2 className="text-2xl font-semibold text-oc-red mb-4">Membresía</h2>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-gray-400">Estado:</span>
+              <span className="text-oc-muted">Estado:</span>
               <span
                 className={`font-semibold ${
-                  membership.status === 'active' ? 'text-green-400' : 'text-red-400'
+                  membership.status === 'active' ? 'text-oc-light' : 'text-oc-red'
                 }`}
               >
                 {membership.status === 'active' ? 'Activa' : 'Vencida'}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Plan:</span>
+              <span className="text-oc-muted">Plan:</span>
               <span className="text-white capitalize">{membership.plan}</span>
             </div>
             {membership.expires_at && (
               <div className="flex justify-between">
-                <span className="text-gray-400">Vence:</span>
+                <span className="text-oc-muted">Vence:</span>
                 <span className="text-white">
                   {format(new Date(membership.expires_at), "dd/MM/yyyy")}
                 </span>
