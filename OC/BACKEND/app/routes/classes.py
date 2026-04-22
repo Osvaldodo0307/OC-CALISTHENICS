@@ -7,6 +7,7 @@ from app.database import get_db
 from app.auth import get_current_admin, get_current_user
 from app.schemas import ClassSessionResponse, ClassSessionCreate, ClassSessionWithBookings
 from app.models import ClassSession, Booking, User
+from app.utils.timezone import mx_today, parse_yyyy_mm_dd
 
 router = APIRouter(prefix="/classes", tags=["classes"])
 
@@ -24,11 +25,11 @@ async def get_classes(
     """
     if target_date:
         try:
-            filter_date = datetime.strptime(target_date, "%Y-%m-%d").date()
+            filter_date = parse_yyyy_mm_dd(target_date)
         except ValueError:
             raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
     else:
-        filter_date = date.today()
+        filter_date = mx_today()
 
     day_start = datetime.combine(filter_date, datetime.min.time())
     day_end = datetime.combine(filter_date, datetime.max.time())
@@ -65,7 +66,8 @@ async def get_classes(
             created_at=cls.created_at,
             bookings_count=bookings_count or 0,
             is_booked_by_me=my_booking is not None,
-            my_booking_id=my_booking.id if my_booking else None
+            my_booking_id=my_booking.id if my_booking else None,
+            my_booking_preferred_hour=my_booking.preferred_hour if my_booking else None
         ))
 
     return result
@@ -80,14 +82,14 @@ async def get_week_classes(
     """Get classes for a full week starting from start_date (or today)."""
     if start_date:
         try:
-            filter_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+            filter_date = parse_yyyy_mm_dd(start_date)
         except ValueError:
             raise HTTPException(status_code=400, detail="Invalid date format")
     else:
-        filter_date = date.today()
+        filter_date = mx_today()
 
     day_start = datetime.combine(filter_date, datetime.min.time())
-    day_end = datetime.combine(filter_date + timedelta(days=7), datetime.max.time())
+    day_end = datetime.combine(filter_date + timedelta(days=6), datetime.max.time())
 
     classes = db.query(ClassSession).filter(
         ClassSession.start_datetime >= day_start,
@@ -121,7 +123,8 @@ async def get_week_classes(
             created_at=cls.created_at,
             bookings_count=bookings_count or 0,
             is_booked_by_me=my_booking is not None,
-            my_booking_id=my_booking.id if my_booking else None
+            my_booking_id=my_booking.id if my_booking else None,
+            my_booking_preferred_hour=my_booking.preferred_hour if my_booking else None
         ))
 
     return result
@@ -163,7 +166,8 @@ async def get_class(
         created_at=cls.created_at,
         bookings_count=bookings_count or 0,
         is_booked_by_me=my_booking is not None,
-        my_booking_id=my_booking.id if my_booking else None
+        my_booking_id=my_booking.id if my_booking else None,
+        my_booking_preferred_hour=my_booking.preferred_hour if my_booking else None
     )
 
 
@@ -211,7 +215,7 @@ async def generate_daily_schedule(
 
     created = 0
     skipped = 0
-    today = date.today()
+    today = mx_today()
 
     for day_offset in range(days):
         current_date = today + timedelta(days=day_offset)

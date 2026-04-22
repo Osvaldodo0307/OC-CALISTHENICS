@@ -1,5 +1,7 @@
 # 🚀 Instrucciones para Subir el Frontend a Netlify
 
+**OC Club:** dominio **`https://oc-club.netlify.app`**. Para **GitHub + Netlify + Render** (sin depender solo de arrastrar carpetas), usa **[`DEPLOY_OC_CLUB.md`](DEPLOY_OC_CLUB.md)** y el `netlify.toml` en la **raíz del repositorio**.
+
 ## 📋 Preparación
 
 1. **Ejecutar el script de copia (opcional):**

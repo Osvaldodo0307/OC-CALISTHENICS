@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { runtime } from '../../config/runtime'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 
 interface StudentData {
   id: number
@@ -52,13 +53,13 @@ export default function CoachDashboard() {
       <div className="bg-oc-metal p-6 rounded-lg border border-oc-red/20 mb-6">
         <h2 className="text-2xl font-semibold text-oc-red mb-4">Mis Alumnos</h2>
         {data && data.students.length === 0 ? (
-          <p className="text-gray-400">No tienes alumnos asignados</p>
+          <p className="text-oc-muted">No tienes alumnos asignados</p>
         ) : (
           <div className="space-y-4">
             {data?.students.map((student) => (
               <div
                 key={student.id}
-                className="bg-oc-dark p-4 rounded border border-gray-700"
+                className="bg-oc-dark p-4 rounded border border-oc-border"
               >
                 <div className="flex justify-between items-start">
                   <div>
@@ -69,13 +70,13 @@ export default function CoachDashboard() {
                       {student.name}
                     </Link>
                     {student.last_progress.date && (
-                      <p className="text-sm text-gray-400 mt-1">
+                      <p className="text-sm text-oc-muted mt-1">
                         Último progreso: {student.last_progress.metric} = {student.last_progress.value}
                         {' '}
                         ({new Date(student.last_progress.date).toLocaleDateString()})
                       </p>
                     )}
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-oc-muted">
                       Consistencia (últimos 30 días): {student.consistency} registros
                     </p>
                   </div>

@@ -17,12 +17,21 @@ class UserLogin(BaseModel):
 # User
 class UserBase(BaseModel):
     username: str
+    gym_code: Optional[str] = None
     name: str
     role: str
     phone: Optional[str] = None
 
 class UserCreate(UserBase):
     password: str
+
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    gym_code: Optional[str] = None
+    name: Optional[str] = None
+    role: Optional[str] = None
+    phone: Optional[str] = None
 
 class StudentCreate(BaseModel):
     username: str
@@ -33,6 +42,8 @@ class StudentCreate(BaseModel):
 class UserResponse(UserBase):
     id: int
     created_at: datetime
+    is_active: bool = True
+    deactivated_at: Optional[datetime] = None
     
     class Config:
         from_attributes = True
@@ -56,6 +67,111 @@ class MembershipResponse(MembershipBase):
     
     class Config:
         from_attributes = True
+
+
+class MembershipCycleCreate(BaseModel):
+    user_id: int
+    membership_type: str
+    cost: float
+    start_date: date
+    end_date: date
+    manual_status: Optional[str] = None
+
+
+class MembershipCycleUpdate(BaseModel):
+    membership_type: Optional[str] = None
+    cost: Optional[float] = None
+    start_date: Optional[date] = None
+    end_date: Optional[date] = None
+    manual_status: Optional[str] = None
+    force_update: bool = False
+    change_reason: Optional[str] = None
+
+
+class MembershipPaymentCreate(BaseModel):
+    amount: float
+    payment_method: str
+    concept: Optional[str] = None
+    observations: Optional[str] = None
+    payment_date: Optional[datetime] = None
+    allow_overpayment: bool = False
+    idempotency_key: Optional[str] = None
+
+
+class MembershipNoteCreate(BaseModel):
+    note: str
+
+class MembershipPaymentReverse(BaseModel):
+    reason: str
+
+
+class MembershipPaymentResponse(BaseModel):
+    id: int
+    membership_cycle_id: int
+    user_id: int
+    payment_date: datetime
+    amount: float
+    payment_method: str
+    concept: Optional[str] = None
+    observations: Optional[str] = None
+    created_by: int
+    created_at: datetime
+    created_by_name: Optional[str] = None
+
+
+class MembershipNoteResponse(BaseModel):
+    id: int
+    user_id: int
+    membership_id: Optional[int] = None
+    membership_cycle_id: Optional[int] = None
+    note: str
+    created_by: int
+    created_at: datetime
+    created_by_name: Optional[str] = None
+
+
+class MembershipCycleResponse(BaseModel):
+    id: int
+    membership_id: int
+    user_id: int
+    membership_type: str
+    cost: float
+    start_date: date
+    end_date: date
+    status: str
+    is_active_cycle: bool
+    created_at: datetime
+    updated_at: datetime
+    total_paid: float = 0
+    pending_balance: float = 0
+
+
+class MembershipClientSummary(BaseModel):
+    user_id: int
+    membership_id: int
+    cycle_id: Optional[int] = None
+    name: str
+    phone: Optional[str] = None
+    created_at: datetime
+    membership_type: Optional[str] = None
+    cost: float = 0
+    start_date: Optional[date] = None
+    end_date: Optional[date] = None
+    status: str
+    total_paid: float = 0
+    pending_balance: float = 0
+
+
+class MembershipClientDetail(BaseModel):
+    user_id: int
+    membership_id: int
+    name: str
+    phone: Optional[str] = None
+    created_at: datetime
+    active_cycle: Optional[MembershipCycleResponse] = None
+    cycles_history: List[MembershipCycleResponse] = []
+    payments: List[MembershipPaymentResponse] = []
+    notes: List[MembershipNoteResponse] = []
 
 # Class Session
 class ClassSessionBase(BaseModel):
@@ -85,6 +201,7 @@ class ClassSessionWithBookings(ClassSessionBase):
     bookings_count: int = 0
     is_booked_by_me: bool = False
     my_booking_id: Optional[int] = None
+    my_booking_preferred_hour: Optional[int] = None
     
     class Config:
         from_attributes = True

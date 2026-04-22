@@ -14,23 +14,36 @@
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #070101;
-    color: #EBE0D7;
+    background-color: #060606;
+    color: #f5f5f5;
   }
 
   html {
     scroll-behavior: smooth;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: 'Oswald', Impact, 'Arial Narrow', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  ::selection {
+    background-color: rgba(210, 31, 45, 0.35);
+    color: #ffffff;
   }
 }
 
 @layer utilities {
   /* Glow effects */
   .glow-red {
-    box-shadow: 0 0 20px rgba(164, 53, 37, 0.3);
+    box-shadow: 0 0 20px rgba(210, 31, 45, 0.35);
   }
 
   .glow-red-lg {
-    box-shadow: 0 0 40px rgba(164, 53, 37, 0.4);
+    box-shadow: 0 0 40px rgba(210, 31, 45, 0.45);
   }
 
   /* Smooth transitions */
@@ -45,6 +58,591 @@
 
   .card-hover:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(164, 53, 37, 0.2);
+    box-shadow: 0 10px 30px rgba(210, 31, 45, 0.22);
+  }
+}
+
+@layer components {
+  /**
+   * Sistema visual landing OC-CLUB (superficies, cards, tipografía, ritmo)
+   * — 3 superficies: base (carbón), elevada (tinte rojo mínimo), acento vino puntual
+   */
+  .oc-landing-page {
+    --oc-lp-base: #060606;
+    --oc-lp-elevated: #0a0808;
+    --oc-lp-accent: #0f080a;
+    --oc-lp-fade-red: rgba(210, 31, 45, 0.055);
+    --oc-lp-border: rgba(255, 255, 255, 0.06);
+    --oc-lp-border-strong: rgba(210, 31, 45, 0.14);
+    --oc-lp-card: rgba(5, 5, 5, 0.65);
+    --oc-lp-section-y: 4rem;
+    --oc-lp-section-y-md: 5rem;
+    --oc-lp-section-y-lg: 6rem;
+    --oc-lp-header-gap: 2.5rem;
+    background-color: var(--oc-lp-base);
+  }
+
+  @media (min-width: 640px) {
+    .oc-landing-page {
+      --oc-lp-section-y: 5rem;
+      --oc-lp-section-y-md: 5.5rem;
+      --oc-lp-section-y-lg: 6.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .oc-landing-page {
+      --oc-lp-section-y: 5.5rem;
+      --oc-lp-section-y-md: 6rem;
+      --oc-lp-section-y-lg: 7rem;
+      --oc-lp-header-gap: 3rem;
+    }
+  }
+
+  /* Textura global muy suave (continuidad con hero, sin saturar) */
+  .oc-landing-page::before {
+    content: '';
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .oc-landing-page > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .landing-section-shell {
+    width: 100%;
+    max-width: 96rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .landing-section-shell {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .landing-section-shell {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
+
+  .landing-section-shell--narrow {
+    max-width: 72rem;
+  }
+
+  /** Grid editorial 12 cols · max ~1200px contenido */
+  .landing-container {
+    width: 100%;
+    max-width: 75rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .landing-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .landing-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  .landing-section--dense {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  @media (min-width: 1024px) {
+    .landing-section--dense {
+      padding-top: 3.25rem;
+      padding-bottom: 3.25rem;
+    }
+  }
+
+  /* Superficies */
+  .landing-surface-base {
+    background-color: var(--oc-lp-base);
+  }
+
+  .landing-surface-elevated {
+    background-color: var(--oc-lp-elevated);
+    background-image: radial-gradient(ellipse 100% 55% at 50% 0%, var(--oc-lp-fade-red), transparent 58%);
+  }
+
+  .landing-surface-accent {
+    background: linear-gradient(180deg, var(--oc-lp-accent) 0%, var(--oc-lp-base) 100%);
+    border-top: 1px solid rgba(210, 31, 45, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  /* Sección: ritmo vertical + transición suave al entrar */
+  .landing-section {
+    position: relative;
+    padding-top: var(--oc-lp-section-y);
+    padding-bottom: var(--oc-lp-section-y);
+  }
+
+  .landing-section--loose {
+    padding-top: var(--oc-lp-section-y-md);
+    padding-bottom: var(--oc-lp-section-y-md);
+  }
+
+  .landing-section__edge-top {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 5rem;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, transparent 100%);
+    opacity: 0.85;
+  }
+
+  .landing-section__rule {
+    pointer-events: none;
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(210, 31, 45, 0.12), transparent);
+  }
+
+  /* Tipografía de sección */
+  .landing-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #d21f2d;
+    margin-bottom: 0.625rem;
+  }
+
+  @media (min-width: 640px) {
+    .landing-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+    }
+  }
+
+  /** Overline editorial (sin exceso de tracking) */
+  .landing-overline-soft {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: #a3a3a3;
+    line-height: 1.45;
+  }
+
+  .landing-section-header {
+    text-align: center;
+    margin-bottom: var(--oc-lp-header-gap);
+  }
+
+  .landing-title {
+    font-family: 'Oswald', Impact, 'Arial Narrow', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    line-height: 1.12;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .landing-title {
+      font-size: clamp(2rem, 3.5vw, 2.5rem);
+    }
+  }
+
+  .landing-subtitle {
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: none;
+    color: #a3a3a3;
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.55;
+  }
+
+  .landing-body {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(245, 245, 245, 0.88);
+  }
+
+  .landing-support {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #a3a3a3;
+  }
+
+  /* Cards (misma familia que hero: bordes finos, poca sombra, hover sobrio) */
+  .landing-card {
+    border-radius: 0.375rem;
+    border: 1px solid var(--oc-lp-border);
+    background: var(--oc-lp-card);
+    backdrop-filter: blur(8px);
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 20px 50px -28px rgba(0, 0, 0, 0.85);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  @media (min-width: 640px) {
+    .landing-card {
+      padding: 2rem 1.75rem;
+    }
+  }
+
+  .landing-card:hover {
+    border-color: rgba(210, 31, 45, 0.22);
+    box-shadow: 0 24px 56px -26px rgba(0, 0, 0, 0.9);
+  }
+
+  .landing-card-title {
+    font-family: 'Oswald', Impact, 'Arial Narrow', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.03em;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    padding-left: 0.75rem;
+    border-left: 2px solid rgba(210, 31, 45, 0.75);
+  }
+
+  @media (min-width: 640px) {
+    .landing-card-title {
+      font-size: 1.375rem;
+    }
+  }
+
+  .landing-card-body {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: rgba(245, 245, 245, 0.86);
+  }
+
+  .landing-card-body-muted {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #a3a3a3;
+    margin-top: 0.75rem;
+  }
+
+  .landing-card--compact {
+    padding: 1.125rem 1.125rem;
+    box-shadow: 0 12px 32px -24px rgba(0, 0, 0, 0.9);
+  }
+
+  @media (min-width: 640px) {
+    .landing-card--compact {
+      padding: 1.25rem 1.25rem;
+    }
+  }
+
+  .landing-card-title--sm {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    border-left-width: 2px;
+  }
+
+  .landing-heading-section {
+    font-family: 'Oswald', Impact, 'Arial Narrow', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.5rem, 2.8vw, 2rem);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Hero editorial */
+  .landing-hero-display {
+    font-family: 'Oswald', Impact, 'Arial Narrow', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 4.8vw, 3.05rem);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    color: #fafafa;
+  }
+
+  .landing-hero-display .landing-hero-accent {
+    color: #d21f2d;
+    font-style: normal;
+  }
+
+  .landing-hero-lead {
+    font-size: 1.0625rem;
+    line-height: 1.62;
+    color: rgba(245, 245, 245, 0.84);
+    max-width: 38rem;
+  }
+
+  @media (min-width: 640px) {
+    .landing-hero-lead {
+      font-size: 1.125rem;
+    }
+  }
+
+  .landing-hero-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 36rem;
+  }
+
+  .landing-hero-bullets li {
+    position: relative;
+    padding-left: 1.125rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: rgba(212, 212, 212, 0.92);
+  }
+
+  .landing-hero-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 3px;
+    height: 3px;
+    border-radius: 1px;
+    background: #d21f2d;
+  }
+
+  .landing-hero-quote {
+    margin: 0;
+    padding: 1rem 0 0 1rem;
+    border-left: 2px solid rgba(210, 31, 45, 0.55);
+    font-size: 0.9375rem;
+    font-style: italic;
+    line-height: 1.45;
+    color: rgba(245, 245, 245, 0.78);
+    max-width: 34rem;
+  }
+
+  .landing-hero-panel {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.42);
+    border-radius: 0.25rem;
+    padding: 1.125rem 1.25rem;
+  }
+
+  .landing-hero-panel__head {
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #d21f2d;
+    margin-bottom: 0.75rem;
+  }
+
+  .landing-hero-panel__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+
+  .landing-hero-panel__row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .landing-hero-panel__label {
+    color: #737373;
+    flex-shrink: 0;
+    max-width: 42%;
+  }
+
+  .landing-hero-panel__value {
+    color: #e5e5e5;
+    text-align: right;
+  }
+
+  /* Botones landing (alineados a hero CTAs) */
+  .landing-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.75rem;
+    border-radius: 0.125rem;
+    background-color: #d21f2d;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition:
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .landing-btn-primary:hover {
+    background-color: #a91822;
+    box-shadow: 0 12px 36px -12px rgba(210, 31, 45, 0.45);
+  }
+
+  .landing-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.75rem;
+    border-radius: 0.125rem;
+    border: 1px solid rgba(210, 31, 45, 0.55);
+    color: #f5f5f5;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .landing-btn-outline:hover {
+    background-color: rgba(210, 31, 45, 0.08);
+    border-color: rgba(210, 31, 45, 0.75);
+  }
+
+  /* Tags / chips */
+  .landing-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.875rem;
+    border-radius: 0.125rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: rgba(245, 245, 245, 0.92);
+    border: 1px solid var(--oc-lp-border);
+    background: rgba(0, 0, 0, 0.35);
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .landing-tag:hover {
+    border-color: rgba(210, 31, 45, 0.28);
+    background: rgba(210, 31, 45, 0.06);
+  }
+
+  /* Footer coherente con shell */
+  .landing-footer {
+    background-color: var(--oc-lp-base);
+    border-top: 1px solid var(--oc-lp-border);
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .landing-footer__rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(210, 31, 45, 0.1), transparent);
+    margin-bottom: 2rem;
+  }
+
+  /* Títulos de columna (footer): sin rojo para no competir con enlaces) */
+  .landing-aside-title {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.88);
+    margin-bottom: 1rem;
+  }
+
+  /* Landing OC-CLUB: hero (glow dosificado, misma base carbón) */
+  .oc-landing-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: var(--oc-lp-base);
+  }
+
+  .oc-landing-hero__glow {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 120% 80% at 0% 35%, rgba(210, 31, 45, 0.11), transparent 52%),
+      radial-gradient(ellipse 90% 60% at 100% 75%, rgba(210, 31, 45, 0.06), transparent 48%),
+      linear-gradient(180deg, #050505 0%, #060606 50%, #060606 100%);
+  }
+
+  .oc-landing-hero__grain {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /** Malla diagonal muy suave: densidad sin cartel */
+  .oc-landing-hero__mesh {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.045;
+    background-image: repeating-linear-gradient(
+      -14deg,
+      transparent,
+      transparent 48px,
+      rgba(210, 31, 45, 0.09) 48px,
+      rgba(210, 31, 45, 0.09) 49px
+    );
+  }
+
+  .oc-landing-hero__chevrons {
+    font-family: 'Oswald', Impact, sans-serif;
+    letter-spacing: 0.15em;
+    color: rgba(210, 31, 45, 0.38);
+  }
+
+  /* Banda de señales: acento vino puntual, sin franja gris plana ancha */
+  .oc-landing-strip {
+    position: relative;
+    background: linear-gradient(180deg, rgba(15, 8, 10, 0.92) 0%, rgba(8, 6, 6, 0.98) 100%);
+    border-top: 1px solid rgba(210, 31, 45, 0.09);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .oc-landing-strip::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0.022;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }

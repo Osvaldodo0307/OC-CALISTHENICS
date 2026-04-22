@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import axios from 'axios'
 import { User, ProgressEntry, TrainingPlan } from '../../types'
+import { runtime } from '../../config/runtime'
 import { Line } from 'react-chartjs-2'
 import {
   type ChartData,
@@ -17,9 +18,9 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 const MAX_POINTS = 30
-const CHART_AXIS_COLOR = '#B5A497'
+const CHART_AXIS_COLOR = '#a3a3a3'
 
 const trimSeries = (labels: string[], data: number[], maxPoints: number) => {
   if (labels.length <= maxPoints) {
@@ -74,8 +75,8 @@ export default function CoachAlumno() {
           {
             label: metric,
             data: trimmed.data,
-            borderColor: '#A43525',
-            backgroundColor: 'rgba(164, 53, 37, 0.12)',
+            borderColor: '#D21F2D',
+            backgroundColor: 'rgba(210, 31, 45, 0.12)',
             tension: 0.4,
             pointRadius: 2
           }
@@ -157,7 +158,7 @@ export default function CoachAlumno() {
           maxTicksLimit: 6
         },
         grid: {
-          color: 'rgba(181, 164, 151, 0.1)'
+          color: 'rgba(163, 163, 163, 0.12)'
         }
       }
     }
@@ -174,7 +175,7 @@ export default function CoachAlumno() {
         <div className="flex gap-2">
           <Link
             to={`/app/coach/asistencia-virtual/${id}`}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
+            className="bg-oc-red hover:bg-oc-red-deep text-white px-4 py-2 rounded text-sm"
           >
             Asistencia Virtual
           </Link>
@@ -191,19 +192,19 @@ export default function CoachAlumno() {
         <div className="bg-oc-metal p-6 rounded-lg border border-oc-red/20">
           <h2 className="text-xl font-semibold text-oc-red mb-4">Progresos</h2>
           {progress.length === 0 ? (
-            <p className="text-gray-400">No hay progresos registrados</p>
+            <p className="text-oc-muted">No hay progresos registrados</p>
           ) : (
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {progress.map((entry) => (
-                <div key={entry.id} className="bg-oc-dark p-3 rounded border border-gray-700">
+                <div key={entry.id} className="bg-oc-dark p-3 rounded border border-oc-border">
                   <div className="flex justify-between">
                     <span className="text-white font-semibold">{entry.metric_type}</span>
                     <span className="text-oc-red font-bold">{entry.value}</span>
                   </div>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-oc-muted">
                     {new Date(entry.date).toLocaleDateString()}
                   </p>
-                  {entry.notes && <p className="text-sm text-gray-300 mt-1">{entry.notes}</p>}
+                  {entry.notes && <p className="text-sm text-oc-light/90 mt-1">{entry.notes}</p>}
                 </div>
               ))}
             </div>
@@ -214,11 +215,11 @@ export default function CoachAlumno() {
           <h2 className="text-xl font-semibold text-oc-red mb-4">Gráfico de Progreso</h2>
           {uniqueMetrics.length > 0 && (
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-300 mb-2">Métrica</label>
+              <label className="block text-sm font-medium text-oc-light/90 mb-2">Métrica</label>
               <select
                 value={selectedMetric}
                 onChange={(e) => setSelectedMetric(e.target.value)}
-                className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+                className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
               >
                 {uniqueMetrics.map((metric) => (
                   <option key={metric} value={metric}>
@@ -239,13 +240,13 @@ export default function CoachAlumno() {
       <div className="bg-oc-metal p-6 rounded-lg border border-oc-red/20">
         <h2 className="text-xl font-semibold text-oc-red mb-4">Planes de Entrenamiento</h2>
         {plans.length === 0 ? (
-          <p className="text-gray-400">No hay planes asignados</p>
+          <p className="text-oc-muted">No hay planes asignados</p>
         ) : (
           <div className="space-y-4">
             {plans.map((plan) => (
-              <div key={plan.id} className="bg-oc-dark p-4 rounded border border-gray-700">
+              <div key={plan.id} className="bg-oc-dark p-4 rounded border border-oc-border">
                 <h3 className="text-lg font-bold text-white">{plan.title}</h3>
-                {plan.goal && <p className="text-gray-300 text-sm">{plan.goal}</p>}
+                {plan.goal && <p className="text-oc-light/90 text-sm">{plan.goal}</p>}
               </div>
             ))}
           </div>

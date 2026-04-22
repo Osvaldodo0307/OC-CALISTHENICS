@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from datetime import datetime, date, timedelta
 import os
+import asyncio
+import httpx
 
 from app.database import engine, Base, get_db, SessionLocal
 from app.models import User, ClassSession
@@ -38,12 +40,11 @@ def init_database():
 
     db = SessionLocal()
     try:
-        db.execute(text("ALTER TABLE bookings ADD COLUMN preferred_hour INTEGER"))
+        # Nota: las mutaciones de esquema deben ejecutarse via migraciones SQL versionadas.
+        # init_database solo verifica conectividad, crea tablas faltantes y aplica seed no destructivo.
+        db.execute(text("SELECT 1"))
         db.commit()
-        print("[MIGRATION] Columna preferred_hour agregada a bookings.")
-    except Exception:
-        db.rollback()
-    try:
+
         existing_admin = db.query(User).filter(User.username == "octavio").first()
         if not existing_admin:
             admin_user = User(
@@ -160,7 +161,7 @@ async def root():
     return {"message": "OC-CALISTHENICS API"}
 
 # =========================
-# HEALTH CHECK BD (ESTO ES LO QUE FALTABA)
+# HEALTH CHECK BD
 # =========================
 @app.get("/health/db")
 def health_db(db: Session = Depends(get_db)):
@@ -169,3 +170,26 @@ def health_db(db: Session = Depends(get_db)):
         "ok": True,
         "database": "connected"
     }
+
+# =========================
+# KEEP-ALIVE (evita que Render duerma el servicio)
+# =========================
+KEEP_ALIVE_INTERVAL = int(os.getenv("KEEP_ALIVE_INTERVAL", "600"))  # 10 min default
+
+async def _keep_alive_loop(url: str):
+    await asyncio.sleep(30)
+    async with httpx.AsyncClient(timeout=30) as client:
+        while True:
+            try:
+                r = await client.get(f"{url}/health/db")
+                print(f"[KEEP-ALIVE] Ping -> {r.status_code}")
+            except Exception as e:
+                print(f"[KEEP-ALIVE] Error: {e}")
+            await asyncio.sleep(KEEP_ALIVE_INTERVAL)
+
+@app.on_event("startup")
+async def start_keep_alive():
+    render_url = os.getenv("RENDER_EXTERNAL_URL")
+    if render_url:
+        asyncio.create_task(_keep_alive_loop(render_url))
+        print(f"[KEEP-ALIVE] Activo — ping cada {KEEP_ALIVE_INTERVAL}s a {render_url}")

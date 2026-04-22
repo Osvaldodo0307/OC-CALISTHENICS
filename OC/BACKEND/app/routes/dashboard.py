@@ -7,6 +7,7 @@ from app.database import get_db
 from app.auth import get_current_admin, get_current_coach, get_current_user
 from app.schemas import DashboardStats, BookingChartData, ClassPopularityData
 from app.models import Membership, Booking, ClassSession, User, CoachStudent, ProgressEntry
+from app.utils.timezone import mx_now, mx_today, parse_yyyy_mm_dd
 
 DAYS_ES = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 
@@ -21,14 +22,14 @@ async def get_admin_dashboard(
     active_members = db.query(Membership).filter(Membership.status == "active").count()
     expired_members = db.query(Membership).filter(Membership.status == "expired").count()
     
-    today = datetime.now().date()
+    today = mx_today()
     bookings_today = db.query(Booking).filter(
         func.date(Booking.created_at) == today,
         Booking.status == "booked"
     ).count()
     
     # Ocupación promedio (últimos 7 días)
-    week_ago = datetime.now() - timedelta(days=7)
+    week_ago = mx_now().replace(tzinfo=None) - timedelta(days=7)
     total_capacity = db.query(func.sum(ClassSession.capacity)).filter(
         ClassSession.start_datetime >= week_ago
     ).scalar() or 0
@@ -59,17 +60,20 @@ async def get_bookings_chart(
 ):
     if period == "week":
         days = 7
-        start_date = datetime.now() - timedelta(days=days)
-        labels = [(datetime.now() - timedelta(days=i)).strftime("%d/%m") for i in range(days-1, -1, -1)]
+        now = mx_now().replace(tzinfo=None)
+        start_date = now - timedelta(days=days)
+        labels = [(now - timedelta(days=i)).strftime("%d/%m") for i in range(days-1, -1, -1)]
     else:
         days = 30
-        start_date = datetime.now() - timedelta(days=days)
-        labels = [(datetime.now() - timedelta(days=i)).strftime("%d/%m") for i in range(days-1, -1, -1)]
+        now = mx_now().replace(tzinfo=None)
+        start_date = now - timedelta(days=days)
+        labels = [(now - timedelta(days=i)).strftime("%d/%m") for i in range(days-1, -1, -1)]
     
     data = []
     for i in range(days):
-        day_start = (datetime.now() - timedelta(days=days-i-1)).date()
-        day_end = (datetime.now() - timedelta(days=days-i-2)).date() if i < days-1 else datetime.now().date()
+        now = mx_now().replace(tzinfo=None)
+        day_start = (now - timedelta(days=days-i-1)).date()
+        day_end = (now - timedelta(days=days-i-2)).date() if i < days-1 else now.date()
         count = db.query(Booking).filter(
             and_(
                 func.date(Booking.created_at) >= day_start,
@@ -117,11 +121,11 @@ async def get_weekly_schedule(
     """
     if start_date:
         try:
-            week_start = datetime.strptime(start_date, "%Y-%m-%d").date()
+            week_start = parse_yyyy_mm_dd(start_date)
         except ValueError:
             raise HTTPException(status_code=400, detail="Formato de fecha invalido. Usa YYYY-MM-DD")
     else:
-        today = date.today()
+        today = mx_today()
         week_start = today - timedelta(days=today.weekday())
 
     days = []
@@ -148,6 +152,21 @@ async def get_weekly_schedule(
 
             student_ids = [b.user_id for b in bookings]
             students = db.query(User).filter(User.id.in_(student_ids)).all() if student_ids else []
+            students_map = {student.id: student for student in students}
+            booking_students = []
+            for booking in bookings:
+                student = students_map.get(booking.user_id)
+                if not student:
+                    continue
+                hour_label = f"{booking.preferred_hour:02d}:00" if booking.preferred_hour is not None else cls.start_datetime.strftime("%H:%M")
+                booking_students.append({
+                    "id": student.id,
+                    "name": student.name,
+                    "username": student.username,
+                    "phone": student.phone,
+                    "preferred_hour": booking.preferred_hour,
+                    "attendance_hour": hour_label
+                })
 
             day_bookings_count += len(bookings)
 
@@ -158,15 +177,7 @@ async def get_weekly_schedule(
                 "start_datetime": cls.start_datetime.isoformat(),
                 "duration_minutes": cls.duration_minutes,
                 "bookings_count": len(bookings),
-                "students": [
-                    {
-                        "id": s.id,
-                        "name": s.name,
-                        "username": s.username,
-                        "phone": s.phone
-                    }
-                    for s in students
-                ]
+                "students": booking_students
             })
 
         total_bookings_week += day_bookings_count
@@ -174,7 +185,7 @@ async def get_weekly_schedule(
         days.append({
             "date": current_date.isoformat(),
             "day_name": DAYS_ES[current_date.weekday()],
-            "is_today": current_date == date.today(),
+            "is_today": current_date == mx_today(),
             "bookings_count": day_bookings_count,
             "classes": classes_data
         })
@@ -207,11 +218,11 @@ async def get_today_detail(
     """
     if target_date:
         try:
-            filter_date = datetime.strptime(target_date, "%Y-%m-%d").date()
+            filter_date = parse_yyyy_mm_dd(target_date)
         except ValueError:
             raise HTTPException(status_code=400, detail="Formato invalido")
     else:
-        filter_date = date.today()
+        filter_date = mx_today()
 
     day_start = datetime.combine(filter_date, datetime.min.time())
     day_end = datetime.combine(filter_date, datetime.max.time())

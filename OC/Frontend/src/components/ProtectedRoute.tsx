@@ -1,5 +1,6 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import LoadingState from './ui/LoadingState'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -7,23 +8,19 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
+  const location = useLocation()
   const { user, loading } = useAuth()
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-oc-dark flex items-center justify-center">
-        <div className="text-oc-red text-xl">Cargando...</div>
-      </div>
-    )
+    return <LoadingState message="Validando sesion..." />
   }
 
   if (!user) {
-    return <Navigate to="/app/login" replace />
+    return <Navigate to="/app/login" replace state={{ from: location.pathname }} />
   }
 
   if (requiredRole && user.role !== requiredRole) {
-    // Redirigir a login si el rol no coincide
-    return <Navigate to="/app/login" replace />
+    return <Navigate to="/app" replace />
   }
 
   return <>{children}</>

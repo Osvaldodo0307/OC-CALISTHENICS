@@ -1,5 +1,10 @@
 # 🚀 Guía Completa para Subir el Frontend a Netlify
 
+## Producción OC Club + Git
+
+- Dominio del sitio: **`https://oc-club.netlify.app`**
+- Para **enlazar GitHub con Netlify y Render** (monorepo), sigue primero **[`DEPLOY_OC_CLUB.md`](DEPLOY_OC_CLUB.md)**. En la raíz del repo hay un `netlify.toml` que construye `OC/Frontend`.
+
 ## 📋 Resumen
 
 Esta guía te ayudará a preparar y subir el frontend de OC-CALISTHENICS directamente a Netlify sin necesidad de ejecutar comandos localmente.

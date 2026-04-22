@@ -2,8 +2,9 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { User, VirtualAssessment } from '../../types'
+import { runtime } from '../../config/runtime'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 const defaultEquipment = {
   barra: false,
   anillas: false,
@@ -125,11 +126,11 @@ export default function AsistenciaVirtual() {
 
       <form onSubmit={handleSubmit} className="bg-oc-metal p-6 rounded-lg border border-oc-red/20 space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Objetivo</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">Objetivo</label>
           <select
             value={formData.goal}
             onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
-            className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+            className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
           >
             <option value="fuerza">Fuerza</option>
             <option value="hipertrofia">Hipertrofia</option>
@@ -139,11 +140,11 @@ export default function AsistenciaVirtual() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Nivel</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">Nivel</label>
           <select
             value={formData.level}
             onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-            className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+            className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
           >
             <option value="principiante">Principiante</option>
             <option value="intermedio">Intermedio</option>
@@ -153,31 +154,31 @@ export default function AsistenciaVirtual() {
 
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Días por Semana</label>
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">Días por Semana</label>
             <input
               type="number"
               value={formData.days_per_week}
               onChange={(e) => setFormData({ ...formData, days_per_week: Number(e.target.value) })}
               min="1"
               max="7"
-              className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+              className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Duración Sesión (min)</label>
+            <label className="block text-sm font-medium text-oc-light/90 mb-2">Duración Sesión (min)</label>
             <input
               type="number"
               value={formData.session_minutes}
               onChange={(e) => setFormData({ ...formData, session_minutes: Number(e.target.value) })}
               min="30"
               max="120"
-              className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+              className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Equipo Disponible</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">Equipo Disponible</label>
           <div className="grid grid-cols-2 gap-2">
             {Object.keys(formData.equipment_json).map((equipment) => (
               <label key={equipment} className="flex items-center text-white">
@@ -194,11 +195,11 @@ export default function AsistenciaVirtual() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Preferencia</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">Preferencia</label>
           <select
             value={formData.preference}
             onChange={(e) => setFormData({ ...formData, preference: e.target.value })}
-            className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+            className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
           >
             <option value="calistenia">Calistenia</option>
             <option value="powerlifting">Powerlifting</option>
@@ -207,11 +208,11 @@ export default function AsistenciaVirtual() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Restricciones/Lesiones</label>
+          <label className="block text-sm font-medium text-oc-light/90 mb-2">Restricciones/Lesiones</label>
           <textarea
             value={formData.restrictions}
             onChange={(e) => setFormData({ ...formData, restrictions: e.target.value })}
-            className="w-full bg-oc-dark border border-gray-600 rounded px-4 py-2 text-white"
+            className="w-full bg-oc-dark border border-oc-border rounded px-4 py-2 text-white"
             rows={3}
             placeholder="Describir restricciones o lesiones..."
           />
@@ -228,7 +229,7 @@ export default function AsistenciaVirtual() {
             <button
               type="button"
               onClick={handleGeneratePlan}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-semibold"
+              className="bg-oc-red hover:bg-oc-red-deep text-white px-6 py-2 rounded font-semibold"
             >
               Generar Plan Mensual (1 Click)
             </button>

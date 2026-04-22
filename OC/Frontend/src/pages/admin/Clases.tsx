@@ -1,7 +1,10 @@
 import { useEffect, useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { addDaysToYmd, getMxDateString, ymdDayOfMonth, ymdWeekday } from '../../utils/datetimeMx'
+import { runtime } from '../../config/runtime'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = runtime.apiBaseUrl
 
 interface ClassSession {
   id: number
@@ -20,13 +23,15 @@ interface ClassSession {
 
 const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
-function toLocalDateStr(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+function formatTime(dt: string): string {
+  const [, timePart = '00:00:00'] = dt.split('T')
+  return timePart.slice(0, 5)
 }
 
-function formatTime(dt: string): string {
-  const d = new Date(dt)
-  return `${d.getUTCHours().toString().padStart(2, '0')}:${d.getUTCMinutes().toString().padStart(2, '0')}`
+function extractHourMinute(dt: string): { hour: number; minute: number } {
+  const [, timePart = '00:00:00'] = dt.split('T')
+  const [hour = '0', minute = '0'] = timePart.split(':')
+  return { hour: Number(hour), minute: Number(minute) }
 }
 
 const DISCIPLINES = [
@@ -57,7 +62,7 @@ const EMPTY_FORM: FormData = {
 export default function AdminClases() {
   const [classes, setClasses] = useState<ClassSession[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedDate, setSelectedDate] = useState<string>(toLocalDateStr(new Date()))
+  const [selectedDate, setSelectedDate] = useState<string>(getMxDateString())
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState<number | null>(null)
   const [form, setForm] = useState<FormData>({ ...EMPTY_FORM })
@@ -89,13 +94,13 @@ export default function AdminClases() {
   }
 
   const openEditForm = (cls: ClassSession) => {
-    const dt = new Date(cls.start_datetime)
+    const { hour, minute } = extractHourMinute(cls.start_datetime)
     setEditingId(cls.id)
     setForm({
       title: cls.title,
       discipline: cls.discipline,
-      hour: dt.getUTCHours(),
-      minute: dt.getUTCMinutes(),
+      hour,
+      minute,
       duration_minutes: cls.duration_minutes,
       capacity: cls.capacity,
       date: selectedDate,
@@ -172,24 +177,22 @@ export default function AdminClases() {
   }
 
   const weekDays = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date()
-    d.setDate(d.getDate() + i)
-    return toLocalDateStr(d)
+    return addDaysToYmd(getMxDateString(), i)
   })
 
-  const selectedDayName = DAYS_ES[new Date(selectedDate + 'T12:00:00').getDay()]
+  const selectedDayName = DAYS_ES[ymdWeekday(selectedDate)]
 
   return (
     <div className="px-4 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white">Gestión de Clases</h1>
-          <p className="text-gray-500 text-sm">Agregar, editar o eliminar clases</p>
+          <p className="text-oc-muted text-sm">Agregar, editar o eliminar clases</p>
         </div>
         <button
           onClick={handleGenerate}
           disabled={generating}
-          className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+          className="bg-oc-panel hover:bg-oc-border text-white text-sm px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
         >
           {generating ? 'Generando...' : 'Generar semana'}
         </button>
@@ -198,7 +201,6 @@ export default function AdminClases() {
       {/* Day selector */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         {weekDays.map((dateStr) => {
-          const d = new Date(dateStr + 'T12:00:00')
           const isSelected = dateStr === selectedDate
           return (
             <button
@@ -207,11 +209,11 @@ export default function AdminClases() {
               className={`flex-shrink-0 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                 isSelected
                   ? 'bg-oc-red text-white'
-                  : 'bg-oc-metal text-gray-400 hover:text-white border border-gray-700'
+                  : 'bg-oc-metal text-oc-muted hover:text-white border border-oc-border'
               }`}
             >
-              <div>{DAYS_ES[d.getDay()].slice(0, 3)}</div>
-              <div className="text-lg font-bold">{d.getDate()}</div>
+              <div>{DAYS_ES[ymdWeekday(dateStr)].slice(0, 3)}</div>
+              <div className="text-lg font-bold">{ymdDayOfMonth(dateStr)}</div>
             </button>
           )
         })}
@@ -239,7 +241,7 @@ export default function AdminClases() {
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Disciplina</label>
+                <label className="block text-xs text-oc-muted mb-1">Disciplina</label>
                 <select
                   value={form.discipline}
                   onChange={(e) => {
@@ -250,7 +252,7 @@ export default function AdminClases() {
                       title: updateTitle(disc, f.hour, f.minute, f.duration_minutes),
                     }))
                   }}
-                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                  className="w-full bg-oc-dark border border-oc-border rounded-lg px-3 py-2 text-white text-sm"
                 >
                   {DISCIPLINES.map((d) => (
                     <option key={d} value={d}>{d}</option>
@@ -258,20 +260,20 @@ export default function AdminClases() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Fecha</label>
+                <label className="block text-xs text-oc-muted mb-1">Fecha</label>
                 <input
                   type="date"
                   value={form.date}
                   onChange={(e) => setForm({ ...form, date: e.target.value })}
                   required
-                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                  className="w-full bg-oc-dark border border-oc-border rounded-lg px-3 py-2 text-white text-sm"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Hora inicio</label>
+                <label className="block text-xs text-oc-muted mb-1">Hora inicio</label>
                 <select
                   value={form.hour}
                   onChange={(e) => {
@@ -282,7 +284,7 @@ export default function AdminClases() {
                       title: updateTitle(f.discipline, h, f.minute, f.duration_minutes),
                     }))
                   }}
-                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                  className="w-full bg-oc-dark border border-oc-border rounded-lg px-3 py-2 text-white text-sm"
                 >
                   {Array.from({ length: 24 }, (_, i) => (
                     <option key={i} value={i}>{i.toString().padStart(2, '0')}:00</option>
@@ -290,7 +292,7 @@ export default function AdminClases() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Minutos</label>
+                <label className="block text-xs text-oc-muted mb-1">Minutos</label>
                 <select
                   value={form.minute}
                   onChange={(e) => {
@@ -301,7 +303,7 @@ export default function AdminClases() {
                       title: updateTitle(f.discipline, f.hour, m, f.duration_minutes),
                     }))
                   }}
-                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                  className="w-full bg-oc-dark border border-oc-border rounded-lg px-3 py-2 text-white text-sm"
                 >
                   <option value={0}>:00</option>
                   <option value={15}>:15</option>
@@ -310,7 +312,7 @@ export default function AdminClases() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Duración</label>
+                <label className="block text-xs text-oc-muted mb-1">Duración</label>
                 <select
                   value={form.duration_minutes}
                   onChange={(e) => {
@@ -321,7 +323,7 @@ export default function AdminClases() {
                       title: updateTitle(f.discipline, f.hour, f.minute, dur),
                     }))
                   }}
-                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                  className="w-full bg-oc-dark border border-oc-border rounded-lg px-3 py-2 text-white text-sm"
                 >
                   <option value={30}>30 min</option>
                   <option value={60}>1 hora</option>
@@ -331,24 +333,24 @@ export default function AdminClases() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Capacidad</label>
+                <label className="block text-xs text-oc-muted mb-1">Capacidad</label>
                 <input
                   type="number"
                   value={form.capacity}
                   onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })}
-                  className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                  className="w-full bg-oc-dark border border-oc-border rounded-lg px-3 py-2 text-white text-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Título (se genera automático)</label>
+              <label className="block text-xs text-oc-muted mb-1">Título (se genera automático)</label>
               <input
                 type="text"
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                 required
-                className="w-full bg-oc-dark border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                className="w-full bg-oc-dark border border-oc-border rounded-lg px-3 py-2 text-white text-sm"
               />
             </div>
 
@@ -363,7 +365,7 @@ export default function AdminClases() {
               <button
                 type="button"
                 onClick={() => { setShowForm(false); setEditingId(null) }}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-5 py-2 rounded-lg transition-colors"
+                className="bg-oc-panel hover:bg-oc-border text-white text-sm px-5 py-2 rounded-lg transition-colors"
               >
                 Cancelar
               </button>
@@ -376,11 +378,11 @@ export default function AdminClases() {
       {loading ? (
         <div className="text-center py-12">
           <div className="animate-spin w-8 h-8 border-2 border-oc-red border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-gray-400">Cargando...</p>
+          <p className="text-oc-muted">Cargando...</p>
         </div>
       ) : classes.length === 0 ? (
-        <div className="text-center py-12 bg-oc-metal rounded-xl border border-gray-700/50">
-          <p className="text-gray-400 mb-3">No hay clases para este día</p>
+        <div className="text-center py-12 bg-oc-metal rounded-xl border border-oc-border/80">
+          <p className="text-oc-muted mb-3">No hay clases para este día</p>
           <button
             onClick={openNewForm}
             className="text-oc-red hover:text-white text-sm font-medium transition-colors"
@@ -393,27 +395,34 @@ export default function AdminClases() {
           {classes.map((cls) => (
             <div
               key={cls.id}
-              className="bg-oc-metal rounded-xl border border-gray-700/50 p-4 flex items-center justify-between"
+              className="bg-oc-metal rounded-xl border border-oc-border/80 p-4 flex items-center justify-between"
             >
               <div className="flex items-center gap-4 flex-1 min-w-0">
                 <div className="text-center flex-shrink-0 w-14">
                   <p className="text-oc-red font-bold text-sm">{formatTime(cls.start_datetime)}</p>
-                  <p className="text-gray-600 text-[10px]">{cls.duration_minutes} min</p>
+                  <p className="text-oc-muted text-[10px]">{cls.duration_minutes} min</p>
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-white font-semibold text-sm truncate">{cls.title}</h3>
-                  <p className="text-gray-500 text-xs">{cls.discipline} · Cap: {cls.capacity}</p>
+                  <p className="text-oc-muted text-xs">{cls.discipline} · Cap: {cls.capacity}</p>
                 </div>
                 {cls.bookings_count != null && cls.bookings_count > 0 && (
-                  <span className="bg-green-900/30 text-green-400 text-xs font-medium px-2 py-1 rounded-full flex-shrink-0">
+                  <span className="bg-oc-red/20 text-oc-light text-xs font-medium px-2 py-1 rounded-full flex-shrink-0">
                     {cls.bookings_count} 👤
                   </span>
                 )}
               </div>
-              <div className="flex gap-2 ml-3 flex-shrink-0">
+              <div className="flex flex-wrap items-center gap-2 ml-3 flex-shrink-0 justify-end">
+                <Link
+                  to={`/app/admin/asistencia?date=${encodeURIComponent(selectedDate)}&classId=${cls.id}`}
+                  className="bg-oc-panel hover:bg-oc-border text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
+                  title="Registrar asistencia de alumnos con reserva en esta clase"
+                >
+                  Asistencia
+                </Link>
                 <button
                   onClick={() => openEditForm(cls)}
-                  className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 p-2 rounded-lg transition-colors"
+                  className="text-oc-muted hover:text-oc-red hover:bg-oc-red/10 p-2 rounded-lg transition-colors"
                   title="Editar"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -422,7 +431,7 @@ export default function AdminClases() {
                 </button>
                 <button
                   onClick={() => handleDelete(cls.id, cls.title)}
-                  className="text-red-400 hover:text-red-300 hover:bg-red-900/30 p-2 rounded-lg transition-colors"
+                  className="text-oc-red hover:text-oc-light hover:bg-oc-red/20 p-2 rounded-lg transition-colors"
                   title="Eliminar"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
