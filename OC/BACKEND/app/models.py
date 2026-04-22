@@ -26,6 +26,26 @@ class User(Base):
 
     # Relationships
     membership = relationship("Membership", back_populates="user", uselist=False)
+    membership_cycles = relationship(
+        "MembershipCycle",
+        foreign_keys="MembershipCycle.user_id",
+        back_populates="user",
+    )
+    created_membership_cycles = relationship(
+        "MembershipCycle",
+        foreign_keys="MembershipCycle.created_by",
+        back_populates="created_by_user",
+    )
+    updated_membership_cycles = relationship(
+        "MembershipCycle",
+        foreign_keys="MembershipCycle.updated_by",
+        back_populates="updated_by_user",
+    )
+    membership_cycle_audits = relationship(
+        "MembershipCycleAudit",
+        foreign_keys="MembershipCycleAudit.changed_by",
+        back_populates="changed_by_user",
+    )
     bookings = relationship("Booking", back_populates="user")
 
     coach_students = relationship(
@@ -96,11 +116,11 @@ class MembershipCycle(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     membership = relationship("Membership", back_populates="cycles")
-    user = relationship("User")
+    user = relationship("User", foreign_keys=[user_id], back_populates="membership_cycles")
     payments = relationship("MembershipPayment", back_populates="membership_cycle", cascade="all, delete-orphan")
     notes = relationship("MembershipNote", back_populates="membership_cycle")
-    created_by_user = relationship("User", foreign_keys=[created_by])
-    updated_by_user = relationship("User", foreign_keys=[updated_by])
+    created_by_user = relationship("User", foreign_keys=[created_by], back_populates="created_membership_cycles")
+    updated_by_user = relationship("User", foreign_keys=[updated_by], back_populates="updated_membership_cycles")
 
 
 class MembershipPayment(Base):
@@ -156,7 +176,7 @@ class MembershipCycleAudit(Base):
     changed_at = Column(DateTime(timezone=True), server_default=func.now())
 
     cycle = relationship("MembershipCycle")
-    changed_by_user = relationship("User")
+    changed_by_user = relationship("User", foreign_keys=[changed_by], back_populates="membership_cycle_audits")
 
 
 class ClassSession(Base):
