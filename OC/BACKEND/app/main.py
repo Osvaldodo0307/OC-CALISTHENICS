@@ -36,12 +36,19 @@ def run_compat_schema_patches(db: Session):
     Estas sentencias son idempotentes: solo agregan columnas/indices faltantes.
     """
     compat_statements = [
+        "ALTER TABLE users ADD COLUMN username VARCHAR(60)",
         "ALTER TABLE users ADD COLUMN gym_code VARCHAR(50)",
+        "ALTER TABLE users ADD COLUMN name VARCHAR(120)",
+        "ALTER TABLE users ADD COLUMN password_hash VARCHAR(255)",
+        "ALTER TABLE users ADD COLUMN role VARCHAR(20)",
+        "ALTER TABLE users ADD COLUMN phone VARCHAR(20)",
         "CREATE UNIQUE INDEX IF NOT EXISTS ix_users_gym_code ON users (gym_code)",
+        "CREATE UNIQUE INDEX IF NOT EXISTS ix_users_username ON users (username)",
         "ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT TRUE",
         "ALTER TABLE users ADD COLUMN deactivated_at TIMESTAMP",
         "ALTER TABLE users ADD COLUMN deactivated_by INTEGER",
         "ALTER TABLE users ADD COLUMN deactivation_reason TEXT",
+        "ALTER TABLE users ADD COLUMN created_at TIMESTAMP",
         "ALTER TABLE bookings ADD COLUMN preferred_hour INTEGER",
         "ALTER TABLE bookings ADD COLUMN attended BOOLEAN",
         "ALTER TABLE class_sessions ADD COLUMN coach_attended BOOLEAN",
