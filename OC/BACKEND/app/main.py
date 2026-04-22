@@ -211,6 +211,21 @@ def health_db(db: Session = Depends(get_db)):
         "database": "connected"
     }
 
+
+@app.get("/health/users-table")
+def health_users_table(db: Session = Depends(get_db)):
+    try:
+        count = db.execute(text("SELECT COUNT(*) FROM users")).scalar()
+        return {
+            "ok": True,
+            "users_count": int(count or 0),
+        }
+    except Exception as exc:
+        return {
+            "ok": False,
+            "error": str(exc),
+        }
+
 # =========================
 # KEEP-ALIVE (evita que Render duerma el servicio)
 # =========================
