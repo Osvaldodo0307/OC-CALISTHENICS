@@ -17,6 +17,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 const API_URL = runtime.apiBaseUrl
+const LOGIN_REQUEST_TIMEOUT_MS = 45000
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
@@ -132,7 +133,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         access_token: string
         token_type: string
         user: User
-      }>(`${API_URL}/auth/login`, formData)
+      }>(`${API_URL}/auth/login`, formData, {
+        timeout: LOGIN_REQUEST_TIMEOUT_MS,
+      })
     } catch (error) {
       setAuthError(toUserMessage(error, 'No se pudo iniciar sesion.'))
       throw error
