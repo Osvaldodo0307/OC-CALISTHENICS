@@ -36,6 +36,7 @@ export default function AppShell() {
     { path: '/app/admin/dashboard', label: 'Agenda Semanal' },
     { path: '/app/admin/asistencia', label: 'Asistencia' },
     { path: '/app/admin/clases', label: 'Gestión de Clases' },
+    { path: '/app/admin/membresias', label: 'Membresias' },
     { path: '/app/admin/usuarios', label: 'Usuarios' },
   ]
 

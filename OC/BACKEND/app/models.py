@@ -17,6 +17,10 @@ class User(Base):
 
     role = Column(String(20), nullable=False)  # admin, socio, coach
     phone = Column(String(20), nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
+    deactivated_at = Column(DateTime(timezone=True), nullable=True)
+    deactivated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    deactivation_reason = Column(Text, nullable=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -69,6 +73,90 @@ class Membership(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="membership")
+    cycles = relationship("MembershipCycle", back_populates="membership", cascade="all, delete-orphan")
+    notes = relationship("MembershipNote", back_populates="membership")
+
+
+class MembershipCycle(Base):
+    __tablename__ = "membership_cycles"
+
+    id = Column(Integer, primary_key=True, index=True)
+    membership_id = Column(Integer, ForeignKey("memberships.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    membership_type = Column(String(60), nullable=False)
+    cost = Column(Float, nullable=False)
+    start_date = Column(Date, nullable=False)
+    end_date = Column(Date, nullable=False)
+    status = Column(String(30), nullable=False, default="active")
+    is_active_cycle = Column(Boolean, nullable=False, default=True)
+    renewed_from_cycle_id = Column(Integer, ForeignKey("membership_cycles.id"), nullable=True)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    updated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    membership = relationship("Membership", back_populates="cycles")
+    user = relationship("User")
+    payments = relationship("MembershipPayment", back_populates="membership_cycle", cascade="all, delete-orphan")
+    notes = relationship("MembershipNote", back_populates="membership_cycle")
+    created_by_user = relationship("User", foreign_keys=[created_by])
+    updated_by_user = relationship("User", foreign_keys=[updated_by])
+
+
+class MembershipPayment(Base):
+    __tablename__ = "membership_payments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    membership_cycle_id = Column(Integer, ForeignKey("membership_cycles.id"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    payment_date = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+    amount = Column(Float, nullable=False)
+    payment_method = Column(String(30), nullable=False)
+    concept = Column(String(120), nullable=True)
+    observations = Column(Text, nullable=True)
+    idempotency_key = Column(String(120), nullable=True)
+    reversed_at = Column(DateTime(timezone=True), nullable=True)
+    reversed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    reversal_reason = Column(Text, nullable=True)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    membership_cycle = relationship("MembershipCycle", back_populates="payments")
+    user = relationship("User", foreign_keys=[user_id])
+    creator = relationship("User", foreign_keys=[created_by])
+    reverser = relationship("User", foreign_keys=[reversed_by])
+
+
+class MembershipNote(Base):
+    __tablename__ = "membership_notes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    membership_id = Column(Integer, ForeignKey("memberships.id"), nullable=True, index=True)
+    membership_cycle_id = Column(Integer, ForeignKey("membership_cycles.id"), nullable=True, index=True)
+    note = Column(Text, nullable=False)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", foreign_keys=[user_id])
+    creator = relationship("User", foreign_keys=[created_by])
+    membership = relationship("Membership", back_populates="notes")
+    membership_cycle = relationship("MembershipCycle", back_populates="notes")
+
+
+class MembershipCycleAudit(Base):
+    __tablename__ = "membership_cycle_audits"
+
+    id = Column(Integer, primary_key=True, index=True)
+    membership_cycle_id = Column(Integer, ForeignKey("membership_cycles.id"), nullable=False, index=True)
+    changed_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    reason = Column(Text, nullable=False)
+    old_payload = Column(JSON, nullable=False)
+    new_payload = Column(JSON, nullable=False)
+    changed_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    cycle = relationship("MembershipCycle")
+    changed_by_user = relationship("User")
 
 
 class ClassSession(Base):

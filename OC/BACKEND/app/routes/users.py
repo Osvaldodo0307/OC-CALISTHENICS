@@ -9,12 +9,7 @@ from app.schemas import UserResponse, UserCreate, UserUpdate
 from app.models import (
     User,
     Membership,
-    CoachStudent,
-    Booking,
-    ProgressEntry,
-    TrainingPlan,
-    VirtualAssessment,
-    ClassSession,
+    MembershipCycle,
 )
 from app.auth import get_password_hash
 
@@ -128,33 +123,44 @@ async def delete_user(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    if user.role == "coach":
-        db.query(CoachStudent).filter(CoachStudent.coach_id == user.id).delete()
-        db.query(ProgressEntry).filter(ProgressEntry.coach_id == user.id).delete()
-        db.query(VirtualAssessment).filter(VirtualAssessment.coach_id == user.id).delete()
-
-        plans = db.query(TrainingPlan).filter(TrainingPlan.coach_id == user.id).all()
-        for plan in plans:
-            db.delete(plan)
-
-        db.query(ClassSession).filter(ClassSession.coach_id == user.id).update(
-            {ClassSession.coach_id: None}
-        )
+    user.is_active = False
+    user.deactivated_at = datetime.utcnow()
+    user.deactivated_by = current_user.id
+    user.deactivation_reason = "Baja administrativa"
 
     if user.role == "socio":
-        db.query(Membership).filter(Membership.user_id == user.id).delete()
-        db.query(CoachStudent).filter(CoachStudent.student_id == user.id).delete()
-        db.query(ProgressEntry).filter(ProgressEntry.student_id == user.id).delete()
-        db.query(VirtualAssessment).filter(VirtualAssessment.student_id == user.id).delete()
-        db.query(Booking).filter(Booking.user_id == user.id).delete()
+        membership = db.query(Membership).filter(Membership.user_id == user.id).first()
+        if membership:
+            membership.status = "expired"
+            active_cycle = db.query(MembershipCycle).filter(
+                MembershipCycle.membership_id == membership.id,
+                MembershipCycle.is_active_cycle == True
+            ).first()
+            if active_cycle:
+                active_cycle.status = "suspendida"
+                active_cycle.updated_by = current_user.id
 
-        plans = db.query(TrainingPlan).filter(TrainingPlan.student_id == user.id).all()
-        for plan in plans:
-            db.delete(plan)
-
-    db.delete(user)
+    db.add(user)
     db.commit()
-    return {"message": "User deleted"}
+    return {"message": "Usuario dado de baja logicamente"}
+
+
+@router.put("/{user_id}/reactivate")
+async def reactivate_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin)
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    user.is_active = True
+    user.deactivated_at = None
+    user.deactivated_by = None
+    user.deactivation_reason = None
+    db.add(user)
+    db.commit()
+    return {"message": "Usuario reactivado"}
 
 @router.get("/coaches", response_model=List[UserResponse])
 async def get_coaches(
