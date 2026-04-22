@@ -30,6 +30,45 @@ from app.routes import (
 # =========================
 # Crear tablas y seeds al iniciar
 # =========================
+def run_compat_schema_patches(db: Session):
+    """
+    Compatibilidad para entornos productivos con tablas preexistentes.
+    Estas sentencias son idempotentes: solo agregan columnas/indices faltantes.
+    """
+    compat_statements = [
+        "ALTER TABLE users ADD COLUMN username VARCHAR(60)",
+        "ALTER TABLE users ADD COLUMN gym_code VARCHAR(50)",
+        "ALTER TABLE users ADD COLUMN name VARCHAR(120)",
+        "ALTER TABLE users ADD COLUMN password_hash VARCHAR(255)",
+        "ALTER TABLE users ADD COLUMN role VARCHAR(20)",
+        "ALTER TABLE users ADD COLUMN phone VARCHAR(20)",
+        "CREATE UNIQUE INDEX IF NOT EXISTS ix_users_gym_code ON users (gym_code)",
+        "CREATE UNIQUE INDEX IF NOT EXISTS ix_users_username ON users (username)",
+        "ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT TRUE",
+        "ALTER TABLE users ADD COLUMN deactivated_at TIMESTAMP",
+        "ALTER TABLE users ADD COLUMN deactivated_by INTEGER",
+        "ALTER TABLE users ADD COLUMN deactivation_reason TEXT",
+        "ALTER TABLE users ADD COLUMN created_at TIMESTAMP",
+        "ALTER TABLE bookings ADD COLUMN preferred_hour INTEGER",
+        "ALTER TABLE bookings ADD COLUMN attended BOOLEAN",
+        "ALTER TABLE class_sessions ADD COLUMN coach_attended BOOLEAN",
+        "ALTER TABLE membership_cycles ADD COLUMN renewed_from_cycle_id INTEGER",
+        "ALTER TABLE membership_cycles ADD COLUMN created_by INTEGER",
+        "ALTER TABLE membership_cycles ADD COLUMN updated_by INTEGER",
+        "ALTER TABLE membership_payments ADD COLUMN idempotency_key VARCHAR(120)",
+        "ALTER TABLE membership_payments ADD COLUMN reversed_at TIMESTAMP",
+        "ALTER TABLE membership_payments ADD COLUMN reversed_by INTEGER",
+        "ALTER TABLE membership_payments ADD COLUMN reversal_reason TEXT",
+        "CREATE UNIQUE INDEX IF NOT EXISTS ux_membership_payments_cycle_idempotency ON membership_payments (membership_cycle_id, idempotency_key)",
+    ]
+    for stmt in compat_statements:
+        try:
+            db.execute(text(stmt))
+            db.commit()
+        except Exception:
+            db.rollback()
+
+
 def init_database():
     try:
         Base.metadata.create_all(bind=engine)
@@ -40,10 +79,11 @@ def init_database():
 
     db = SessionLocal()
     try:
-        # Nota: las mutaciones de esquema deben ejecutarse via migraciones SQL versionadas.
-        # init_database solo verifica conectividad, crea tablas faltantes y aplica seed no destructivo.
+        # Idealmente usar migraciones SQL versionadas. Este fallback evita caidas en prod
+        # cuando existen tablas antiguas sin columnas nuevas.
         db.execute(text("SELECT 1"))
         db.commit()
+        run_compat_schema_patches(db)
 
         existing_admin = db.query(User).filter(User.username == "octavio").first()
         if not existing_admin:
@@ -170,6 +210,21 @@ def health_db(db: Session = Depends(get_db)):
         "ok": True,
         "database": "connected"
     }
+
+
+@app.get("/health/users-table")
+def health_users_table(db: Session = Depends(get_db)):
+    try:
+        count = db.execute(text("SELECT COUNT(*) FROM users")).scalar()
+        return {
+            "ok": True,
+            "users_count": int(count or 0),
+        }
+    except Exception as exc:
+        return {
+            "ok": False,
+            "error": str(exc),
+        }
 
 # =========================
 # KEEP-ALIVE (evita que Render duerma el servicio)

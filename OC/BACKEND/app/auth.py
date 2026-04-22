@@ -29,8 +29,12 @@ def authenticate_user(db: Session, username: str, password: str) -> Optional[Use
     user = get_user_by_username(db, username)
     if not user:
         return None
-    if not user.is_active:
-        return None
+    try:
+        if user.is_active is False:
+            return None
+    except Exception:
+        # Compatibilidad con esquemas legacy sin columna is_active
+        pass
     if not verify_password(password, user.password_hash):
         return None
     return user
@@ -59,11 +63,15 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
     user = get_user_by_username(db, username=username)
     if user is None:
         raise credentials_exception
-    if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Usuario inactivo",
-        )
+    try:
+        if user.is_active is False:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Usuario inactivo",
+            )
+    except Exception:
+        # Compatibilidad con esquemas legacy sin columna is_active
+        pass
     
     return user
 
