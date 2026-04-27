@@ -16,6 +16,9 @@ export default function Perfil() {
   const [membership, setMembership] = useState<Membership | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [opinionDraft, setOpinionDraft] = useState('')
+  const [disciplineDraft, setDisciplineDraft] = useState('')
+  const [opinionNotice, setOpinionNotice] = useState<string | null>(null)
 
   useEffect(() => {
     if (user?.role === 'socio') {
@@ -35,6 +38,10 @@ export default function Perfil() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleSaveOpinion = () => {
+    setOpinionNotice('Esta funcion quedara conectada proximamente.')
   }
 
   if (loading) {
@@ -118,6 +125,59 @@ export default function Perfil() {
           title="Sin membresia registrada"
           message="No encontramos una membresia asociada a tu cuenta."
         />
+      )}
+
+      {user.role === 'socio' && (
+        <div className="bg-oc-metal p-6 rounded-lg border border-oc-red/20 mt-6">
+          <h2 className="text-2xl font-semibold text-oc-red mb-2">Mi opinion sobre OC-CLUB</h2>
+          <p className="text-sm text-oc-muted mb-5">
+            Comparte tu experiencia. Esta seccion quedara conectada con backend en una siguiente fase.
+          </p>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm text-oc-muted mb-2" htmlFor="discipline">
+                Disciplina (opcional)
+              </label>
+              <input
+                id="discipline"
+                type="text"
+                value={disciplineDraft}
+                onChange={(event) => setDisciplineDraft(event.target.value)}
+                placeholder="Ej. Calistenia, HYROX, Powerlifting"
+                className="w-full rounded-md border border-oc-border bg-black/30 px-3 py-2.5 text-white placeholder:text-oc-muted/70 focus:outline-none focus:ring-2 focus:ring-oc-red/40"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-oc-muted mb-2" htmlFor="opinion">
+                Tu opinion
+              </label>
+              <textarea
+                id="opinion"
+                value={opinionDraft}
+                onChange={(event) => setOpinionDraft(event.target.value)}
+                placeholder="Escribe aqui tu experiencia en OC-CLUB..."
+                rows={4}
+                className="w-full rounded-md border border-oc-border bg-black/30 px-3 py-2.5 text-white placeholder:text-oc-muted/70 focus:outline-none focus:ring-2 focus:ring-oc-red/40"
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={handleSaveOpinion}
+              className="inline-flex items-center justify-center rounded-md bg-oc-red px-5 py-2.5 text-sm font-semibold text-white hover:bg-oc-red-deep transition-colors"
+            >
+              Guardar opinion
+            </button>
+
+            {opinionNotice && (
+              <p className="text-sm text-amber-300">
+                {opinionNotice} {/* TODO: conectar guardado real cuando exista endpoint de opiniones */}
+              </p>
+            )}
+          </div>
+        </div>
       )}
     </div>
   )

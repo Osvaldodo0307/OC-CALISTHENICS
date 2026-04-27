@@ -19,6 +19,7 @@ const Membresias = lazy(() => import('./pages/Membresias'))
 const ClasesInfo = lazy(() => import('./pages/ClasesInfo'))
 const EquipoComunidad = lazy(() => import('./pages/EquipoComunidad'))
 const Convenios = lazy(() => import('./pages/Convenios'))
+const Experiencias = lazy(() => import('./pages/Experiencias'))
 const DashboardSocio = lazy(() => import('./pages/DashboardSocio'))
 const Classes = lazy(() => import('./pages/Classes'))
 const Reservas = lazy(() => import('./pages/Reservas'))
@@ -101,6 +102,7 @@ function App() {
             <Route path="clases" element={<ClasesInfo />} />
             <Route path="equipo-comunidad" element={<EquipoComunidad />} />
             <Route path="convenios" element={<Convenios />} />
+            <Route path="experiencias" element={<Experiencias />} />
           </Route>
 
           <Route path="/app" element={<AuthLayout />}>

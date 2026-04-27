@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
 import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
+import { featuredTestimonials } from '../data/testimonials'
 
-/** Visuales de stock (Unsplash) — reemplazar por fotografía real del club cuando exista. */
-const IMG_HERO =
-  'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=2400&q=85'
-const IMG_CLUB_INTERIOR =
-  'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1600&q=82'
+const IMG_HERO = '/Gimnasio.jpeg'
+const IMG_CLUB_INTERIOR = '/2do piso.jpeg'
+const IMG_COMPETENCIA = '/Competencia.jpeg'
+const IMG_COMUNIDAD = '/Comunidad.jpeg'
 
 const DISCIPLINES: {
   slug: string
@@ -15,32 +15,22 @@ const DISCIPLINES: {
   image: string
 }[] = [
   {
+    slug: 'hyrox',
+    title: 'HYROX',
+    blurb: 'Entrenamiento híbrido de resistencia, fuerza y rendimiento funcional.',
+    image: '/HYROX.jpeg',
+  },
+  {
     slug: 'calistenia',
     title: 'Calistenia',
-    blurb: 'Fuerza y control con el peso corporal. Progresiones claras.',
-    image:
-      'https://images.unsplash.com/photo-1599058945522-734bedebfa09?auto=format&fit=crop&w=900&q=82',
+    blurb: 'Control corporal, fuerza relativa y progresiones técnicas.',
+    image: '/Calistenia.jpeg',
   },
   {
     slug: 'powerlifting',
     title: 'Powerlifting',
-    blurb: 'Bases sólidas: técnica, líneas de fuerza y seguridad.',
-    image:
-      'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=82',
-  },
-  {
-    slug: 'spartan',
-    title: 'Spartan',
-    blurb: 'Resistencia y mentalidad. Entrenamiento que exige constancia.',
-    image:
-      'https://images.unsplash.com/photo-1552674605-db6ffd1643d5?auto=format&fit=crop&w=900&q=82',
-  },
-  {
-    slug: 'marcial',
-    title: 'Artes marciales / defensa',
-    blurb: 'Movimiento, coordinación y aplicación práctica según programación.',
-    image:
-      'https://images.unsplash.com/photo-1549714876-bbe2cc9efad1?auto=format&fit=crop&w=900&q=82',
+    blurb: 'Fuerza máxima en sentadilla, press banca y peso muerto.',
+    image: '/Powerlifting.jpeg',
   },
 ]
 
@@ -63,23 +53,11 @@ const WHY_US: { title: string; text: string }[] = [
   },
 ]
 
-/** Placeholders — validar con dirección del club */
-const PLACEHOLDER_METRICS: { label: string; value: string; placeholder?: boolean }[] = [
-  { label: 'Años en Tlalpan', value: '[validar]', placeholder: true },
-  { label: 'Clases por semana (referencia)', value: 'Programación viva', placeholder: false },
-  { label: 'Socios activos', value: '[validar]', placeholder: true },
-  { label: 'Staff coaching', value: 'Certificado / en formación continua', placeholder: false },
-]
-
-const TESTIMONIALS_PLACEHOLDER: { quote: string; author: string }[] = [
-  {
-    quote: 'Aquí va un testimonio real de socio cuando lo tengan.',
-    author: '[Nombre — placeholder]',
-  },
-  {
-    quote: 'Segundo testimonio corto sobre resultados o ambiente.',
-    author: '[Nombre — placeholder]',
-  },
+const KEY_METRICS: { label: string; value: string }[] = [
+  { label: 'Trayectoria', value: '8 años en Tlalpan' },
+  { label: 'Clases por semana', value: 'Programacion viva' },
+  { label: 'Enfoque', value: 'Competencia y comunidad' },
+  { label: 'Staff coaching', value: 'Certificado / formacion continua' },
 ]
 
 export default function Landing() {
@@ -92,7 +70,7 @@ export default function Landing() {
         <div className="absolute inset-0 z-0">
           <img
             src={IMG_HERO}
-            alt=""
+            alt="Interior real del gimnasio OC-CLUB en Tlalpan"
             className="h-full w-full object-cover object-center scale-105 sm:scale-100"
             fetchPriority="high"
             loading="eager"
@@ -113,26 +91,28 @@ export default function Landing() {
               Elite Training Community · <span className="text-white">Tlalpan, CDMX</span>
             </p>
             <h1 className="mt-6 font-hero text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.95] text-white uppercase tracking-tight">
-              Entrena con método.
-              <span className="block text-oc-red mt-1">Compite contigo.</span>
+              OC-CLUB
+              <span className="block text-oc-red mt-1">Elite Training Community</span>
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-white/85 font-medium leading-snug max-w-xl">
-              Club de alto rendimiento: calistenia, powerlifting y spartan en un mismo estándar. Más
-              disciplinas según tu plan. <span className="text-white">Te guiamos en el piso.</span>
+              Entrena con estructura, comunidad y seguimiento real.
+              <span className="text-white"> Te guiamos en el piso para competir contigo mismo.</span>
             </p>
             <div className="mt-9 flex flex-wrap gap-3 sm:gap-4">
               <Link
                 to="/membresias"
                 className="inline-flex items-center justify-center px-8 py-3.5 bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold tracking-wide rounded-sm border border-white/10 transition-colors shadow-lg shadow-black/40"
               >
-                Ver membresías
+                Conocer membresías
               </Link>
-              <Link
-                to="/clases"
+              <a
+                href="https://wa.me/525567869589"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-3.5 border border-white/25 text-white hover:bg-white/10 text-sm font-semibold rounded-sm transition-colors"
               >
-                Horarios y clases
-              </Link>
+                Agendar visita
+              </a>
             </div>
           </div>
 
@@ -145,7 +125,7 @@ export default function Landing() {
             <div>
               <dt className="text-xs text-white/50 font-medium">Zona</dt>
               <dd className="mt-1 text-lg font-hero text-white tracking-wide">Tlalpan</dd>
-              <dd className="text-xs text-white/55 mt-0.5">San Andrés Totoltepec</dd>
+              <dd className="text-xs text-white/55 mt-0.5">Ejidos de San Pedro Mártir</dd>
             </div>
             <div>
               <dt className="text-xs text-white/50 font-medium">Formato</dt>
@@ -218,7 +198,7 @@ export default function Landing() {
               Ver todas las clases →
             </Link>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {DISCIPLINES.map((d) => (
               <article
                 key={d.slug}
@@ -226,7 +206,7 @@ export default function Landing() {
               >
                 <img
                   src={d.image}
-                  alt=""
+                  alt={`Entrenamiento de ${d.title} en OC-CLUB`}
                   className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
@@ -244,40 +224,100 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 4 · Credibilidad + testimonios (placeholders marcados) */}
+      {/* 4 · Preparación para competencia */}
+      <section className="py-16 md:py-24 bg-[#111] border-y border-white/[0.05]">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10">
+              <img
+                src={IMG_COMPETENCIA}
+                alt="Atletas de OC-CLUB en preparación para competencia"
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" aria-hidden />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-oc-red/90">Rendimiento</p>
+              <h2 className="mt-3 font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">
+                Preparación para competencia
+              </h2>
+              <p className="mt-5 text-white/75 leading-relaxed">
+                Entrenamientos diseñados para llevar tu rendimiento a escenarios reales: fuerza, técnica,
+                resistencia y mentalidad competitiva.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5 · Comunidad */}
+      <section className="py-16 md:py-24 bg-oc-carbon border-b border-white/[0.06]">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-oc-red/90">Cultura OC-CLUB</p>
+              <h2 className="mt-3 font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">
+                Una comunidad que entrena contigo
+              </h2>
+              <p className="mt-5 text-white/75 leading-relaxed">
+                OC-CLUB no es solo un gimnasio. Es una comunidad enfocada en disciplina, progreso y
+                acompañamiento.
+              </p>
+            </div>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10">
+              <img
+                src={IMG_COMUNIDAD}
+                alt="Comunidad de entrenamiento en OC-CLUB"
+                className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/70 via-transparent to-black/20" aria-hidden />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6 · Credibilidad + testimonios (placeholders marcados) */}
       <section className="py-16 md:py-20 bg-[#111] border-y border-white/[0.05]">
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-amber-400/90 mb-8">
-            Datos numéricos pendientes de validación con dirección
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-oc-red/85 mb-8">
+            8 anos impulsando entrenamiento en Tlalpan
           </p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16 md:mb-20">
-            {PLACEHOLDER_METRICS.map((m) => (
+            {KEY_METRICS.map((m) => (
               <div key={m.label}>
                 <p className="text-xs text-white/45">{m.label}</p>
-                <p
-                  className={`mt-2 font-display text-2xl font-bold tracking-tight ${m.placeholder ? 'text-white/50' : 'text-white'}`}
-                >
-                  {m.value}
-                </p>
+                <p className="mt-2 font-display text-2xl font-bold tracking-tight text-white">{m.value}</p>
               </div>
             ))}
           </div>
-          <h2 className="font-hero text-3xl sm:text-4xl text-white uppercase tracking-tight mb-8">Voces del club</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {TESTIMONIALS_PLACEHOLDER.map((t, i) => (
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+            <h2 className="font-hero text-3xl sm:text-4xl text-white uppercase tracking-tight">Voces del club</h2>
+            <Link
+              to="/experiencias"
+              className="text-sm font-semibold text-oc-red hover:text-white transition-colors"
+            >
+              Ver mas experiencias →
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {featuredTestimonials.map((t, i) => (
               <figure
                 key={i}
                 className="rounded-lg border border-white/[0.08] bg-black/40 p-6 md:p-8"
               >
                 <blockquote className="text-white/85 leading-relaxed italic">&ldquo;{t.quote}&rdquo;</blockquote>
-                <figcaption className="mt-4 text-sm text-oc-muted not-italic">— {t.author}</figcaption>
+                <figcaption className="mt-4 text-sm text-oc-muted not-italic">
+                  — {t.name}, {t.discipline}
+                </figcaption>
               </figure>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5 · Filosofía / club — corto */}
+      {/* 7 · Filosofía / club — corto */}
       <section id="club" className="scroll-mt-24 py-16 md:py-24 bg-oc-carbon">
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -296,20 +336,18 @@ export default function Landing() {
             <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[320px] rounded-lg overflow-hidden border border-white/[0.07]">
               <img
                 src={IMG_CLUB_INTERIOR}
-                alt=""
+                alt="Segundo piso de entrenamiento en OC-CLUB"
                 className="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-black/60 to-transparent" aria-hidden />
-              <p className="absolute bottom-4 left-4 right-4 text-xs text-white/60">
-                Imagen de referencia (gimnasio) — sustituir por foto del espacio OC-CLUB.
-              </p>
+              <p className="absolute bottom-4 left-4 right-4 text-xs text-white/60">Espacio real OC-CLUB.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6 · Membresías / CTA cierre */}
+      {/* 8 · Membresías / CTA cierre */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div
           className="absolute inset-0 bg-gradient-to-br from-oc-red-deep/90 via-oc-black to-oc-carbon"
@@ -421,7 +459,9 @@ export default function Landing() {
             <div>
               <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">Contacto</p>
               <p className="text-sm text-white/70">55 6786 9589</p>
-              <p className="text-sm text-white/55 mt-2">Segunda Cda. de Cedral 2, San Andrés Totoltepec, Tlalpan</p>
+              <p className="text-sm text-white/55 mt-2">
+                Lázaro Cárdenas 8, Ejidos de San Pedro Mártir, 14400, Tlalpan
+              </p>
             </div>
             <div>
               <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">Redes</p>
