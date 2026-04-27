@@ -17,6 +17,9 @@ __pycache__/
 # Node
 node_modules/
 
+# Netlify CLI (estado local al linkear; el sitio se configura con netlify.toml + panel)
+.netlify/
+
 # IDE
 .vscode/
 .idea/

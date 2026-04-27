@@ -1,6 +1,10 @@
-# Netlify + Git (monorepo): raiz del repo = carpeta que contiene /OC
-# Sitio de produccion: https://oc-club.netlify.app
-# Tras enlazar GitHub, Netlify lee este archivo automaticamente (no hace falta Netlify Drop).
+# Netlify + Git (monorepo)
+# - Conecta el sitio a GitHub y deja "Build settings" en "Read from file" (recomendado).
+#   Netlify toma [build] de este archivo; no hace falta poner "Base directory" a mano
+#   en el panel si usas la raiz del repositorio como contexto de build.
+# - Cada push a la rama de produccion (p. ej. main o master) dispara build y publica `OC/Frontend/dist`.
+# - CLI local: el directorio .netlify/ no se sube a git (ver .gitignore).
+# Referencia: sitio de produccion https://oc-club.netlify.app
 
 [build]
   base = "OC/Frontend"
