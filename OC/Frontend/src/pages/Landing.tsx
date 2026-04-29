@@ -272,7 +272,11 @@ export default function Landing() {
                 className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-tr from-black/70 via-transparent to-black/20" aria-hidden />
+              <div
+                className="absolute inset-0 bg-gradient-to-tr from-black/70 via-transparent to-black/20"
+                style={{ top: '130px', left: '-3px' }}
+                aria-hidden
+              />
             </div>
           </div>
         </div>
