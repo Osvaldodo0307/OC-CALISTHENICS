@@ -1,14 +1,21 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { clubServicePanels, membershipFees, type ServicePanel } from '../../data/clubServices'
 import ServiceCard from './ServiceCard'
 
 export default function ClubServicePanels() {
   const [activePanelId, setActivePanelId] = useState<ServicePanel['id']>(clubServicePanels[0].id)
+  const detailPanelRef = useRef<HTMLDivElement | null>(null)
 
   const activePanel = useMemo(
     () => clubServicePanels.find((panel) => panel.id === activePanelId) ?? clubServicePanels[0],
     [activePanelId],
   )
+
+  useEffect(() => {
+    // En móvil, mover foco visual al contenido al cambiar de panel.
+    if (!window.matchMedia('(max-width: 1023px)').matches) return
+    detailPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [activePanelId])
 
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-oc-dark">
@@ -61,7 +68,7 @@ export default function ClubServicePanels() {
           })}
         </div>
 
-        <div className="bg-oc-metal/45 border border-oc-border rounded-2xl p-4 sm:p-6 lg:p-8">
+        <div ref={detailPanelRef} className="scroll-mt-28 bg-oc-metal/45 border border-oc-border rounded-2xl p-4 sm:p-6 lg:p-8">
           <div className="mb-6">
             <h3 className="text-2xl sm:text-3xl font-bold text-oc-light uppercase">{activePanel.title}</h3>
             <p className="mt-2 text-oc-muted">{activePanel.description}</p>
