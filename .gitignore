@@ -1,5 +1,6 @@
 # Virtual environments
 .venv/
+.venv*/
 venv/
 env/
 
@@ -11,6 +12,7 @@ env/
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
 *.so
 *.egg-info/
 
@@ -28,3 +30,16 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local QA / generated reports
+qa-*.png
+render_openapi*.json
+Resumen IA.txt
+
+# Supabase local temp/config (keep migrations and SQL files versioned)
+supabase/.branches/
+supabase/.temp/
+supabase/.cache/
+**/supabase/.branches/
+**/supabase/.temp/
+**/supabase/.cache/

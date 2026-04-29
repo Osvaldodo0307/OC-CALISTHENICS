@@ -1,13 +1,9 @@
 import { Link } from 'react-router-dom'
 import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
+import ConveniosSection from '../components/landing/ConveniosSection'
 
 export default function Convenios() {
-  const aliados = [
-    { name: 'CCDF (Certificaciones)', category: 'Educación' },
-    { name: 'Team Youri Yeshua (World Strong Man)', category: 'Deporte' },
-  ]
-
   return (
     <div className="min-h-screen bg-oc-dark text-oc-light">
       <PublicNav />
@@ -25,33 +21,7 @@ export default function Convenios() {
         </div>
       </section>
 
-      {/* Aliados */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-oc-dark">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-oc-light mb-4">Nuestros Aliados</h2>
-            <p className="text-oc-muted">Partners estratégicos para tu bienestar integral</p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 max-w-2xl mx-auto gap-6">
-            {aliados.map((aliado, index) => (
-              <div
-                key={index}
-                className="bg-oc-metal/50 p-6 rounded-xl border border-oc-border hover:border-oc-red/50 transition-all hover:shadow-lg hover:shadow-oc-red/10 group"
-              >
-                {/* Espacio para logo */}
-                <div className="w-full h-32 mb-4 bg-oc-dark rounded-lg border-2 border-oc-border flex items-center justify-center overflow-hidden group-hover:border-oc-red/50 transition-colors">
-                  <span className="text-oc-muted text-sm">Logo</span>
-                </div>
-                <h3 className="text-lg font-bold text-oc-light mb-2 group-hover:text-oc-red transition-colors text-center">
-                  {aliado.name}
-                </h3>
-                <p className="text-oc-muted text-xs text-center">{aliado.category}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ConveniosSection />
 
       {/* Información sobre Convenios */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-oc-metal">
