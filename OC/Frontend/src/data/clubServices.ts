@@ -16,6 +16,8 @@ export type ServicePanel = {
   title: string
   description: string
   panelImage?: string
+  panelImageAlt?: string
+  panelImageFit?: 'cover' | 'contain'
   showItemImages?: boolean
   items: ServiceItem[]
 }
@@ -28,6 +30,8 @@ export const clubServicePanels: ServicePanel[] = [
     title: 'Planes OC GYM',
     description: 'Entrenamiento en gimnasio con opciones flexibles.',
     panelImage: '/Actualizacion/Paneles/OCGYM.jpeg',
+    panelImageAlt: 'Área de entrenamiento OC GYM',
+    panelImageFit: 'cover',
     showItemImages: false,
     items: [
       {
@@ -72,7 +76,9 @@ export const clubServicePanels: ServicePanel[] = [
     id: 'acceso-total',
     title: 'Acceso Total',
     description: 'Todo el club en una sola membresía.',
-    panelImage: '/Actualizacion/Paneles/OCGYM.jpeg',
+    panelImage: '/Actualizacion/Paneles/ELITE.png',
+    panelImageAlt: 'Experiencia premium Acceso Total OC Club',
+    panelImageFit: 'cover',
     showItemImages: false,
     items: [
       {
@@ -135,7 +141,9 @@ export const clubServicePanels: ServicePanel[] = [
     id: 'clases',
     title: 'Clases',
     description: 'Entrena por disciplina o por paquete.',
-    panelImage: '/Actualizacion/Paneles/OCGYM.jpeg',
+    panelImage: '/Actualizacion/Paneles/ACADEMY.png',
+    panelImageAlt: 'Clases y academia deportiva OC Club',
+    panelImageFit: 'cover',
     showItemImages: false,
     items: [
       {
@@ -220,7 +228,9 @@ export const clubServicePanels: ServicePanel[] = [
     id: 'recovery-lab',
     title: 'Recovery Lab',
     description: 'Recuperación, evaluación y bienestar.',
-    panelImage: '/Actualizacion/Paneles/OCGYM.jpeg',
+    panelImage: '/Actualizacion/Recovery Lab/Paquete recovery.jpeg',
+    panelImageAlt: 'Servicios de recuperación Recovery Lab OC Club',
+    panelImageFit: 'contain',
     showItemImages: false,
     items: [
       {

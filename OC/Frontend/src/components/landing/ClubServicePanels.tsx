@@ -39,8 +39,13 @@ export default function ClubServicePanels() {
                 }`}
               >
                 {panel.panelImage && (
-                  <div className="h-28 relative">
-                    <img src={panel.panelImage} alt={panel.title} className="h-full w-full object-cover" loading="lazy" />
+                  <div className="h-28 relative bg-black/40">
+                    <img
+                      src={panel.panelImage}
+                      alt={panel.panelImageAlt ?? panel.title}
+                      className={`h-full w-full ${panel.panelImageFit === 'contain' ? 'object-contain p-2' : 'object-cover'}`}
+                      loading="lazy"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/20" aria-hidden />
                   </div>
                 )}
@@ -57,16 +62,6 @@ export default function ClubServicePanels() {
         </div>
 
         <div className="bg-oc-metal/45 border border-oc-border rounded-2xl p-4 sm:p-6 lg:p-8">
-          {activePanel.panelImage && (
-            <div className="mb-6 rounded-xl overflow-hidden border border-oc-border h-48 sm:h-56">
-              <img
-                src={activePanel.panelImage}
-                alt={`Panel ${activePanel.title}`}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          )}
           <div className="mb-6">
             <h3 className="text-2xl sm:text-3xl font-bold text-oc-light uppercase">{activePanel.title}</h3>
             <p className="mt-2 text-oc-muted">{activePanel.description}</p>
