@@ -65,12 +65,12 @@ export default function Landing() {
       <PublicNav />
 
       {/* 1 · Hero alto impacto: full-bleed imagen + overlay + contenido comercial */}
-      <section className="relative min-h-[70vh] sm:min-h-[78vh] lg:min-h-[min(92vh,900px)] flex flex-col justify-end overflow-hidden">
+      <section className="relative min-h-[62vh] sm:min-h-[78vh] lg:min-h-[min(92vh,900px)] flex flex-col justify-end overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={IMG_HERO}
             alt="Interior real del gimnasio OC-CLUB en Tlalpan"
-            className="h-full w-full object-cover object-[72%_center] sm:object-right scale-105 sm:scale-100"
+            className="h-full w-full object-cover object-[74%_center] sm:object-right scale-105 sm:scale-100"
             fetchPriority="high"
             loading="eager"
             decoding="async"
@@ -79,28 +79,28 @@ export default function Landing() {
             className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/55 sm:to-black/35"
             aria-hidden
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/70" aria-hidden />
-          <div className="absolute bottom-0 left-0 right-0 h-28 sm:h-48 bg-gradient-to-t from-oc-carbon to-transparent" aria-hidden />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/65" aria-hidden />
+          <div className="absolute bottom-0 left-0 right-0 h-20 sm:h-48 bg-gradient-to-t from-oc-carbon to-transparent" aria-hidden />
         </div>
 
-        <div className="relative z-10 mx-auto w-full max-w-[80rem] px-4 pb-8 pt-20 sm:px-6 sm:pb-12 sm:pt-24 lg:px-10 lg:pb-20">
+        <div className="relative z-10 mx-auto w-full max-w-[80rem] px-4 pb-6 pt-14 sm:px-6 sm:pb-12 sm:pt-24 lg:px-10 lg:pb-20">
           <div className="max-w-3xl">
-            <OcClubLogo variant="heroMark" priority className="opacity-95" />
+            <OcClubLogo variant="heroMark" priority className="hidden sm:block opacity-95" />
             <p className="mt-3 text-xs sm:text-sm font-medium text-white/75 tracking-wide">
               Elite Training Community · <span className="text-white">Tlalpan, CDMX</span>
             </p>
-            <h1 className="mt-4 font-hero text-[clamp(2rem,10vw,5.5rem)] leading-[0.94] text-white uppercase tracking-tight">
+            <h1 className="mt-3 sm:mt-4 font-hero text-[clamp(1.7rem,8.2vw,5.5rem)] leading-[0.96] text-white uppercase tracking-tight">
               OC-CLUB
-              <span className="block text-oc-red mt-1">Elite Training Community</span>
+              <span className="block text-oc-red mt-0.5 sm:mt-1">Elite Training Community</span>
             </h1>
-            <p className="mt-4 text-sm sm:text-lg text-white/85 font-medium leading-snug max-w-xl">
+            <p className="mt-3 text-[13px] sm:text-lg text-white/85 font-medium leading-snug max-w-xl">
               Entrena con estructura, comunidad y seguimiento real.
               <span className="text-white"> Te guiamos en el piso para competir contigo mismo.</span>
             </p>
-            <div className="mt-6 sm:mt-9 flex flex-col sm:flex-row sm:flex-wrap gap-2.5 sm:gap-4">
+            <div className="mt-4 sm:mt-9 flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4">
               <Link
                 to="/membresias"
-                className="inline-flex w-full sm:w-auto items-center justify-center px-6 sm:px-8 py-3 sm:py-3.5 bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold tracking-wide rounded-sm border border-white/10 transition-colors shadow-lg shadow-black/40"
+                className="inline-flex w-full sm:w-auto items-center justify-center px-5 sm:px-8 py-2.5 sm:py-3.5 bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold tracking-wide rounded-sm border border-white/10 transition-colors shadow-lg shadow-black/40"
               >
                 Conocer membresías
               </Link>
@@ -108,37 +108,37 @@ export default function Landing() {
                 href="https://wa.me/525567869589"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-full sm:w-auto items-center justify-center px-6 sm:px-8 py-3 sm:py-3.5 border border-white/25 text-white hover:bg-white/10 text-sm font-semibold rounded-sm transition-colors"
+                className="inline-flex w-full sm:w-auto items-center justify-center px-5 sm:px-8 py-2.5 sm:py-3.5 border border-white/25 text-white hover:bg-white/10 text-sm font-semibold rounded-sm transition-colors"
               >
                 Agendar visita
               </a>
             </div>
           </div>
 
-          <dl className="mt-8 sm:mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 max-w-4xl border-t border-white/15 pt-5 sm:pt-10">
+          <dl className="mt-5 sm:mt-12 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6 lg:gap-8 max-w-4xl border-t border-white/15 pt-4 sm:pt-10">
             <div>
               <dt className="text-[11px] sm:text-xs text-white/50 font-medium">Clases</dt>
-              <dd className="mt-0.5 sm:mt-1 text-base sm:text-lg font-hero text-white tracking-wide">60 min</dd>
-              <dd className="text-[11px] sm:text-xs text-white/55 mt-0.5">Grupales estructuradas</dd>
+              <dd className="mt-0.5 text-[15px] sm:text-lg font-hero text-white tracking-wide">60 min</dd>
+              <dd className="text-[10px] sm:text-xs text-white/55 mt-0.5">Grupales estructuradas</dd>
             </div>
             <div>
               <dt className="text-[11px] sm:text-xs text-white/50 font-medium">Zona</dt>
-              <dd className="mt-0.5 sm:mt-1 text-base sm:text-lg font-hero text-white tracking-wide">Tlalpan</dd>
-              <dd className="text-[11px] sm:text-xs text-white/55 mt-0.5">Ejidos de San Pedro Mártir</dd>
+              <dd className="mt-0.5 text-[15px] sm:text-lg font-hero text-white tracking-wide">Tlalpan</dd>
+              <dd className="text-[10px] sm:text-xs text-white/55 mt-0.5">Ejidos de San Pedro Mártir</dd>
             </div>
             <div>
               <dt className="text-[11px] sm:text-xs text-white/50 font-medium">Formato</dt>
-              <dd className="mt-0.5 sm:mt-1 text-base sm:text-lg font-hero text-white tracking-wide">Cupos</dd>
-              <dd className="text-[11px] sm:text-xs text-white/55 mt-0.5">Seguimiento real</dd>
+              <dd className="mt-0.5 text-[15px] sm:text-lg font-hero text-white tracking-wide">Cupos</dd>
+              <dd className="text-[10px] sm:text-xs text-white/55 mt-0.5">Seguimiento real</dd>
             </div>
             <div>
               <dt className="text-[11px] sm:text-xs text-white/50 font-medium">Enfoque</dt>
-              <dd className="mt-0.5 sm:mt-1 text-base sm:text-lg font-hero text-oc-red tracking-wide">Técnica</dd>
-              <dd className="text-[11px] sm:text-xs text-white/55 mt-0.5">Progresión y orden</dd>
+              <dd className="mt-0.5 text-[15px] sm:text-lg font-hero text-oc-red tracking-wide">Técnica</dd>
+              <dd className="text-[10px] sm:text-xs text-white/55 mt-0.5">Progresión y orden</dd>
             </div>
           </dl>
 
-          <ul className="mt-6 sm:mt-10 flex flex-wrap gap-x-4 sm:gap-x-8 gap-y-1.5 sm:gap-y-2 text-xs sm:text-sm text-white/80 max-w-2xl">
+          <ul className="mt-4 sm:mt-10 grid grid-cols-2 sm:flex sm:flex-wrap gap-x-3 sm:gap-x-8 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-sm text-white/80 max-w-2xl">
             <li className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-sm bg-oc-red shrink-0" aria-hidden />
               Progresión por niveles
