@@ -30,28 +30,57 @@ export default function ClasesInfo() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: 'Calistenia', tags: ['Grupo', 'Técnica', 'Progresión'], desc: 'Fuerza relativa, dominadas, fondos, holds y progresiones.' },
-              { name: 'Funcional', tags: ['Cardio', 'Core', 'Full body'], desc: 'Circuitos y trabajo metabólico para condición general.' },
-              { name: 'HYROX', tags: ['Resistencia', 'HIIT', 'Competitivo'], desc: 'Entrenamiento de resistencia y acondicionamiento de alto rendimiento.' },
-              { name: 'Karate', tags: ['Técnica', 'Agilidad', 'Disciplina'], desc: 'Arte marcial tradicional con enfoque en técnica, coordinación y acondicionamiento.' },
-              { name: 'Defensa personal', tags: ['Práctico', 'Confianza', 'Control'], desc: 'Práctico, progresivo y orientado a seguridad personal.' },
-              { name: 'OPEN GYM', tags: ['Libre', 'Asesoría', 'Progreso'], desc: 'Acceso libre para entrenamiento personal con guía básica disponible.' },
+              {
+                name: 'Calistenia',
+                image: '/Actualizacion/Clases/Paneles/CALISTENIA.png',
+                imageContainsText: true,
+              },
+              {
+                name: 'Funcional',
+                image: '/Actualizacion/Clases/Paneles/Funcional.png',
+                imageContainsText: true,
+              },
+              {
+                name: 'HYROX',
+                image: '/Actualizacion/Clases/Paneles/HYROX.png',
+                imageContainsText: true,
+              },
+              {
+                name: 'Karate',
+                image: '/Actualizacion/Clases/Paneles/Karate.png',
+                imageContainsText: true,
+              },
+              {
+                name: 'Defensa personal',
+                image: '/Actualizacion/Clases/Paneles/Defensa Personal.png',
+                imageContainsText: true,
+              },
+              {
+                name: 'OPEN GYM',
+                image: '/Actualizacion/Clases/Paneles/Open Gym.png',
+                imageContainsText: true,
+              },
             ].map((clase) => (
               <div
                 key={clase.name}
-                className="bg-oc-metal/50 p-6 rounded-xl border border-oc-border hover:border-oc-red/50 transition-all hover:shadow-lg hover:shadow-oc-red/10 group"
+                className="bg-oc-metal/50 rounded-xl border border-oc-border hover:border-oc-red/50 transition-all hover:shadow-lg hover:shadow-oc-red/10 group overflow-hidden"
               >
-                <h3 className="text-xl font-bold text-oc-light mb-3 group-hover:text-oc-red transition-colors">{clase.name}</h3>
-                <p className="text-oc-muted text-sm mb-4">{clase.desc}</p>
-                <div className="flex flex-wrap gap-2">
-                  {clase.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 rounded-full bg-oc-dark border border-oc-red/20 text-oc-red text-xs font-medium"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="relative h-52 sm:h-56 md:h-60 overflow-hidden">
+                  <img src={clase.image} alt={`Panel de ${clase.name}`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" aria-hidden />
+                </div>
+                <div className="p-4 sm:p-5">
+                  {clase.imageContainsText && (
+                    <p className="text-xs text-oc-muted mb-3">Clase disponible en OC-CLUB</p>
+                  )}
+                  <a
+                    href="https://wa.me/525567869589"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center rounded-full border border-oc-red/60 px-4 py-2.5 text-sm font-semibold text-oc-light hover:bg-oc-red/10 transition-colors"
+                  >
+                    Solicitar información
+                  </a>
                 </div>
               </div>
             ))}

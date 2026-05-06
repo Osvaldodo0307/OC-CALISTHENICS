@@ -3,8 +3,7 @@ import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
 import { featuredTestimonials } from '../data/testimonials'
 
-const IMG_HERO = '/Gimnasio.jpeg'
-const IMG_CLUB_INTERIOR = '/2do piso.jpeg'
+const IMG_HERO = '/Actualizacion/Front/IA (2).png'
 const IMG_COMPETENCIA = '/Competencia.jpeg'
 const IMG_COMUNIDAD = '/Comunidad.jpeg'
 
@@ -71,7 +70,7 @@ export default function Landing() {
           <img
             src={IMG_HERO}
             alt="Interior real del gimnasio OC-CLUB en Tlalpan"
-            className="h-full w-full object-cover object-center scale-105 sm:scale-100"
+            className="h-full w-full object-cover object-right scale-105 sm:scale-100"
             fetchPriority="high"
             loading="eager"
             decoding="async"
@@ -321,32 +320,23 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 7 · Filosofía / club — corto */}
-      <section id="club" className="scroll-mt-24 py-16 md:py-24 bg-oc-carbon">
+      {/* 7 · El club (apartado independiente) */}
+      <section className="py-16 md:py-20 bg-oc-carbon border-t border-white/[0.06]">
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div>
-              <h2 className="font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">El club</h2>
-              <p className="mt-6 text-lg text-white/75 leading-relaxed">
-                <strong className="text-white font-semibold">OC-CLUB</strong> existe para que entrenes con orden y
-                resultados: peso corporal, fuerza y disciplinas que se complementan. Aquí se entiende el esfuerzo como
-                hábito, no como moda pasajera.
-              </p>
-              <p className="mt-4 text-white/60 leading-relaxed">
-                Somos humanos, profesionales y exigentes. Si buscas pasar desapercibido en un rincón, probablemente no
-                encajes.
+          <div className="rounded-2xl border border-white/10 bg-black/25 p-8 md:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oc-red/90">Nuevo apartado</p>
+              <h2 className="mt-3 font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">El Club</h2>
+              <p className="mt-4 text-white/70 leading-relaxed">
+                Conoce en detalle los espacios del club: gimnasio principal, segundo piso, zonas especializadas y ambiente OC.
               </p>
             </div>
-            <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[320px] rounded-lg overflow-hidden border border-white/[0.07]">
-              <img
-                src={IMG_CLUB_INTERIOR}
-                alt="Segundo piso de entrenamiento en OC-CLUB"
-                className="absolute inset-0 h-full w-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-black/60 to-transparent" aria-hidden />
-              <p className="absolute bottom-4 left-4 right-4 text-xs text-white/60">Espacio real OC-CLUB.</p>
-            </div>
+            <Link
+              to="/club"
+              className="inline-flex items-center justify-center px-8 py-3.5 bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold tracking-wide rounded-sm border border-white/10 transition-colors shadow-lg shadow-black/40"
+            >
+              Explorar El Club
+            </Link>
           </div>
         </div>
       </section>
@@ -435,13 +425,9 @@ export default function Landing() {
               <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">Navegación</p>
               <ul className="space-y-2 text-sm text-white/65">
                 <li>
-                  <button
-                    type="button"
-                    onClick={() => document.getElementById('club')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="hover:text-oc-red transition-colors text-left"
-                  >
+                  <Link to="/club" className="hover:text-oc-red transition-colors">
                     El club
-                  </button>
+                  </Link>
                 </li>
                 <li>
                   <Link to="/clases" className="hover:text-oc-red transition-colors">

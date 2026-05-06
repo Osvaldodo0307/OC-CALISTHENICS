@@ -4,6 +4,7 @@ export type ServiceItem = {
   subtitle?: string
   description: string
   price?: string
+  summaryChips?: string[]
   details?: string[]
   sections?: { title: string; lines: string[] }[]
   note?: string
@@ -18,6 +19,12 @@ export type ServicePanel = {
   panelImage?: string
   panelImageAlt?: string
   panelImageFit?: 'cover' | 'contain'
+  imagePosition?: string
+  imageOpacity?: number
+  statusLabel?: string
+  featured?: boolean
+  categoryChips?: string[]
+  panelCtaLabel?: string
   showItemImages?: boolean
   items: ServiceItem[]
 }
@@ -29,46 +36,50 @@ export const clubServicePanels: ServicePanel[] = [
     id: 'oc-gym',
     title: 'Planes OC GYM',
     description: 'Entrenamiento en gimnasio con opciones flexibles.',
-    panelImage: '/Actualizacion/Paneles/OCGYM.jpeg',
+    panelImage: '/Actualizacion/PlanesOC/OC-GYM.png',
     panelImageAlt: 'Área de entrenamiento OC GYM',
     panelImageFit: 'cover',
-    showItemImages: false,
+    imagePosition: 'center 38%',
+    imageOpacity: 0.26,
+    statusLabel: 'Panel activo',
+    featured: true,
+    categoryChips: ['Básico', 'Premium', 'Anualidad'],
+    panelCtaLabel: 'Ver planes',
+    showItemImages: true,
     items: [
       {
         id: 'oc-basico',
         title: 'OC GYM BÁSICO',
         price: '$600 / mes',
+        image: '/Actualizacion/PlanesOC/OCGYM/Basico.png',
         description:
           'Ideal para entrenar por tu cuenta con acceso al área de gimnasio y apoyo general de coach de piso.',
-        details: [
-          'Uso de instalaciones.',
-          'Agua: trae tu botella, nosotros la llenamos.',
-          'Coach de piso con rutina general.',
-          'Regaderas.',
-          'Cancelación inmediata.',
+        summaryChips: [
+          'Instalaciones',
+          'Agua',
+          'Coach de piso',
+          'Regaderas',
+          'Cancelación inmediata',
         ],
-        sections: [{ title: 'No incluye', lines: ['Clases.', 'Sauna.'] }],
+        note: 'No incluye: Clases, Sauna.',
+        ctaLabel: 'Solicitar información',
       },
       {
         id: 'oc-premium',
         title: 'OC GYM PREMIUM',
         price: '$950 / mes',
+        image: '/Actualizacion/PlanesOC/OCGYM/Premium.png',
         description: 'Para quienes buscan entrenamiento de gimnasio con beneficios de recuperación incluidos.',
-        details: ['Incluye todo lo del básico.', 'Sauna.', '1 sesión de presoterapia.'],
+        summaryChips: ['Todo lo del básico', 'Sauna', 'Presoterapia'],
+        ctaLabel: 'Solicitar información',
       },
       {
         id: 'oc-anualidad',
         title: 'ANUALIDAD OC GYM',
+        image: '/Actualizacion/PlanesOC/OCGYM/Anualidad.png',
         description: 'Plan anual para quienes buscan continuidad y mejor precio por permanencia.',
-        sections: [
-          {
-            title: 'Precios',
-            lines: [
-              '$3,999 pago en una sola exhibición con TDD (tarjeta de débito) o efectivo.',
-              '$5,760 pago con TDC (tarjeta de crédito) hasta 3 meses sin intereses.',
-            ],
-          },
-        ],
+        summaryChips: ['$3,999 TDD/efectivo', '$5,760 TDC hasta 3 MSI'],
+        ctaLabel: 'Solicitar información',
       },
     ],
   },
@@ -76,64 +87,42 @@ export const clubServicePanels: ServicePanel[] = [
     id: 'acceso-total',
     title: 'Acceso Total',
     description: 'Todo el club en una sola membresía.',
-    panelImage: '/Actualizacion/Paneles/ELITE.png',
+    panelImage: '/Actualizacion/PlanesOC/Acceso Total.png',
     panelImageAlt: 'Experiencia premium Acceso Total OC Club',
     panelImageFit: 'cover',
-    showItemImages: false,
+    imagePosition: 'center 32%',
+    imageOpacity: 0.24,
+    statusLabel: 'Ver detalles',
+    categoryChips: ['Mensual', '6 meses', '18 meses'],
+    panelCtaLabel: 'Ver acceso',
+    showItemImages: true,
     items: [
       {
         id: 'acceso-total-mensual',
         title: 'Acceso Total Mensual',
         price: '$2,100 / mes',
+        image: '/Actualizacion/PlanesOC/Acceso total/Mensual.png',
         description: 'Plan mensual con acceso premium completo al club.',
         ctaLabel: 'Solicitar información',
-        details: [
-          'Acceso a todo el club.',
-          'Clases incluidas.',
-          'Sauna.',
-          'Servicio de toalla.',
-          'Café.',
-          'Regaderas.',
-          'Servicio de agua.',
-          '1 sesión de salud INBODY por mes.',
-          'Visitas: hasta 3 por invitado.',
-        ],
+        summaryChips: ['Todo el club', 'Clases', 'Sauna', 'Toalla', 'Café', 'Regaderas', 'Agua', 'INBODY 1/mes', '3 visitas'],
       },
       {
         id: 'acceso-total-6m',
         title: 'Acceso Total 6 meses',
         price: '$12,600',
+        image: '/Actualizacion/PlanesOC/Acceso total/6 meses.png',
         description: 'Plan semestral para continuidad y ahorro frente al pago mensual.',
         ctaLabel: 'Solicitar información',
-        details: [
-          'Acceso a todo el club.',
-          'Clases incluidas.',
-          'Sauna.',
-          'Servicio de toalla.',
-          'Café.',
-          'Regaderas.',
-          'Servicio de agua.',
-          '1 sesión de salud INBODY por mes.',
-          'Visitas: hasta 3 por invitado.',
-        ],
+        summaryChips: ['Todo el club', 'Clases', 'Sauna', 'Toalla', 'Café', 'Regaderas', 'Agua', 'INBODY 1/mes', '3 visitas'],
       },
       {
         id: 'acceso-total-18m',
         title: 'Acceso Total 18 meses',
         price: '$25,200',
+        image: '/Actualizacion/PlanesOC/Acceso total/18 meses.png',
         description: 'Plan de largo plazo para máximo rendimiento y permanencia.',
         ctaLabel: 'Solicitar información',
-        details: [
-          'Acceso a todo el club.',
-          'Clases incluidas.',
-          'Sauna.',
-          'Servicio de toalla.',
-          'Café.',
-          'Regaderas.',
-          'Servicio de agua.',
-          '1 sesión de salud INBODY por mes.',
-          'Visitas: hasta 3 por invitado.',
-        ],
+        summaryChips: ['Todo el club', 'Clases', 'Sauna', 'Toalla', 'Café', 'Regaderas', 'Agua', 'INBODY 1/mes', '3 visitas'],
       },
     ],
   },
@@ -141,85 +130,39 @@ export const clubServicePanels: ServicePanel[] = [
     id: 'clases',
     title: 'Clases',
     description: 'Entrena por disciplina o por paquete.',
-    panelImage: '/Actualizacion/Paneles/ACADEMY.png',
+    panelImage: '/Actualizacion/PlanesOC/Clases.png',
     panelImageAlt: 'Clases y academia deportiva OC Club',
     panelImageFit: 'cover',
-    showItemImages: false,
+    imagePosition: 'center 35%',
+    imageOpacity: 0.28,
+    statusLabel: 'Ver detalles',
+    categoryChips: ['Hyrox', 'Powerlifting', 'Paquetes'],
+    panelCtaLabel: 'Ver clases',
+    showItemImages: true,
     items: [
       {
         id: 'clase-hyrox',
         title: 'HYROX',
+        image: '/Actualizacion/PlanesOC/Clases/Hyrox.png',
         description: 'Modalidad enfocada en entrenamiento híbrido de fuerza, resistencia y rendimiento funcional.',
-        sections: [
-          {
-            title: 'OC-HYROX VIP',
-            lines: [
-              'Visita: $350',
-              'Mensual: $1,450',
-              'Bimestral: $2,700',
-              'Trimestral: $3,600',
-              'Semestral: $6,900',
-              'Incluye: Sauna, Gym y servicios premium.',
-            ],
-          },
-          {
-            title: 'OC-HYROX BASIC',
-            lines: [
-              'Mensual: $999',
-              'Bimestral: $1,899',
-              'Trimestral: $2,699',
-              'Semestral: $5,280',
-              'Anualidad: $10,200',
-              'Incluye: Área de HYROX, regaderas, agua (trae tu termo) y 1 visita semanal.',
-            ],
-          },
-        ],
+        summaryChips: ['VIP', 'BASIC', 'Visita $350', 'Mensual desde $999', 'Semestral hasta $6,900'],
         ctaLabel: 'Solicitar información',
       },
       {
         id: 'clase-powerlifting',
         title: 'POWERLIFTING',
+        image: '/Actualizacion/PlanesOC/Clases/Powerlifting.png',
         description: 'Entrenamiento de fuerza máxima orientado a sentadilla, press banca y peso muerto.',
-        sections: [
-          {
-            title: 'OC-POWER VIP',
-            lines: [
-              'Visita: $350',
-              'Mensual: $1,200',
-              'Bimestral: $2,250',
-              'Trimestral: $3,300',
-              'Semestral: $6,000',
-              'Incluye: Gym, sauna y servicios premium.',
-            ],
-          },
-          {
-            title: 'OC-POWER BASIC',
-            lines: [
-              'Mensual: $899',
-              'Bimestral: $1,699',
-              'Trimestral: $2,399',
-              'Semestral: $4,200',
-              'Anualidad: $7,800',
-              'Incluye: Área de powerlifting, regaderas, agua (trae tu termo) y 1 visita semanal.',
-            ],
-          },
-        ],
+        summaryChips: ['VIP', 'BASIC', 'Visita $350', 'Mensual desde $899', 'Semestral hasta $6,000'],
         ctaLabel: 'Solicitar información',
       },
       {
         id: 'clase-paquetes',
         title: 'PAQUETES POR CLASE',
+        image: '/Actualizacion/PlanesOC/Clases/Paquetes por clase.png',
         description: 'Entrena a tu ritmo, sin ataduras.',
-        sections: [
-          {
-            title: 'Costos',
-            lines: ['1 clase: $250', '4 clases: $800', '8 clases: $1,280', '16 clases: $2,400', '20 clases: $2,800'],
-          },
-          {
-            title: 'Clases válidas',
-            lines: ['Kickboxing', 'Box', 'Calistenia', 'Funcional', 'Explosive', 'Karate', 'Gym', 'Militarizado'],
-          },
-        ],
+        summaryChips: ['1 clase $250', '4 clases $800', '8 clases $1,280', '16 clases $2,400', '20 clases $2,800'],
+        note: 'Válido para: Kickboxing, Box, Calistenia, Funcional, Explosive, Karate, Gym y Militarizado.',
         ctaLabel: 'Solicitar información',
       },
     ],
@@ -228,124 +171,88 @@ export const clubServicePanels: ServicePanel[] = [
     id: 'recovery-lab',
     title: 'Recovery Lab',
     description: 'Recuperación, evaluación y bienestar.',
-    panelImage: '/Actualizacion/Recovery Lab/Paquete recovery.jpeg',
+    panelImage: '/Actualizacion/PlanesOC/Recovery Lab.png',
     panelImageAlt: 'Servicios de recuperación Recovery Lab OC Club',
-    panelImageFit: 'contain',
-    showItemImages: false,
+    panelImageFit: 'cover',
+    imagePosition: 'center center',
+    imageOpacity: 0.22,
+    statusLabel: 'Ver detalles',
+    categoryChips: ['Sauna', 'Hielo', 'Fisioterapia', 'Normatec'],
+    panelCtaLabel: 'Ver recovery',
+    showItemImages: true,
     items: [
       {
         id: 'recovery-paquete',
         title: 'PAQUETE RECOVERY',
+        image: '/Actualizacion/PlanesOC/Recovery LAB/Paquete Recovery.png',
         description: 'Sauna, presoterapia y tina de hielo en una experiencia integral de recuperación.',
-        sections: [
-          {
-            title: 'Sesión individual / paquete de 10',
-            lines: [
-              '15 min: $150 / $1,200',
-              '30 min: $260 / $2,100',
-              '45 min: $340 / $2,800',
-              '60 min: $420 / $3,400',
-            ],
-          },
-          {
-            title: 'Membresías Recovery',
-            lines: [
-              'Recovery Basic: $2,200 / mes — 8 sesiones, acceso total.',
-              'Recovery Pro: $3,300 / mes — 12 sesiones, sauna + hielo + Normatec.',
-              'Recovery Elite: $4,400 / mes — sesión ilimitada, plan integral.',
-            ],
-          },
+        summaryChips: [
+          '15 min: $150 / $1,200',
+          '30 min: $260 / $2,100',
+          '45 min: $340 / $2,800',
+          '60 min: $420 / $3,400',
+          'Basic $2,200',
+          'Pro $3,300',
+          'Elite $4,400',
         ],
+        ctaLabel: 'Solicitar información',
       },
       {
         id: 'recovery-sauna',
         title: 'SAUNA',
+        image: '/Actualizacion/PlanesOC/Recovery LAB/Sauna.png',
         description: 'Sesiones de recuperación y relajación muscular.',
-        sections: [
-          {
-            title: 'Sesión individual / paquete de 10',
-            lines: [
-              '15 min: $80 / $700',
-              '30 min: $150 / $1,300',
-              '45 min: $180 / $1,700',
-              '60 min: $200 / $1,900',
-            ],
-          },
-        ],
+        summaryChips: ['15 min: $80 / $700', '30 min: $150 / $1,300', '45 min: $180 / $1,700', '60 min: $200 / $1,900'],
+        ctaLabel: 'Solicitar información',
       },
       {
         id: 'recovery-hielo',
         title: 'TINA DE HIELO',
+        image: '/Actualizacion/PlanesOC/Recovery LAB/Tina de hielo.png',
         description: 'Exposición al frío como apoyo a procesos de recuperación.',
         note: 'Pendiente: confirmar precios específicos si serán distintos al Paquete Recovery.',
+        ctaLabel: 'Solicitar información',
       },
       {
         id: 'recovery-fisio',
         title: 'FISIOTERAPIA',
+        image: '/Actualizacion/PlanesOC/Recovery LAB/Fisioterapia.png',
         description: 'Atención orientada a movilidad, rehabilitación y readaptación deportiva.',
-        sections: [
-          {
-            title: 'Servicios',
-            lines: [
-              'Valoración inicial + diagnóstico funcional — 60 min',
-              'Sesión individual de fisioterapia — 50 min',
-              'Rehabilitación post lesión — 60 min',
-              'Readaptación deportiva en gimnasio — 60 min',
-              'Terapia manual + liberación miofascial — 50 min',
-              'Ondas de choque — 20 min',
-              'Sesión de radiofrecuencia — 30 min',
-              'Punción seca por grupo muscular — 20 min',
-              'Electroterapia / ultrasonido — 30 min',
-              'Vendaje neuromuscular — 20 min',
-              'Sesión recovery post entrenamiento — 40 min',
-              'Masaje deportivo premium, medio cuerpo — 50 min',
-              'Plan mensual de rehabilitación — 8 sesiones',
-              'Plan mensual elite — 12 sesiones',
-            ],
-          },
+        summaryChips: [
+          'Valoración 60 min',
+          'Sesión fisio 50 min',
+          'Rehabilitación 60 min',
+          'Ondas de choque 20 min',
+          'Radiofrecuencia 30 min',
+          'Plan 8 sesiones',
+          'Plan 12 sesiones',
         ],
+        ctaLabel: 'Solicitar información',
       },
       {
         id: 'recovery-nutri',
         title: 'NUTRIÓLOGO',
+        image: '/Actualizacion/PlanesOC/Recovery LAB/Nutriologo.png',
         description: 'Orientación nutricional para acompañar objetivos de rendimiento y composición corporal.',
         note: 'Pendiente: confirmar precios y paquetes específicos.',
+        summaryChips: ['Rendimiento', 'Composición corporal', 'Nutrición estratégica', 'Plan personalizado'],
+        ctaLabel: 'Solicitar información',
       },
       {
         id: 'recovery-inbody',
         title: 'INBODY',
+        image: '/Actualizacion/PlanesOC/Recovery LAB/INBODY.png',
         description: 'Evaluación de composición corporal para medir progreso real.',
-        sections: [
-          {
-            title: 'Costo normal',
-            lines: ['1 aplicación: $300'],
-          },
-          {
-            title: 'Promoción en paquetes',
-            lines: [
-              '2 aplicaciones: $560',
-              '4 aplicaciones: $1,040',
-              '6 aplicaciones: $1,380',
-              '8 aplicaciones: $1,680',
-              '10 aplicaciones: $2,000',
-            ],
-          },
-        ],
+        summaryChips: ['1 aplicación: $300', '2: $560', '4: $1,040', '6: $1,380', '8: $1,680', '10: $2,000'],
+        ctaLabel: 'Solicitar información',
       },
       {
         id: 'recovery-presoterapia',
         title: 'PRESOTERAPIA NORMATEC',
+        image: '/Actualizacion/PlanesOC/Recovery LAB/Presoterapia.png',
         description: 'Sistema de compresión dinámica profesional para recuperación muscular.',
-        sections: [
-          {
-            title: 'Beneficios',
-            lines: ['Menos fatiga', 'Mayor rendimiento', 'Mejor circulación', 'Recuperación real'],
-          },
-          {
-            title: 'Programa Athlete',
-            lines: ['Primera sesión: $499', '10 sesiones: $4,990'],
-          },
-        ],
+        summaryChips: ['Menos fatiga', 'Mayor rendimiento', 'Mejor circulación', 'Recuperación real', 'Primera sesión: $499', '10 sesiones: $4,990'],
+        ctaLabel: 'Solicitar información',
       },
     ],
   },

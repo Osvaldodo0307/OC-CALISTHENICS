@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react'
 import OcClubLogo from './brand/OcClubLogo'
 
 const NAV_LINKS = [
-  { label: 'Club', to: '/', hash: 'club' },
+  { label: 'Club', to: '/club' },
   { label: 'Clases', to: '/clases' },
   { label: 'Membresías', to: '/membresias' },
   { label: 'Convenios', to: '/convenios' },

@@ -17,6 +17,7 @@ import WebOnlyModule from './pages/app/WebOnlyModule'
 const Landing = lazy(() => import('./pages/Landing'))
 const Membresias = lazy(() => import('./pages/Membresias'))
 const ClasesInfo = lazy(() => import('./pages/ClasesInfo'))
+const Club = lazy(() => import('./pages/Club'))
 const EquipoComunidad = lazy(() => import('./pages/EquipoComunidad'))
 const Convenios = lazy(() => import('./pages/Convenios'))
 const Experiencias = lazy(() => import('./pages/Experiencias'))
@@ -100,6 +101,7 @@ function App() {
             <Route index element={<Landing />} />
             <Route path="membresias" element={<Membresias />} />
             <Route path="clases" element={<ClasesInfo />} />
+            <Route path="club" element={<Club />} />
             <Route path="equipo-comunidad" element={<EquipoComunidad />} />
             <Route path="convenios" element={<Convenios />} />
             <Route path="experiencias" element={<Experiencias />} />
