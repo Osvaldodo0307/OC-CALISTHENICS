@@ -30,27 +30,27 @@ export default function ClubServicePanels() {
   }, [activePanelId])
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-oc-dark">
+    <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-oc-dark">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl font-bold text-oc-light">Membresías y Servicios</h2>
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-4xl font-bold text-oc-light">Membresías y Servicios</h2>
           <p className="mt-3 text-oc-muted max-w-2xl mx-auto">
             Elige un panel para explorar planes, clases y beneficios de recuperación en OC-CLUB.
           </p>
         </div>
 
-        <div className="mb-8 rounded-xl border border-oc-red/40 bg-oc-metal/50 px-4 py-3 text-center text-sm sm:text-base text-oc-light">
+        <div className="mb-6 sm:mb-8 rounded-xl border border-oc-red/40 bg-oc-metal/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-center text-xs sm:text-base text-oc-light">
           <span className="font-semibold text-oc-red">Costos generales:</span> {membershipFees}
         </div>
 
-        <div className="mb-8 sm:mb-10">
-          <h3 className="text-2xl sm:text-3xl font-semibold text-oc-light">Elige tu experiencia OC</h3>
-          <p className="mt-3 max-w-2xl text-sm sm:text-base text-oc-muted">
+        <div className="mb-6 sm:mb-10">
+          <h3 className="text-xl sm:text-3xl font-semibold text-oc-light">Elige tu experiencia OC</h3>
+          <p className="mt-2 sm:mt-3 max-w-2xl text-sm sm:text-base text-oc-muted">
             Selecciona una categoría para conocer planes, clases y servicios disponibles.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {clubServicePanels.map((panel) => {
             const isActive = panel.id === activePanelId
             const accent = panelAccent[panel.id]
@@ -60,7 +60,7 @@ export default function ClubServicePanels() {
                 key={panel.id}
                 type="button"
                 onClick={() => setActivePanelId(panel.id)}
-                className={`group relative min-h-[230px] sm:min-h-[245px] lg:min-h-[270px] overflow-hidden rounded-[24px] border text-left transition-all duration-300 ${
+                className={`group relative min-h-[205px] sm:min-h-[245px] lg:min-h-[270px] overflow-hidden rounded-[20px] sm:rounded-[24px] border text-left transition-all duration-300 ${
                   isActive
                     ? 'border-oc-red/75 shadow-[0_0_35px_rgba(239,0,24,0.22)]'
                     : 'border-white/10 bg-[#111] hover:border-red-600/70 hover:shadow-[0_0_35px_rgba(239,0,24,0.22)]'
@@ -96,27 +96,27 @@ export default function ClubServicePanels() {
                 />
                 <div className={`absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r ${accent.line}`} aria-hidden />
 
-                <div className="relative z-10 flex h-full flex-col justify-end p-5 md:p-7">
-                  <div className="mb-3 flex flex-wrap items-center gap-2">
-                    <span className="inline-flex w-fit rounded-full border border-white/15 bg-black/30 px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">
+                <div className="relative z-10 flex h-full flex-col justify-end p-4 sm:p-5 md:p-7">
+                  <div className="mb-2.5 sm:mb-3 flex flex-wrap items-center gap-1.5 sm:gap-2">
+                    <span className="inline-flex w-fit rounded-full border border-white/15 bg-black/30 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] font-semibold tracking-[0.14em] text-white/65">
                       {order}
                     </span>
                     {isActive && (
-                      <span className={`inline-flex w-fit rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${accent.badge}`}>
+                      <span className={`inline-flex w-fit rounded-full border px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${accent.badge}`}>
                         Panel activo
                       </span>
                     )}
                   </div>
 
-                  <p className="font-hero text-[1.8rem] sm:text-[2.05rem] tracking-tight text-white">{panel.title}</p>
-                  <p className="mt-2 max-w-md text-sm sm:text-base text-white/78">{panel.description}</p>
+                  <p className="font-hero text-[1.45rem] sm:text-[2.05rem] tracking-tight text-white">{panel.title}</p>
+                  <p className="mt-1.5 sm:mt-2 max-w-md text-xs sm:text-base text-white/78">{panel.description}</p>
 
                   {!!panel.categoryChips?.length && (
-                    <div className="mt-4 flex flex-wrap gap-2">
+                    <div className="mt-3 sm:mt-4 flex flex-wrap gap-1.5 sm:gap-2">
                       {panel.categoryChips.map((chip) => (
                         <span
                           key={chip}
-                          className="rounded-full border border-white/30 bg-white/5 px-3 py-1.5 text-[11px] font-medium text-white/85"
+                          className="rounded-full border border-white/30 bg-white/5 px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-[11px] font-medium text-white/85"
                         >
                           {chip}
                         </span>
@@ -124,7 +124,7 @@ export default function ClubServicePanels() {
                     </div>
                   )}
 
-                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-oc-red">
+                  <p className="mt-4 sm:mt-5 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.16em] sm:tracking-[0.18em] text-oc-red">
                     {`${isActive ? panel.statusLabel ?? 'Panel activo' : panel.panelCtaLabel ?? 'Ver detalles'} →`}
                   </p>
                 </div>
@@ -133,9 +133,9 @@ export default function ClubServicePanels() {
           })}
         </div>
 
-        <div ref={detailPanelRef} className="scroll-mt-28 bg-oc-metal/45 border border-oc-border rounded-2xl p-4 sm:p-6 lg:p-8">
-          <div className="mb-6">
-            <h3 className="text-2xl sm:text-3xl font-bold text-oc-light uppercase">{activePanel.title}</h3>
+        <div ref={detailPanelRef} className="scroll-mt-24 sm:scroll-mt-28 bg-oc-metal/45 border border-oc-border rounded-2xl p-3.5 sm:p-6 lg:p-8">
+          <div className="mb-4 sm:mb-6">
+            <h3 className="text-xl sm:text-3xl font-bold text-oc-light uppercase">{activePanel.title}</h3>
             <p className="mt-2 text-oc-muted">{activePanel.description}</p>
             {activePanel.id === 'acceso-total' && (
               <p className="mt-3 text-sm text-oc-light/85">
@@ -144,7 +144,7 @@ export default function ClubServicePanels() {
             )}
           </div>
 
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 md:auto-rows-fr gap-5">
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 md:auto-rows-fr gap-3.5 sm:gap-5">
             {activePanel.items.map((item) => (
               <ServiceCard key={item.id} item={item} showImage={activePanel.showItemImages} />
             ))}

@@ -11,9 +11,9 @@ export default function ServiceCard({ item, showImage = false }: ServiceCardProp
 
   return (
     <>
-      <article className="rounded-xl border border-oc-border bg-oc-dark/55 h-full flex flex-col p-5 sm:p-6">
+      <article className="rounded-xl border border-oc-border bg-oc-dark/55 h-full flex flex-col p-4 sm:p-6">
       {showImage && item.image ? (
-        <div className="relative h-52 sm:h-56 overflow-hidden rounded-lg">
+        <div className="relative h-44 sm:h-52 overflow-hidden rounded-lg">
           <button
             type="button"
             onClick={() => setIsImageOpen(true)}
@@ -35,16 +35,16 @@ export default function ServiceCard({ item, showImage = false }: ServiceCardProp
         </div>
       ) : null}
 
-      <div className={`flex-1 flex flex-col ${showImage && item.image ? 'pt-5' : ''}`}>
-        <h3 className="text-xl font-bold text-oc-light">{item.title}</h3>
-        {item.price && <p className="mt-2 text-4xl font-bold text-oc-red leading-none">{item.price}</p>}
+      <div className={`flex-1 flex flex-col ${showImage && item.image ? 'pt-4 sm:pt-5' : ''}`}>
+        <h3 className="text-lg sm:text-xl font-bold text-oc-light">{item.title}</h3>
+        {item.price && <p className="mt-1.5 sm:mt-2 text-3xl sm:text-4xl font-bold text-oc-red leading-none">{item.price}</p>}
         {item.subtitle && <p className="mt-1 text-sm text-oc-muted font-medium">{item.subtitle}</p>}
-        <p className="mt-3 text-sm text-oc-muted leading-relaxed">{item.description}</p>
+        <p className="mt-2.5 sm:mt-3 text-sm text-oc-muted leading-relaxed">{item.description}</p>
 
         {item.summaryChips && item.summaryChips.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2 border-t border-oc-border pt-4">
+          <div className="mt-3 sm:mt-4 flex flex-wrap gap-1.5 sm:gap-2 border-t border-oc-border pt-3 sm:pt-4">
             {item.summaryChips.map((chip) => (
-              <span key={chip} className="rounded-full border border-white/20 bg-black/35 px-2.5 py-1 text-xs text-oc-light/90">
+              <span key={chip} className="rounded-full border border-white/20 bg-black/35 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs text-oc-light/90">
                 {chip}
               </span>
             ))}
@@ -52,7 +52,7 @@ export default function ServiceCard({ item, showImage = false }: ServiceCardProp
         )}
 
         {item.details && item.details.length > 0 && (
-          <ul className="mt-4 space-y-2 border-t border-oc-border pt-4">
+          <ul className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2 border-t border-oc-border pt-3 sm:pt-4">
             {item.details.map((detail) => (
               <li key={detail} className="text-sm text-oc-light flex items-start gap-2">
                 <span className="text-oc-red mt-0.5">■</span>
@@ -63,7 +63,7 @@ export default function ServiceCard({ item, showImage = false }: ServiceCardProp
         )}
 
         {item.sections?.map((section) => (
-          <div key={section.title} className="mt-4 border-t border-oc-border pt-4">
+          <div key={section.title} className="mt-3 sm:mt-4 border-t border-oc-border pt-3 sm:pt-4">
             <h4 className="text-sm uppercase tracking-wide text-oc-red font-semibold">{section.title}</h4>
             <ul className="mt-2 space-y-1.5">
               {section.lines.map((line) => (
@@ -76,14 +76,14 @@ export default function ServiceCard({ item, showImage = false }: ServiceCardProp
           </div>
         ))}
 
-        {item.note && <p className="mt-4 text-sm text-amber-200/90 border-t border-oc-border pt-4">{item.note}</p>}
+        {item.note && <p className="mt-3 sm:mt-4 text-sm text-amber-200/90 border-t border-oc-border pt-3 sm:pt-4">{item.note}</p>}
 
         {item.ctaLabel && (
           <a
             href="https://wa.me/525567869589"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-auto pt-5 inline-flex items-center justify-center rounded-full border border-oc-red/65 px-4 py-2 text-sm font-semibold text-oc-light hover:bg-oc-red/10 transition-colors"
+            className="mt-auto pt-4 sm:pt-5 inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-oc-red/65 px-4 py-2 text-sm font-semibold text-oc-light hover:bg-oc-red/10 transition-colors"
           >
             {item.ctaLabel}
           </a>

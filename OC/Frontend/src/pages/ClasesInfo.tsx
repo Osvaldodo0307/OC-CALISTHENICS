@@ -8,27 +8,27 @@ export default function ClasesInfo() {
       <PublicNav />
 
       {/* Hero Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-oc-dark to-oc-metal">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-oc-dark to-oc-metal">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+          <h1 className="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4">
             <span className="text-oc-light">Clases y</span>{' '}
             <span className="text-oc-red">Servicios</span>
           </h1>
-          <p className="text-xl text-oc-muted mb-8">
+          <p className="text-base sm:text-xl text-oc-muted mb-2 sm:mb-8">
             Clases grupales de 60 minutos · Todos los niveles
           </p>
         </div>
       </section>
 
       {/* Clases Disponibles */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-oc-dark">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-oc-dark">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-oc-light mb-4">Nuestras Clases</h2>
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-4xl font-bold text-oc-light mb-3 sm:mb-4">Nuestras Clases</h2>
             <p className="text-oc-muted">Diversidad de disciplinas para todos los objetivos</p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {[
               {
                 name: 'Calistenia',
@@ -65,19 +65,19 @@ export default function ClasesInfo() {
                 key={clase.name}
                 className="bg-oc-metal/50 rounded-xl border border-oc-border hover:border-oc-red/50 transition-all hover:shadow-lg hover:shadow-oc-red/10 group overflow-hidden"
               >
-                <div className="relative h-52 sm:h-56 md:h-60 overflow-hidden">
+                <div className="relative h-40 sm:h-52 md:h-56 overflow-hidden">
                   <img src={clase.image} alt={`Panel de ${clase.name}`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" aria-hidden />
                 </div>
-                <div className="p-4 sm:p-5">
+                <div className="p-3.5 sm:p-5">
                   {clase.imageContainsText && (
-                    <p className="text-xs text-oc-muted mb-3">Clase disponible en OC-CLUB</p>
+                    <p className="text-[11px] sm:text-xs text-oc-muted mb-2.5 sm:mb-3">Clase disponible en OC-CLUB</p>
                   )}
                   <a
                     href="https://wa.me/525567869589"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center rounded-full border border-oc-red/60 px-4 py-2.5 text-sm font-semibold text-oc-light hover:bg-oc-red/10 transition-colors"
+                    className="inline-flex w-full items-center justify-center rounded-full border border-oc-red/60 px-4 py-2 text-sm font-semibold text-oc-light hover:bg-oc-red/10 transition-colors"
                   >
                     Solicitar información
                   </a>
