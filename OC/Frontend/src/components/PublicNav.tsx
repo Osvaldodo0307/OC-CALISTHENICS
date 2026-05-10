@@ -49,6 +49,7 @@ export default function PublicNav() {
 
   useEffect(() => {
     if (!openGroup) return
+    if (mobileMenuOpen) return
     const onDocDown = (e: MouseEvent) => {
       if (groupDesktopRef.current && !groupDesktopRef.current.contains(e.target as Node)) {
         setOpenGroup(null)
@@ -56,7 +57,7 @@ export default function PublicNav() {
     }
     document.addEventListener('mousedown', onDocDown)
     return () => document.removeEventListener('mousedown', onDocDown)
-  }, [openGroup])
+  }, [openGroup, mobileMenuOpen])
 
   const handleNavClick = useCallback(
     (to: string, hash?: string) => {
