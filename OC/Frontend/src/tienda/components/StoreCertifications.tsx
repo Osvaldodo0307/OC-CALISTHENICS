@@ -1,66 +1,56 @@
-import { CERTIFICACIONES_BANNER, getCertificacionLogos } from '../data/tiendaAssets'
+import { Link } from 'react-router-dom'
+import { CERTIFICACIONES_BANNER } from '../data/tiendaAssets'
 
 /**
- * Sección de certificaciones en el home de la tienda.
- * - Panel editorial: `public/tienda/imagenes/certificaciones/banner.png` (copia de `Imágenes/Certificaciones.png`).
- * - Sellos adicionales: archivos en `src/tienda/Imágenes/certificaciones/`.
+ * Tarjeta clickeable de "Certificaciones" para el home de la tienda.
+ *
+ * Reemplaza al panel grande anterior. Mantiene la misma identidad visual
+ * que las tarjetas de categoría (cover + overlay + label rojo OC) pero en
+ * un formato horizontal/wide para destacar el acceso a la vista dedicada.
+ *
+ * Link: /tienda/certificaciones
  */
 export default function StoreCertifications() {
-  const logos = getCertificacionLogos()
-
   return (
-    <section className="border-y border-neutral-200 bg-white" aria-labelledby="tienda-certificaciones-heading">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
-        <header className="mb-6 text-center sm:text-left">
-          <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-oc-red">
-            Confianza
-          </p>
-          <h2
-            id="tienda-certificaciones-heading"
-            className="mt-2 font-display text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl"
+    <section
+      className="mx-auto max-w-7xl px-4 pt-2 pb-10 sm:px-6 lg:px-10 lg:pb-14"
+      aria-labelledby="tienda-certificaciones-card"
+    >
+      <Link
+        to="/tienda/certificaciones"
+        className="group relative flex aspect-[16/9] overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-all hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.18)] sm:aspect-[21/9]"
+      >
+        <img
+          src={CERTIFICACIONES_BANNER}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"
+          aria-hidden
+        />
+        <div className="relative z-10 mt-auto flex w-full flex-col gap-1 p-5 sm:p-6">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-oc-red">Confianza</span>
+          <span
+            id="tienda-certificaciones-card"
+            className="text-base font-bold text-white sm:text-lg"
           >
             Certificaciones
-          </h2>
-          <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-neutral-600 sm:mx-0 mx-auto">
-            Compromiso con calidad y buenas prácticas. Aquí iremos sumando los reconocimientos y sellos
-            oficiales disponibles.
-          </p>
-        </header>
-
-        <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-          <img
-            src={CERTIFICACIONES_BANNER}
-            alt="Certificaciones y estándares OC Store"
-            className="h-auto w-full object-cover object-center"
-            loading="lazy"
-            decoding="async"
-          />
+          </span>
+          <span className="line-clamp-1 text-[12px] text-white/75">
+            Reconocimientos y formaciones del equipo OC
+          </span>
+          <span
+            className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-white"
+            aria-hidden
+          >
+            Ver certificaciones <span>→</span>
+          </span>
         </div>
-
-        {logos.length > 0 && (
-          <div className="mt-8">
-            <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-wider text-neutral-500 sm:text-left">
-              Sellos y distintivos
-            </p>
-            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-              {logos.map((item) => (
-                <li
-                  key={item.src}
-                  className="flex items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-6"
-                >
-                  <img
-                    src={item.src}
-                    alt={item.alt}
-                    className="max-h-14 w-auto max-w-full object-contain"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+      </Link>
     </section>
   )
 }

@@ -45,6 +45,7 @@ const StoreCatalog = lazy(() => import('./tienda/pages/StoreCatalog'))
 const ProductDetail = lazy(() => import('./tienda/pages/ProductDetail'))
 const CartPage = lazy(() => import('./tienda/pages/CartPage'))
 const CheckoutPreview = lazy(() => import('./tienda/pages/CheckoutPreview'))
+const Certifications = lazy(() => import('./tienda/pages/Certifications'))
 
 function AppRedirect() {
   const { user } = useAuth()
@@ -225,6 +226,7 @@ function App() {
               <Route path="producto/:slug" element={<ProductDetail />} />
               <Route path="carrito" element={<CartPage />} />
               <Route path="checkout" element={<CheckoutPreview />} />
+              <Route path="certificaciones" element={<Certifications />} />
             </Route>
           )}
 

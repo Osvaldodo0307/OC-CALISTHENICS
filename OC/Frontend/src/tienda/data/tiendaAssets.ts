@@ -14,7 +14,7 @@ export const PRODUCTO_IMAGEN_PENDIENTE = '/tienda/imagenes/pendiente.svg'
 
 export const TIENDA_HERO_PRINCIPAL = '/tienda/imagenes/hero/principal-front.png'
 
-/** Panel principal de la sección Certificaciones (en `public/tienda/imagenes/certificaciones/banner.png`). */
+/** Cover/banner para la tarjeta de Certificaciones en el home (en `public/tienda/imagenes/certificaciones/banner.png`). */
 export const CERTIFICACIONES_BANNER = '/tienda/imagenes/certificaciones/banner.png'
 
 /** Cover de categoría (paneles). */
@@ -46,25 +46,4 @@ for (const [path, url] of Object.entries(productImageModules)) {
 
 export function productCoverSrc(slug: string): string {
   return PRODUCT_IMAGE_BY_SLUG[slug] ?? PRODUCTO_IMAGEN_PENDIENTE
-}
-
-/**
- * Logos / sellos sueltos en `src/tienda/Imágenes/certificaciones/`.
- * Agrega archivos `.png`, `.jpg`, `.jpeg`, `.webp` o `.svg`; el nombre del archivo (sin extensión) se usa en el texto alternativo.
- */
-const certificacionModules = import.meta.glob<string>(
-  '../Imágenes/certificaciones/*.{png,jpg,jpeg,webp,svg}',
-  { eager: true, query: '?url', import: 'default' },
-)
-
-function labelFromCertPath(path: string): string {
-  const file = path.split('/').pop() ?? 'certificación'
-  return file.replace(/\.(png|jpg|jpeg|webp|svg)$/i, '').replace(/[-_]+/g, ' ')
-}
-
-export function getCertificacionLogos(): { src: string; alt: string }[] {
-  return Object.entries(certificacionModules).map(([path, url]) => ({
-    src: url,
-    alt: `Certificación: ${labelFromCertPath(path)}`,
-  }))
 }
