@@ -3,7 +3,7 @@ import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
 import { featuredTestimonials } from '../data/testimonials'
 
-const IMG_HERO = '/Actualizacion/Front/IA (2).png'
+const IMG_HERO = '/Actualizacion/Front/GYM_Cel.png'
 const IMG_COMPETENCIA = '/Competencia.jpeg'
 const IMG_COMUNIDAD = '/Comunidad.jpeg'
 
@@ -70,7 +70,7 @@ export default function Landing() {
           <img
             src={IMG_HERO}
             alt="Interior real del gimnasio OC-CLUB en Tlalpan"
-            className="h-full w-full object-cover object-[74%_center] sm:object-right scale-105 sm:scale-100"
+            className="h-full w-full object-cover object-center"
             fetchPriority="high"
             loading="eager"
             decoding="async"
@@ -408,6 +408,9 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      {/* Sección "Ecosistema OC" retirada del primer panel:
+          los accesos a Bolsa de trabajo y OC Store viven ahora en el menú desplegable del nav. */}
 
       {/* Footer simple */}
       <footer id="contacto" className="scroll-mt-24 border-t border-white/[0.08] bg-black py-12 md:py-14">

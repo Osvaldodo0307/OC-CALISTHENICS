@@ -10,17 +10,17 @@ export type FeaturedTestimonial = {
  */
 export const featuredTestimonials: FeaturedTestimonial[] = [
   {
-    name: 'Usuario OC',
+    name: 'Osvaldo González',
     discipline: 'Calistenia',
     quote: 'Entrenar aqui me ayudo a ser constante y mejorar mi tecnica.',
   },
   {
-    name: 'Usuario OC',
+    name: 'Jorge Ayala',
     discipline: 'Powerlifting',
     quote: 'El ambiente te exige, pero tambien te acompana.',
   },
   {
-    name: 'Usuario OC',
+    name: 'Hector Nieto',
     discipline: 'Entrenamiento funcional',
     quote: 'Me gusta que el entrenamiento se siente estructurado y con comunidad.',
   },
