@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import { useEffect, lazy, Suspense, type ReactNode } from 'react'
+import { Component, useEffect, lazy, Suspense, type ErrorInfo, type ReactNode } from 'react'
 import { App as CapacitorApp } from '@capacitor/app'
 import { AuthProvider } from './contexts/AuthContext'
 import { runtime } from './config/runtime'
@@ -37,6 +37,14 @@ const CoachDashboard = lazy(() => import('./pages/coach/Dashboard'))
 const CoachAlumnos = lazy(() => import('./pages/coach/Alumnos'))
 const CoachAlumno = lazy(() => import('./pages/coach/Alumno'))
 const AsistenciaVirtual = lazy(() => import('./pages/coach/AsistenciaVirtual'))
+
+// ─── Tienda OC (módulo aislado bajo /tienda/*) ─────────────────────────
+const StoreLayout = lazy(() => import('./tienda/layout/StoreLayout'))
+const StoreHome = lazy(() => import('./tienda/pages/StoreHome'))
+const StoreCatalog = lazy(() => import('./tienda/pages/StoreCatalog'))
+const ProductDetail = lazy(() => import('./tienda/pages/ProductDetail'))
+const CartPage = lazy(() => import('./tienda/pages/CartPage'))
+const CheckoutPreview = lazy(() => import('./tienda/pages/CheckoutPreview'))
 
 function AppRedirect() {
   const { user } = useAuth()
@@ -88,15 +96,64 @@ function AppOnlyRoleRoute({
   return children
 }
 
+interface RootErrorBoundaryState {
+  error: Error | null
+}
+
+class RootErrorBoundary extends Component<{ children: ReactNode }, RootErrorBoundaryState> {
+  state: RootErrorBoundaryState = { error: null }
+
+  static getDerivedStateFromError(error: Error): RootErrorBoundaryState {
+    return { error }
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    if (typeof console !== 'undefined') {
+      console.error('[OC] Runtime error:', error, info)
+    }
+  }
+
+  private handleReload = () => {
+    if (typeof window !== 'undefined') {
+      window.location.assign('/')
+    }
+  }
+
+  render() {
+    if (!this.state.error) return this.props.children
+    return (
+      <div className="min-h-screen bg-oc-carbon text-oc-light flex items-center justify-center px-6 py-12">
+        <div className="max-w-md w-full rounded-lg border border-white/10 bg-black/40 p-6 shadow-xl">
+          <h1 className="text-lg font-bold text-oc-light">Algo salió mal cargando esta vista.</h1>
+          <p className="mt-2 text-sm text-oc-muted">
+            Recargar suele resolverlo. Si persiste, escríbenos por WhatsApp.
+          </p>
+          <pre className="mt-4 max-h-40 overflow-auto rounded bg-black/60 p-3 text-[11px] leading-snug text-white/70">
+            {String(this.state.error?.message ?? this.state.error)}
+          </pre>
+          <button
+            type="button"
+            onClick={this.handleReload}
+            className="mt-5 inline-flex items-center justify-center rounded-sm bg-oc-red px-4 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-oc-red-deep"
+          >
+            Volver al inicio
+          </button>
+        </div>
+      </div>
+    )
+  }
+}
+
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <ScrollToTop />
         <NetworkStatusBanner />
         <NativeBackButtonHandler />
-        <Suspense fallback={<LoadingState message="Cargando modulo..." />}>
-          <Routes>
+        <RootErrorBoundary>
+          <Suspense fallback={<LoadingState message="Cargando modulo..." />}>
+            <Routes>
           <Route path="/" element={runtime.isAppMode ? <Navigate to="/app/login" replace /> : <PublicLayout />}>
             <Route index element={<Landing />} />
             <Route path="membresias" element={<Membresias />} />
@@ -161,11 +218,22 @@ function App() {
             />
           </Route>
 
+          {!runtime.isAppMode && (
+            <Route path="/tienda" element={<StoreLayout />}>
+              <Route index element={<StoreHome />} />
+              <Route path="catalogo" element={<StoreCatalog />} />
+              <Route path="producto/:slug" element={<ProductDetail />} />
+              <Route path="carrito" element={<CartPage />} />
+              <Route path="checkout" element={<CheckoutPreview />} />
+            </Route>
+          )}
+
           <Route path="*" element={<Navigate to={runtime.isAppMode ? '/app/login' : '/'} replace />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </AuthProvider>
+            </Routes>
+          </Suspense>
+        </RootErrorBoundary>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 

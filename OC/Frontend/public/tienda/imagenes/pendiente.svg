@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-label="Imagen del producto pendiente">
+  <rect width="800" height="1000" fill="#f4f4f5"/>
+  <rect x="1" y="1" width="798" height="998" fill="none" stroke="#e4e4e7" stroke-width="2"/>
+  <text x="400" y="470" text-anchor="middle" font-family="system-ui,sans-serif" font-size="22" font-weight="600" fill="#71717a">OC Store</text>
+  <text x="400" y="520" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#a1a1aa">Imagen pendiente</text>
+  <text x="400" y="555" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="#a1a1aa">Agregar foto en /tienda/imagenes/productos/</text>
+</svg>
