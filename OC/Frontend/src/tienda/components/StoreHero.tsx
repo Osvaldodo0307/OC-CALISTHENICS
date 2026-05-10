@@ -9,16 +9,34 @@ import { productCoverSrc, TIENDA_HERO_PRINCIPAL } from '../data/tiendaAssets'
 export default function StoreHero() {
   return (
     <section className="relative overflow-hidden bg-neutral-950 text-white">
-      <div className="absolute inset-0 z-0">
+      {/* Mobile/tablet: la imagen vive como bloque visible arriba (no como fondo absoluto)
+          para que la foto completa quepa, mantenga su tamaño y no recorte al sujeto. */}
+      <div className="relative w-full lg:hidden">
         <img
           src={TIENDA_HERO_PRINCIPAL}
           alt="OC Store — imagen principal de la tienda"
+          className="block h-auto w-full object-cover object-center"
+          loading="eager"
+          decoding="async"
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-neutral-950 via-neutral-950/55 to-transparent"
+          aria-hidden
+        />
+      </div>
+
+      {/* Desktop: fondo absoluto + degradados para superponer el texto en la columna izquierda. */}
+      <div className="absolute inset-0 z-0 hidden lg:block">
+        <img
+          src={TIENDA_HERO_PRINCIPAL}
+          alt=""
+          aria-hidden
           className="h-full w-full object-cover object-center opacity-60"
           loading="eager"
           decoding="async"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-transparent sm:to-black/40"
+          className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/40"
           aria-hidden
         />
         <div
@@ -27,7 +45,7 @@ export default function StoreHero() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-8 px-4 py-16 sm:px-6 sm:py-20 lg:flex-row lg:items-center lg:gap-12 lg:px-10 lg:py-28">
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-8 px-4 pb-14 pt-10 sm:px-6 sm:pb-16 sm:pt-12 lg:flex-row lg:items-center lg:gap-12 lg:px-10 lg:py-28">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80 backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-oc-red shadow-[0_0_10px_rgba(229,9,20,0.7)]" />
