@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Link } from 'react-router-dom'
 import { runtime } from '../config/runtime'
+import { isAdminDemoMode } from '../config/adminDemo'
 import InlineNotice from '../components/ui/InlineNotice'
 import OcClubLogo from '../components/brand/OcClubLogo'
 import { toUserMessage } from '../services/api/errorMessages'
@@ -12,8 +13,22 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { login, authError } = useAuth()
+  const { login, loginAsAdminDemo, authError } = useAuth()
   const navigate = useNavigate()
+  const demoEnabled = isAdminDemoMode()
+
+  const handleDemoLogin = async () => {
+    setError('')
+    setLoading(true)
+    try {
+      await loginAsAdminDemo()
+      navigate('/app/admin/membresias')
+    } catch (err) {
+      setError(toUserMessage(err, 'No se pudo iniciar sesion demo'))
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -89,7 +104,24 @@ export default function Login() {
           >
             {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
+
+          {demoEnabled && (
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => void handleDemoLogin()}
+              className="w-full border border-amber-600/60 bg-amber-950/30 hover:bg-amber-900/40 text-amber-100 font-semibold py-2 px-4 rounded disabled:opacity-50"
+            >
+              Entrar como admin demo
+            </button>
+          )}
         </form>
+
+        {demoEnabled && (
+          <p className="mt-4 text-xs text-amber-200/90 text-center bg-amber-950/20 border border-amber-800/40 rounded px-3 py-2">
+            Modo demo/local activo — datos de prueba, sin backend real
+          </p>
+        )}
 
         <div className="mt-6 text-sm text-oc-muted text-center">
           <p>Ingresa con tu usuario y contraseña proporcionados.</p>

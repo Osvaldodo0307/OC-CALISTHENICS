@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { ServiceItem } from '../../data/clubServices'
+import WhatsAppLink from '../WhatsAppLink'
 
 type ServiceCardProps = {
   item: ServiceItem
@@ -79,14 +80,12 @@ export default function ServiceCard({ item, showImage = false }: ServiceCardProp
         {item.note && <p className="mt-3 sm:mt-4 text-sm text-amber-200/90 border-t border-oc-border pt-3 sm:pt-4">{item.note}</p>}
 
         {item.ctaLabel && (
-          <a
-            href="https://wa.me/525567869589"
-            target="_blank"
-            rel="noopener noreferrer"
+          <WhatsAppLink
+            preset="general"
             className="mt-auto pt-4 sm:pt-5 inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-oc-red/65 px-4 py-2 text-sm font-semibold text-oc-light hover:bg-oc-red/10 transition-colors"
           >
             {item.ctaLabel}
-          </a>
+          </WhatsAppLink>
         )}
       </div>
       </article>

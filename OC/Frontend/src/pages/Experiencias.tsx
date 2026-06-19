@@ -14,8 +14,8 @@ export default function Experiencias() {
               Experiencias OC-CLUB
             </h1>
             <p className="mt-4 text-white/70 leading-relaxed">
-              Historias de atletas y socios del club. Esta seccion sera alimentada con opiniones reales
-              desde la cuenta de usuario.
+              Opiniones de socios del club en Tlalpan. Si entrenas con nosotros, podrás compartir la tuya desde tu
+              perfil en el portal cuando esté disponible.
             </p>
           </div>
 

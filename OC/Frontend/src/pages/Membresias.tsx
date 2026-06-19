@@ -2,19 +2,7 @@ import { Link } from 'react-router-dom'
 import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
 import ClubServicePanels from '../components/landing/ClubServicePanels'
-
-function WhatsAppButton({ className = '' }: { className?: string }) {
-  return (
-    <a
-      href="https://wa.me/525567869589"
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`inline-flex items-center gap-2 px-8 py-4 rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold transition-all hover:shadow-lg hover:shadow-oc-red/50 ${className}`}
-    >
-      Pedir informes por WhatsApp
-    </a>
-  )
-}
+import WhatsAppLink from '../components/WhatsAppLink'
 
 export default function Membresias() {
   return (
@@ -66,7 +54,12 @@ export default function Membresias() {
             <span>🕐 L–V 7:00 – 22:00</span>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <WhatsAppButton />
+            <WhatsAppLink
+              preset="visita"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold transition-all hover:shadow-lg hover:shadow-oc-red/50"
+            >
+              Pedir informes por WhatsApp
+            </WhatsAppLink>
             <Link
               to="/"
               className="px-8 py-4 rounded-full border-2 border-oc-red text-oc-red hover:bg-oc-red/10 font-semibold transition-all"
@@ -109,20 +102,24 @@ export default function Membresias() {
                 <Link to="/clases" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
                   Clases
                 </Link>
-                <a
-                  href="https://wa.me/525567869589"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <WhatsAppLink
+                  preset="visita"
                   className="block text-oc-muted hover:text-oc-red text-sm transition-colors"
                 >
-                  Contacto
-                </a>
+                  Agendar visita (WhatsApp)
+                </WhatsAppLink>
+                <Link to="/aviso-privacidad" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                  Aviso de privacidad
+                </Link>
+                <Link to="/terminos" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                  Términos
+                </Link>
               </div>
             </div>
           </div>
           <div className="border-t border-oc-border pt-8 text-center">
             <p className="text-oc-muted text-sm">
-              © {new Date().getFullYear()} OC-CLUB. Todos los derechos reservados.
+              © {new Date().getFullYear()} OC Club. Todos los derechos reservados.
             </p>
           </div>
         </div>

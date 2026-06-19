@@ -34,11 +34,13 @@ def _admin_headers(client):
 
 def test_status_precedence_rules():
     today = date.today()
-    assert resolve_membership_status(MembershipStatusContext("suspendida", today + timedelta(days=20), 100, 100, today, 5)) == "suspendida"
-    assert resolve_membership_status(MembershipStatusContext(None, today - timedelta(days=1), 100, 100, today, 5)) == "vencida"
-    assert resolve_membership_status(MembershipStatusContext(None, today + timedelta(days=1), 100, 90, today, 5)) == "con_adeudo"
-    assert resolve_membership_status(MembershipStatusContext(None, today + timedelta(days=2), 100, 100, today, 5)) == "proxima_a_vencer"
-    assert resolve_membership_status(MembershipStatusContext(None, today + timedelta(days=30), 100, 100, today, 5)) == "activa"
+    assert resolve_membership_status(MembershipStatusContext("suspendida", today + timedelta(days=20), 100, 100, today, 3)) == "suspendida"
+    assert resolve_membership_status(MembershipStatusContext(None, today - timedelta(days=1), 100, 100, today, 3)) == "vencida"
+    assert resolve_membership_status(MembershipStatusContext(None, today + timedelta(days=1), 100, 90, today, 3)) == "con_adeudo"
+    assert resolve_membership_status(MembershipStatusContext(None, today, 100, 100, today, 3)) == "vence_hoy"
+    assert resolve_membership_status(MembershipStatusContext(None, today, 100, 90, today, 3)) == "con_adeudo"
+    assert resolve_membership_status(MembershipStatusContext(None, today + timedelta(days=2), 100, 100, today, 3)) == "proxima_a_vencer"
+    assert resolve_membership_status(MembershipStatusContext(None, today + timedelta(days=30), 100, 100, today, 3)) == "activa"
 
 
 def test_login_blocked_for_inactive_user(client, db_session):
@@ -120,7 +122,7 @@ def test_admin_membership_core_flows(client, db_session):
     reject_overpay = client.post(
         f"/membership/admin/cycle/{cycle_id}/payment",
         headers=headers,
-        json={"amount": 700, "payment_method": "tarjeta"},
+        json={"amount": 700, "payment_method": "tarjeta", "payment_action": "partial_debt"},
     )
     assert reject_overpay.status_code == 409
 
@@ -227,4 +229,30 @@ def test_admin_membership_core_flows(client, db_session):
     expired_filter = client.get("/membership/admin/clients?status=vencida", headers=headers)
     assert expired_filter.status_code == 200
     assert any(row["user_id"] == student2.id for row in expired_filter.json())
+
+    summary = client.get("/membership/admin/summary", headers=headers)
+    assert summary.status_code == 200
+    summary_data = summary.json()
+    assert "month_income" in summary_data
+    assert "counts" in summary_data
+    assert summary_data["counts"]["total_socios"] >= 2
+
+    alerts = client.get("/membership/admin/alerts", headers=headers)
+    assert alerts.status_code == 200
+    alerts_data = alerts.json()
+    assert "vence_hoy" in alerts_data
+    assert "vencidos" in alerts_data
+
+    clients_enriched = client.get("/membership/admin/clients?status=todos", headers=headers)
+    assert clients_enriched.status_code == 200
+    first_row = next(row for row in clients_enriched.json() if row["user_id"] == student.id)
+    assert "last_payment" in first_row
+    assert first_row["last_payment"] is not None
+
+    cortesia = client.post(
+        f"/membership/admin/cycle/{new_cycle_id}/payment",
+        headers=headers,
+        json={"amount": 50, "payment_method": "cortesia", "idempotency_key": "pay-cortesia"},
+    )
+    assert cortesia.status_code == 200
 

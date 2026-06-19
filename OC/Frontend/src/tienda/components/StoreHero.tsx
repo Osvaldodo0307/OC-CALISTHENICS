@@ -59,8 +59,8 @@ export default function StoreHero() {
             .
           </h1>
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75 sm:text-base">
-            Ropa técnica, accesorios premium, suplementos seleccionados por nuestro staff y
-            artículos oficiales de OC-CALISTHENICS. Diseñados para entrenar duro y vivir mejor.
+            Catálogo en actualización. Consulta disponibilidad, tallas y precios con el equipo OC antes de pedir.
+            Los pedidos se confirman por WhatsApp; no hay pago en línea en esta etapa.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
@@ -79,21 +79,21 @@ export default function StoreHero() {
 
           <ul className="mt-10 grid grid-cols-3 gap-4 max-w-lg">
             <li className="flex flex-col">
-              <span className="text-2xl font-bold text-white">30+</span>
+              <span className="text-2xl font-bold text-white">Catálogo</span>
               <span className="text-[11px] uppercase tracking-wider text-white/60">
-                productos
+                en actualización
               </span>
             </li>
             <li className="flex flex-col">
-              <span className="text-2xl font-bold text-white">8</span>
+              <span className="text-2xl font-bold text-white">Pedido</span>
               <span className="text-[11px] uppercase tracking-wider text-white/60">
-                categorías
+                por WhatsApp
               </span>
             </li>
             <li className="flex flex-col">
-              <span className="text-2xl font-bold text-white">100%</span>
+              <span className="text-2xl font-bold text-white">Stock</span>
               <span className="text-[11px] uppercase tracking-wider text-white/60">
-                oficial OC
+                sujeto a disponibilidad
               </span>
             </li>
           </ul>

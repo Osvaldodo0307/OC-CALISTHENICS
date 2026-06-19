@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
+import WhatsAppLink from '../components/WhatsAppLink'
 
 export default function ClasesInfo() {
   return (
@@ -73,14 +74,12 @@ export default function ClasesInfo() {
                   {clase.imageContainsText && (
                     <p className="text-[11px] sm:text-xs text-oc-muted mb-2.5 sm:mb-3">Clase disponible en OC-CLUB</p>
                   )}
-                  <a
-                    href="https://wa.me/525567869589"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <WhatsAppLink
+                    preset="clases"
                     className="inline-flex w-full items-center justify-center rounded-full border border-oc-red/60 px-4 py-2 text-sm font-semibold text-oc-light hover:bg-oc-red/10 transition-colors"
                   >
                     Solicitar información
-                  </a>
+                  </WhatsAppLink>
                 </div>
               </div>
             ))}
@@ -231,14 +230,12 @@ export default function ClasesInfo() {
             Contáctanos para más información o agenda una clase de prueba
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="https://wa.me/525567869589"
-              target="_blank"
-              rel="noopener noreferrer"
+            <WhatsAppLink
+              preset="clases"
               className="px-8 py-4 rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold transition-all hover:shadow-lg hover:shadow-oc-red/50"
             >
               Contactar por WhatsApp
-            </a>
+            </WhatsAppLink>
             <Link
               to="/"
               className="px-8 py-4 rounded-full border-2 border-oc-red text-oc-red hover:bg-oc-red/10 font-semibold transition-all"
@@ -277,20 +274,24 @@ export default function ClasesInfo() {
                 <Link to="/membresias" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
                   Membresías
                 </Link>
-                <a
-                  href="https://wa.me/525567869589"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <WhatsAppLink
+                  preset="clases"
                   className="block text-oc-muted hover:text-oc-red text-sm transition-colors"
                 >
-                  Contacto
-                </a>
+                  WhatsApp (clases)
+                </WhatsAppLink>
+                <Link to="/aviso-privacidad" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                  Aviso de privacidad
+                </Link>
+                <Link to="/terminos" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                  Términos
+                </Link>
               </div>
             </div>
           </div>
           <div className="border-t border-oc-border pt-8 text-center">
             <p className="text-oc-muted text-sm">
-              © {new Date().getFullYear()} OC-CLUB. Todos los derechos reservados.
+              © {new Date().getFullYear()} OC Club. Todos los derechos reservados.
             </p>
           </div>
         </div>

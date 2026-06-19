@@ -4,12 +4,8 @@ import { useCart } from '../context/CartContext'
 import { formatCurrency } from '../utils/formatCurrency'
 import EmptyState from '../components/EmptyState'
 import { buildStoreOrderWhatsAppHref, OC_COMMERCIAL_DISCLAIMER } from '../utils/storeCopy'
-
-const WHATSAPP_CONSULTA_HREF =
-  'https://wa.me/525567869589?text=' +
-  encodeURIComponent(
-    'Hola OC, quiero consultar disponibilidad y opciones de compra en la tienda. Gracias.',
-  )
+import { ANALYTICS_EVENTS, trackEvent } from '../../utils/analytics'
+import WhatsAppLink from '../../components/WhatsAppLink'
 
 /**
  * Compra asistida (sin pasarela de pago). El usuario arma el pedido en el navegador
@@ -173,18 +169,17 @@ export default function CheckoutPreview() {
               href={whatsappPedidoHref}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent(ANALYTICS_EVENTS.whatsapp_tienda, { source: 'checkout_pedido' })}
               className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-oc-red px-5 py-3 text-[12px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-oc-red-deep"
             >
               Enviar solicitud por WhatsApp
             </a>
-            <a
-              href={WHATSAPP_CONSULTA_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
+            <WhatsAppLink
+              preset="tienda"
               className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-neutral-300 bg-white px-5 py-3 text-[12px] font-bold uppercase tracking-wider text-neutral-800 transition-colors hover:border-neutral-500"
             >
               Consultar disponibilidad
-            </a>
+            </WhatsAppLink>
             <Link
               to="/tienda/carrito"
               className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-transparent px-5 py-2 text-[12px] font-semibold text-neutral-600 underline-offset-2 hover:text-oc-red hover:underline"

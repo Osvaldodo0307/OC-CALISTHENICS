@@ -1,0 +1,2 @@
+﻿socio_nombre,telefono,plan,fecha_pago,monto_pagado,metodo_pago,periodo_inicio,periodo_fin,payment_action,counts_as_income,applies_to_balance,saldo_pendiente,nota,fuente_archivo,referencia_externa
+URIEL CARDIEL,,POR CHECK IN,2025-11-01,1890.02,historico_sin_metodo,2025-11-01,2025-11-30,renew_extend,true,true,0.0,Fecha de pago inferida desde columna mensual; método de pago no registrado en fuente.; Sobrepago vs costo_plan=171.82; revisar; MEMBRESIA_col=POR CHECK IN,OCCALISTHENICS.xlsx::NOVIEMBRE 2025,OCCALISTHENICS:NOVIEMBRE 2025:uriel_cardiel:2025-11-01

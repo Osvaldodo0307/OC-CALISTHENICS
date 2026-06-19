@@ -1,12 +1,13 @@
 import type { CartLine } from '../types/store'
 import { formatCurrency } from './formatCurrency'
+import { buildWhatsAppHref, OC_WHATSAPP_TEL } from '../../utils/whatsapp'
+
+/** @deprecated Usar OC_WHATSAPP_TEL desde utils/whatsapp */
+export const OC_STORE_WHATSAPP_TEL = OC_WHATSAPP_TEL
 
 /** Aviso legal/comercial obligatorio en el MVP (compra asistida, sin pasarela). */
 export const OC_COMMERCIAL_DISCLAIMER =
-  'La compra, disponibilidad, entrega y método de pago se confirman directamente con el equipo OC.'
-
-/** WhatsApp comercial (mismo número que el sitio público OC). */
-export const OC_STORE_WHATSAPP_TEL = '525567869589'
+  'La compra, disponibilidad, entrega y método de pago se confirman directamente con el equipo OC. Catálogo sujeto a disponibilidad.'
 
 /**
  * Enlace para enviar la solicitud de compra por WhatsApp con el detalle del carrito.
@@ -32,5 +33,5 @@ export function buildStoreOrderWhatsAppHref(lines: CartLine[], subtotal: number)
     'Gracias.',
   ].join('\n')
 
-  return `https://wa.me/${OC_STORE_WHATSAPP_TEL}?text=${encodeURIComponent(body)}`
+  return buildWhatsAppHref(body)
 }

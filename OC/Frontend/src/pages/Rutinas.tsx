@@ -223,7 +223,7 @@ export default function Rutinas() {
               : 'text-oc-muted hover:text-white'
           }`}
         >
-          Con IA
+          Con generador automático
         </button>
       </div>
       
@@ -324,7 +324,10 @@ export default function Rutinas() {
       {/* AI-based form */}
       {activeTab === 'ai' && (
         <div>
-          <h2 className="text-2xl font-bold text-white mb-6">Generar Rutina con IA</h2>
+          <h2 className="text-2xl font-bold text-white mb-6">Generador automático de rutinas</h2>
+          <p className="text-sm text-oc-muted mb-4 max-w-2xl">
+            Arma una rutina de referencia según objetivo y nivel del alumno. No sustituye la evaluación presencial del coach.
+          </p>
 
       <form onSubmit={handleSubmit} className="bg-oc-metal p-6 rounded-lg border border-oc-red/20 space-y-6 max-w-2xl">
         <div>

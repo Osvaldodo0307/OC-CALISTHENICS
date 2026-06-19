@@ -1,5 +1,5 @@
-from pydantic import BaseModel, EmailStr
-from typing import Optional, List
+from pydantic import BaseModel, EmailStr, field_validator
+from typing import Optional, List, Dict
 from datetime import datetime, date
 
 # Auth
@@ -96,6 +96,13 @@ class MembershipPaymentCreate(BaseModel):
     payment_date: Optional[datetime] = None
     allow_overpayment: bool = False
     idempotency_key: Optional[str] = None
+    payment_action: Optional[str] = None
+    period_start: Optional[date] = None
+    period_end: Optional[date] = None
+    period_duration_months: Optional[int] = None
+    renewal_start_date: Optional[date] = None
+    counts_as_income: Optional[bool] = None
+    applies_to_balance: Optional[bool] = None
 
 
 class MembershipNoteCreate(BaseModel):
@@ -114,9 +121,20 @@ class MembershipPaymentResponse(BaseModel):
     payment_method: str
     concept: Optional[str] = None
     observations: Optional[str] = None
+    payment_action: Optional[str] = None
+    period_start_date: Optional[date] = None
+    period_end_date: Optional[date] = None
+    counts_as_income: bool = True
+    applies_to_balance: bool = True
+    previous_end_date: Optional[date] = None
+    extended_end_date: Optional[date] = None
     created_by: int
     created_at: datetime
     created_by_name: Optional[str] = None
+    reversed_at: Optional[datetime] = None
+    reversed_by: Optional[int] = None
+    reversed_by_name: Optional[str] = None
+    reversal_reason: Optional[str] = None
 
 
 class MembershipNoteResponse(BaseModel):
@@ -172,6 +190,60 @@ class MembershipClientDetail(BaseModel):
     cycles_history: List[MembershipCycleResponse] = []
     payments: List[MembershipPaymentResponse] = []
     notes: List[MembershipNoteResponse] = []
+
+
+class MembershipFollowUpCreate(BaseModel):
+    user_id: int
+    membership_cycle_id: Optional[int] = None
+    followup_type: str = "otro"
+    channel: str = "nota_interna"
+    status: str = "pendiente"
+    contact_at: Optional[datetime] = None
+    next_followup_at: Optional[datetime] = None
+    note: Optional[str] = None
+
+
+class MembershipFollowUpUpdate(BaseModel):
+    followup_type: Optional[str] = None
+    channel: Optional[str] = None
+    status: Optional[str] = None
+    contact_at: Optional[datetime] = None
+    next_followup_at: Optional[datetime] = None
+    note: Optional[str] = None
+
+
+class MembershipFollowUpResponse(BaseModel):
+    id: int
+    user_id: int
+    membership_id: Optional[int] = None
+    membership_cycle_id: Optional[int] = None
+    followup_type: str
+    channel: str
+    status: str
+    contact_at: Optional[datetime] = None
+    next_followup_at: Optional[datetime] = None
+    note: Optional[str] = None
+    created_by: int
+    updated_by: Optional[int] = None
+    created_at: datetime
+    updated_at: datetime
+    created_by_name: Optional[str] = None
+    updated_by_name: Optional[str] = None
+
+
+class MembershipImportCommitRequest(BaseModel):
+    batch_id: int
+    confirm_duplicate_rows: List[int] = []
+    resolve_ambiguous: Dict[int, int] = {}
+    confirm_extend_without_period_rows: List[int] = []
+
+    @field_validator("resolve_ambiguous", mode="before")
+    @classmethod
+    def _coerce_ambiguous_keys(cls, value):
+        if not value:
+            return {}
+        return {int(k): int(v) for k, v in value.items()}
+
 
 # Class Session
 class ClassSessionBase(BaseModel):

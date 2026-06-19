@@ -21,6 +21,8 @@ const Club = lazy(() => import('./pages/Club'))
 const EquipoComunidad = lazy(() => import('./pages/EquipoComunidad'))
 const Convenios = lazy(() => import('./pages/Convenios'))
 const Experiencias = lazy(() => import('./pages/Experiencias'))
+const AvisoPrivacidad = lazy(() => import('./pages/AvisoPrivacidad'))
+const Terminos = lazy(() => import('./pages/Terminos'))
 const DashboardSocio = lazy(() => import('./pages/DashboardSocio'))
 const Classes = lazy(() => import('./pages/Classes'))
 const Reservas = lazy(() => import('./pages/Reservas'))
@@ -33,6 +35,9 @@ const AdminClases = lazy(() => import('./pages/admin/Clases'))
 const CoachesAlumnos = lazy(() => import('./pages/admin/CoachesAlumnos'))
 const AdminAsistencia = lazy(() => import('./pages/admin/Asistencia'))
 const AdminMembresiasControl = lazy(() => import('./pages/admin/MembresiasControl'))
+const AdminRecordatorios = lazy(() => import('./pages/admin/Recordatorios'))
+const AdminImportarPagos = lazy(() => import('./pages/admin/ImportarPagos'))
+const AdminSocioExpediente = lazy(() => import('./pages/admin/SocioExpediente'))
 const CoachDashboard = lazy(() => import('./pages/coach/Dashboard'))
 const CoachAlumnos = lazy(() => import('./pages/coach/Alumnos'))
 const CoachAlumno = lazy(() => import('./pages/coach/Alumno'))
@@ -163,6 +168,8 @@ function App() {
             <Route path="equipo-comunidad" element={<EquipoComunidad />} />
             <Route path="convenios" element={<Convenios />} />
             <Route path="experiencias" element={<Experiencias />} />
+            <Route path="aviso-privacidad" element={<AvisoPrivacidad />} />
+            <Route path="terminos" element={<Terminos />} />
           </Route>
 
           <Route path="/app" element={<AuthLayout />}>
@@ -200,6 +207,18 @@ function App() {
             <Route
               path="admin/membresias"
               element={<ProtectedRoute requiredRole="admin"><AdminMembresiasControl /></ProtectedRoute>}
+            />
+            <Route
+              path="admin/recordatorios"
+              element={<ProtectedRoute requiredRole="admin"><AdminRecordatorios /></ProtectedRoute>}
+            />
+            <Route
+              path="admin/importar-pagos"
+              element={<ProtectedRoute requiredRole="admin"><AdminImportarPagos /></ProtectedRoute>}
+            />
+            <Route
+              path="admin/socios/:id"
+              element={<ProtectedRoute requiredRole="admin"><AdminSocioExpediente /></ProtectedRoute>}
             />
             <Route
               path="coach/dashboard"

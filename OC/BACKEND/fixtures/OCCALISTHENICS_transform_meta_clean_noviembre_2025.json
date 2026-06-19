@@ -1,0 +1,128 @@
+[
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:tonito_osnaya:2025-11-01",
+    "costo_plan": 945.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:liria_villegas:2025-11-01",
+    "costo_plan": 945.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:valeria_quintana:2025-11-01",
+    "costo_plan": 945.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:arlette_roman:2025-11-01",
+    "costo_plan": 945.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:pedro_flores:2025-11-01",
+    "costo_plan": 945.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:luis_alberto:2025-11-01",
+    "costo_plan": 945.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:rodrigo_alva:2025-11-01",
+    "costo_plan": 995.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:valeria_mena:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "4",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:april:2025-11-01",
+    "costo_plan": 70.0,
+    "plan_source": "3",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:uriel_cardiel:2025-11-01",
+    "costo_plan": 171.82,
+    "plan_source": "POR CHECK IN",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:prima_charlie:2025-11-01",
+    "costo_plan": 50.0,
+    "plan_source": "1",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:hermana_liria:2025-11-01",
+    "costo_plan": 50.0,
+    "plan_source": "1",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:amiga_cynthia:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "X",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:cynthia_juarez_perez:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "X",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:angelina_hernandez_garcia:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "X",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:alejandra_cuellar:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "500",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:arya_cuellar:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "250",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:patricio_cuellar:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "250",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:zuleika_de_zenteno:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "260",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:daniel_albertano_zenteno:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "260",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:NOVIEMBRE 2025:nicole_zenteno:2025-11-01",
+    "costo_plan": 75.0,
+    "plan_source": "280",
+    "plan_mapped": false
+  }
+]

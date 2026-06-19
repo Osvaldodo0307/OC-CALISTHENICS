@@ -1,0 +1,17 @@
+{
+  "sheet": "NOVIEMBRE 2025",
+  "socios_procesados": 30,
+  "filas_pago_generadas": 21,
+  "celdas_ignoradas_vacio": 4,
+  "montos_cero_sin_pago": 5,
+  "montos_parciales": 0,
+  "montos_sobrepago": 8,
+  "metodos_ausentes_filas": 0,
+  "telefonos_ausentes_socios": 30,
+  "telefonos_desde_contactos": 0,
+  "planes_no_mapeados": 14,
+  "valores_no_numericos": 0,
+  "ingresos_estimados": 10595.02,
+  "adeudos_estimados": 2940.0,
+  "warnings_count": 27
+}

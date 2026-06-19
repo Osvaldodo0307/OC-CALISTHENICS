@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom'
 import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
+import AnchorPlans from '../components/landing/AnchorPlans'
+import TrustBlock from '../components/landing/TrustBlock'
+import LeadCaptureForm from '../components/landing/LeadCaptureForm'
+import WhatsAppLink from '../components/WhatsAppLink'
 import { featuredTestimonials } from '../data/testimonials'
 
 const IMG_HERO = '/Actualizacion/Front/GYM_Cel.png'
@@ -87,31 +91,31 @@ export default function Landing() {
           <div className="max-w-3xl">
             <OcClubLogo variant="heroMark" priority className="hidden sm:block opacity-95" />
             <p className="mt-3 text-xs sm:text-sm font-medium text-white/75 tracking-wide">
-              Elite Training Community · <span className="text-white">Tlalpan, CDMX</span>
+              Gimnasio de alto rendimiento · <span className="text-white">Tlalpan, CDMX</span>
             </p>
             <h1 className="mt-3 sm:mt-4 font-hero text-[clamp(1.7rem,8.2vw,5.5rem)] leading-[0.96] text-white uppercase tracking-tight">
-              OC-CLUB
-              <span className="block text-oc-red mt-0.5 sm:mt-1">Elite Training Community</span>
+              OC Club
+              <span className="block text-oc-red mt-0.5 sm:mt-1 text-[clamp(1.1rem,4.5vw,2.75rem)]">
+                Entrena en Tlalpan con estructura real
+              </span>
             </h1>
             <p className="mt-3 text-[13px] sm:text-lg text-white/85 font-medium leading-snug max-w-xl">
-              Entrena con estructura, comunidad y seguimiento real.
-              <span className="text-white"> Te guiamos en el piso para competir contigo mismo.</span>
+              Club presencial en Ejidos de San Pedro Mártir, Tlalpan: calistenia, HYROX, powerlifting y Recovery Lab.
+              <span className="text-white"> Planes de gimnasio desde $600/mes.</span> El canal principal para dudas y visitas es WhatsApp.
             </p>
             <div className="mt-4 sm:mt-9 flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4">
-              <Link
-                to="/membresias"
+              <WhatsAppLink
+                preset="visita"
                 className="inline-flex w-full sm:w-auto items-center justify-center px-5 sm:px-8 py-2.5 sm:py-3.5 bg-oc-red hover:bg-oc-red-deep text-white text-sm font-bold tracking-wide rounded-sm border border-white/10 transition-colors shadow-lg shadow-black/40"
               >
-                Conocer membresías
-              </Link>
-              <a
-                href="https://wa.me/525567869589"
-                target="_blank"
-                rel="noopener noreferrer"
+                Agendar visita por WhatsApp
+              </WhatsAppLink>
+              <Link
+                to="/membresias"
                 className="inline-flex w-full sm:w-auto items-center justify-center px-5 sm:px-8 py-2.5 sm:py-3.5 border border-white/25 text-white hover:bg-white/10 text-sm font-semibold rounded-sm transition-colors"
               >
-                Agendar visita
-              </a>
+                Ver membresías
+              </Link>
             </div>
           </div>
 
@@ -155,7 +159,9 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 2 · Por qué OC-CLUB */}
+      <AnchorPlans />
+
+      {/* 2 · Por qué OC Club */}
       <section id="por-que" className="scroll-mt-24 border-t border-oc-red/25 bg-[#0c0c0c] py-16 md:py-20">
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
           <div className="max-w-2xl mb-12 md:mb-14">
@@ -242,8 +248,8 @@ export default function Landing() {
                 Preparación para competencia
               </h2>
               <p className="mt-5 text-white/75 leading-relaxed">
-                Entrenamientos diseñados para llevar tu rendimiento a escenarios reales: fuerza, técnica,
-                resistencia y mentalidad competitiva.
+                Entrenamientos orientados a competencia y rendimiento. Los resultados dependen de tu constancia,
+                técnica y evaluación profesional; no garantizamos cambios físicos específicos.
               </p>
             </div>
           </div>
@@ -281,7 +287,9 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 6 · Credibilidad + testimonios (placeholders marcados) */}
+      <TrustBlock />
+
+      {/* 6 · Credibilidad + testimonios */}
       <section className="py-16 md:py-20 bg-[#111] border-y border-white/[0.05]">
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-oc-red/85 mb-8">
@@ -385,34 +393,74 @@ export default function Landing() {
             </li>
           </ol>
           <div className="mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-4">
+            <WhatsAppLink
+              preset="visita"
+              className="inline-flex items-center justify-center px-10 py-4 bg-white text-oc-red font-bold text-sm rounded-sm hover:bg-white/90 transition-colors"
+            >
+              Agendar visita por WhatsApp
+            </WhatsAppLink>
             <Link
               to="/membresias"
-              className="inline-flex items-center justify-center px-10 py-4 bg-white text-oc-red font-bold text-sm rounded-sm hover:bg-white/90 transition-colors"
+              className="inline-flex items-center justify-center px-10 py-4 border-2 border-white/80 text-white font-semibold text-sm rounded-sm hover:bg-white/10 transition-colors"
             >
               Ver membresías
             </Link>
             <Link
               to="/clases"
-              className="inline-flex items-center justify-center px-10 py-4 border-2 border-white/80 text-white font-semibold text-sm rounded-sm hover:bg-white/10 transition-colors"
+              className="inline-flex items-center justify-center px-10 py-4 border border-white/25 text-white font-semibold text-sm rounded-sm hover:bg-white/10 transition-colors"
             >
               Ver clases y horarios
             </Link>
-            <a
-              href="https://wa.me/525567869589"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-10 py-4 border border-white/25 text-white font-semibold text-sm rounded-sm hover:bg-white/10 transition-colors"
-            >
-              WhatsApp
-            </a>
           </div>
         </div>
       </section>
 
-      {/* Sección "Ecosistema OC" retirada del primer panel:
-          los accesos a Bolsa de trabajo y OC Store viven ahora en el menú desplegable del nav. */}
+      {/* Aviso comercial */}
+      <section className="py-10 md:py-12 bg-oc-carbon border-t border-white/[0.06]">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
+          <div className="rounded-lg border border-white/10 bg-black/30 p-6 md:p-8 text-sm text-white/65 leading-relaxed space-y-2">
+            <p>
+              <strong className="text-white/85">OC Club</strong> opera en Tlalpan, CDMX. Membresías de gimnasio desde
+              $600/mes; clases y Recovery Lab son servicios adicionales con precios que confirmamos por WhatsApp.
+            </p>
+            <p>
+              La tienda en línea muestra referencias de catálogo; disponibilidad y entrega se confirman con el equipo.
+              No hay compra en línea activa en esta etapa.
+            </p>
+            <p>
+              El entrenamiento no garantiza resultados corporales específicos. Consulta a un profesional de la salud si
+              tienes condiciones médicas relevantes.
+            </p>
+          </div>
+        </div>
+      </section>
 
-      {/* Footer simple */}
+      {/* Formulario de prospectos + contacto */}
+      <section id="solicitud" className="scroll-mt-24 py-16 md:py-20 bg-[#111] border-t border-white/[0.06]">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-oc-red/90">Contacto</p>
+              <h2 className="mt-3 font-hero text-3xl sm:text-4xl text-white uppercase tracking-tight">
+                ¿Listo para visitarnos?
+              </h2>
+              <p className="mt-4 text-white/70 leading-relaxed">
+                Estamos en Tlalpan, CDMX. Escríbenos por WhatsApp para agendar una visita o déjanos tus datos y te
+                llamamos.
+              </p>
+              <WhatsAppLink
+                preset="visita"
+                className="mt-6 inline-flex items-center justify-center rounded-sm bg-oc-red px-6 py-3 text-sm font-bold text-white hover:bg-oc-red-deep transition-colors"
+              >
+                Agendar visita por WhatsApp
+              </WhatsAppLink>
+            </div>
+            <LeadCaptureForm />
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
       <footer id="contacto" className="scroll-mt-24 border-t border-white/[0.08] bg-black py-12 md:py-14">
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
@@ -459,9 +507,9 @@ export default function Landing() {
             <div>
               <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">Redes</p>
               <div className="flex flex-wrap gap-4 text-sm">
-                <a href="https://wa.me/525567869589" className="text-white/65 hover:text-oc-red transition-colors" target="_blank" rel="noopener noreferrer">
+                <WhatsAppLink preset="general" className="text-white/65 hover:text-oc-red transition-colors">
                   WhatsApp
-                </a>
+                </WhatsAppLink>
                 <a
                   href="https://instagram.com/oc_calisthenics"
                   className="text-white/65 hover:text-oc-red transition-colors"
@@ -481,9 +529,17 @@ export default function Landing() {
               </div>
             </div>
           </div>
-          <p className="mt-12 pt-8 border-t border-white/[0.06] text-center text-xs text-white/40">
-            © {new Date().getFullYear()} OC-CLUB. Todos los derechos reservados.
-          </p>
+          <div className="mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40">
+            <p>© {new Date().getFullYear()} OC Club. Todos los derechos reservados.</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/aviso-privacidad" className="hover:text-oc-red transition-colors">
+                Aviso de privacidad
+              </Link>
+              <Link to="/terminos" className="hover:text-oc-red transition-colors">
+                Términos y condiciones
+              </Link>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

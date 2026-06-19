@@ -1,0 +1,108 @@
+[
+  {
+    "sheet": "NOVIEMBRE 2025",
+    "rows_total": 344,
+    "members_col0": 31,
+    "header_labels": [
+      "NOMBRE",
+      "MEMBRESIA",
+      "COSTO PLAN",
+      "TIPO DE PLAN",
+      "2025-09-01 00:00:00",
+      "2025-10-01 00:00:00",
+      "2025-11-01 00:00:00",
+      "SAUNA",
+      "OPEN GYM",
+      "5 VISITAS",
+      "CLASES",
+      "CLASES POR DIA"
+    ],
+    "blocking": [
+      "Faltan columnas obligatorias mapeadas: fecha_pago, metodo_pago, monto_pagado, socio_nombre"
+    ],
+    "can_preview": false,
+    "incomplete_rows": 344
+  },
+  {
+    "sheet": "DICIEMBRE 2025",
+    "rows_total": 443,
+    "members_col0": 39,
+    "header_labels": [
+      "NOMBRE",
+      "MEMBRESIA",
+      "COSTO PLAN",
+      "TIPO DE PLAN",
+      "2025-09-01 00:00:00",
+      "2025-10-01 00:00:00",
+      "2025-11-01 00:00:00",
+      "2025-12-01 00:00:00",
+      "SAUNA",
+      "OPEN GYM",
+      "5 VISITAS",
+      "CLASES",
+      "CLASES POR DIA"
+    ],
+    "blocking": [
+      "Faltan columnas obligatorias mapeadas: fecha_pago, metodo_pago, monto_pagado, socio_nombre"
+    ],
+    "can_preview": false,
+    "incomplete_rows": 443
+  },
+  {
+    "sheet": "ENERO 2026",
+    "rows_total": 484,
+    "members_col0": 0,
+    "header_labels": [
+      "X",
+      "OCTUBRE",
+      "NOVIEMBRE",
+      "DICIEMBRE",
+      "ENERO",
+      "Visitas"
+    ],
+    "blocking": [
+      "Faltan columnas obligatorias mapeadas: fecha_pago, metodo_pago, monto_pagado, socio_nombre"
+    ],
+    "can_preview": false,
+    "incomplete_rows": 484
+  },
+  {
+    "sheet": "FEBRERO 2026",
+    "rows_total": 522,
+    "members_col0": 0,
+    "header_labels": [
+      "OCCALISTHENICSMX"
+    ],
+    "blocking": [
+      "Faltan columnas obligatorias mapeadas: fecha_pago, metodo_pago, monto_pagado, socio_nombre"
+    ],
+    "can_preview": false,
+    "incomplete_rows": 522
+  },
+  {
+    "sheet": "MARZO 2026",
+    "rows_total": 648,
+    "members_col0": 0,
+    "header_labels": [
+      "OCCALISTHENICSMX"
+    ],
+    "blocking": [
+      "Faltan columnas obligatorias mapeadas: fecha_pago, metodo_pago, monto_pagado, socio_nombre"
+    ],
+    "can_preview": false,
+    "incomplete_rows": 648
+  },
+  {
+    "sheet": "ABRIL 2026",
+    "rows_total": 421,
+    "members_col0": 0,
+    "header_labels": [
+      "OCCALISTHENICSMX"
+    ],
+    "blocking": [
+      "Faltan columnas obligatorias mapeadas: fecha_pago, metodo_pago, monto_pagado, socio_nombre"
+    ],
+    "can_preview": false,
+    "incomplete_rows": 421
+  }
+]

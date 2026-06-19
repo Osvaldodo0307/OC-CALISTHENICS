@@ -109,6 +109,9 @@ class MembershipCycle(Base):
     end_date = Column(Date, nullable=False)
     status = Column(String(30), nullable=False, default="active")
     is_active_cycle = Column(Boolean, nullable=False, default=True)
+    is_historical_import = Column(Boolean, nullable=False, default=False)
+    historical_source = Column(String(60), nullable=True)
+    import_batch_id = Column(Integer, ForeignKey("membership_import_batches.id"), nullable=True, index=True)
     renewed_from_cycle_id = Column(Integer, ForeignKey("membership_cycles.id"), nullable=True)
     created_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     updated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
@@ -135,6 +138,13 @@ class MembershipPayment(Base):
     concept = Column(String(120), nullable=True)
     observations = Column(Text, nullable=True)
     idempotency_key = Column(String(120), nullable=True)
+    payment_action = Column(String(40), nullable=True)
+    period_start_date = Column(Date, nullable=True)
+    period_end_date = Column(Date, nullable=True)
+    counts_as_income = Column(Boolean, nullable=False, default=True)
+    applies_to_balance = Column(Boolean, nullable=False, default=True)
+    previous_end_date = Column(Date, nullable=True)
+    extended_end_date = Column(Date, nullable=True)
     reversed_at = Column(DateTime(timezone=True), nullable=True)
     reversed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     reversal_reason = Column(Text, nullable=True)
@@ -162,6 +172,92 @@ class MembershipNote(Base):
     creator = relationship("User", foreign_keys=[created_by])
     membership = relationship("Membership", back_populates="notes")
     membership_cycle = relationship("MembershipCycle", back_populates="notes")
+
+
+class MembershipFollowUp(Base):
+    __tablename__ = "membership_followups"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    membership_id = Column(Integer, ForeignKey("memberships.id"), nullable=True, index=True)
+    membership_cycle_id = Column(Integer, ForeignKey("membership_cycles.id"), nullable=True, index=True)
+    followup_type = Column(String(30), nullable=False, default="otro")
+    channel = Column(String(30), nullable=False, default="nota_interna")
+    status = Column(String(30), nullable=False, default="pendiente")
+    contact_at = Column(DateTime(timezone=True), nullable=True)
+    next_followup_at = Column(DateTime(timezone=True), nullable=True)
+    note = Column(Text, nullable=True)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    updated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    user = relationship("User", foreign_keys=[user_id])
+    creator = relationship("User", foreign_keys=[created_by])
+    updater = relationship("User", foreign_keys=[updated_by])
+    membership = relationship("Membership")
+    membership_cycle = relationship("MembershipCycle")
+
+
+class MembershipFollowUpAudit(Base):
+    __tablename__ = "membership_followup_audits"
+
+    id = Column(Integer, primary_key=True, index=True)
+    followup_id = Column(Integer, ForeignKey("membership_followups.id"), nullable=False, index=True)
+    changed_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    event = Column(String(60), nullable=False)
+    reason = Column(Text, nullable=True)
+    old_payload = Column(JSON, nullable=False)
+    new_payload = Column(JSON, nullable=False)
+    changed_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    followup = relationship("MembershipFollowUp")
+    changed_by_user = relationship("User", foreign_keys=[changed_by])
+
+
+class MembershipImportBatch(Base):
+    __tablename__ = "membership_import_batches"
+
+    id = Column(Integer, primary_key=True, index=True)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    status = Column(String(30), nullable=False, default="preview", index=True)
+    filename = Column(String(255), nullable=True)
+    sheet_name = Column(String(120), nullable=True)
+    file_sha256 = Column(String(64), nullable=True)
+    column_mapping = Column(JSON, nullable=True)
+    diagnosis = Column(JSON, nullable=True)
+    preview_summary = Column(JSON, nullable=True)
+    committed_summary = Column(JSON, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    committed_at = Column(DateTime(timezone=True), nullable=True)
+
+    creator = relationship("User", foreign_keys=[created_by])
+    records = relationship("MembershipImportRecord", back_populates="batch", cascade="all, delete-orphan")
+
+
+class MembershipImportRecord(Base):
+    __tablename__ = "membership_import_records"
+
+    id = Column(Integer, primary_key=True, index=True)
+    batch_id = Column(Integer, ForeignKey("membership_import_batches.id"), nullable=False, index=True)
+    row_number = Column(Integer, nullable=False)
+    status = Column(String(30), nullable=False, index=True)
+    raw_data = Column(JSON, nullable=False)
+    normalized_data = Column(JSON, nullable=True)
+    errors = Column(JSON, nullable=True)
+    warnings = Column(JSON, nullable=True)
+    referencia_externa = Column(String(120), nullable=True, index=True)
+    matched_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    membership_cycle_id = Column(Integer, ForeignKey("membership_cycles.id"), nullable=True)
+    payment_id = Column(Integer, ForeignKey("membership_payments.id"), nullable=True)
+    note_id = Column(Integer, ForeignKey("membership_notes.id"), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    batch = relationship("MembershipImportBatch", back_populates="records")
+    matched_user = relationship("User", foreign_keys=[matched_user_id])
+    membership_cycle = relationship("MembershipCycle")
+    payment = relationship("MembershipPayment")
+    note = relationship("MembershipNote")
 
 
 class MembershipCycleAudit(Base):

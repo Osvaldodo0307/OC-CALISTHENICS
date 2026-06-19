@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import WhatsAppLink from '../../components/WhatsAppLink'
 
 export default function StoreFooter() {
   return (
@@ -32,18 +33,14 @@ export default function StoreFooter() {
             Soporte
           </p>
           <ul className="mt-3 space-y-2 text-[13px]">
-            <li><span className="text-neutral-400">Envíos y devoluciones (próximamente)</span></li>
-            <li><span className="text-neutral-400">Guía de tallas (próximamente)</span></li>
-            <li><span className="text-neutral-400">Términos y condiciones</span></li>
+            <li><span className="text-neutral-500">Envíos y devoluciones: consúltanos por WhatsApp</span></li>
+            <li><span className="text-neutral-500">Guía de tallas: disponible al pedir</span></li>
+            <li><Link to="/terminos" className="hover:text-oc-red">Términos y condiciones</Link></li>
+            <li><Link to="/aviso-privacidad" className="hover:text-oc-red">Aviso de privacidad</Link></li>
             <li>
-              <a
-                href="https://wa.me/525567869589"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-oc-red"
-              >
+              <WhatsAppLink preset="tienda" className="hover:text-oc-red">
                 WhatsApp comercial
-              </a>
+              </WhatsAppLink>
             </li>
           </ul>
         </div>
@@ -63,7 +60,7 @@ export default function StoreFooter() {
 
       <div className="border-t border-neutral-200">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-[11px] text-neutral-500 sm:flex-row sm:px-6 lg:px-10">
-          <p>© {new Date().getFullYear()} OC-CALISTHENICS. Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} OC Club. Todos los derechos reservados.</p>
           <p>Tlalpan, CDMX · México</p>
         </div>
       </div>

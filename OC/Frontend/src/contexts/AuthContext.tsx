@@ -3,16 +3,25 @@ import axios from 'axios'
 import { App as CapacitorApp } from '@capacitor/app'
 import { User } from '../types'
 import { runtime } from '../config/runtime'
+import { DEMO_ADMIN_USER, DEMO_SESSION_TOKEN, isAdminDemoMode, isDemoSessionToken } from '../config/adminDemo'
+import { resetDemoStore } from '../mocks/adminDemoData'
+import { setupAdminDemoInterceptor } from '../mocks/setupAdminDemoInterceptor'
 import { sessionManager } from '../services/auth/sessionManager'
 import { toUserMessage } from '../services/api/errorMessages'
+
+if (isAdminDemoMode()) {
+  setupAdminDemoInterceptor()
+}
 
 interface AuthContextType {
   user: User | null
   token: string | null
   login: (username: string, password: string) => Promise<User>
+  loginAsAdminDemo: () => Promise<User>
   logout: () => Promise<void>
   loading: boolean
   authError: string | null
+  isDemoSession: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -24,15 +33,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [authError, setAuthError] = useState<string | null>(null)
+  const [isDemoSession, setIsDemoSession] = useState(false)
 
   const clearSession = useCallback(async () => {
+    const wasDemo = isDemoSession
     setUser(null)
     setToken(null)
+    setIsDemoSession(false)
     setAuthError(null)
     await sessionManager.clear()
-  }, [])
+    if (wasDemo && isAdminDemoMode()) {
+      resetDemoStore()
+    }
+  }, [isDemoSession])
 
   const fetchUser = useCallback(async (authToken: string): Promise<User | null> => {
+    if (isDemoSessionToken(authToken) && isAdminDemoMode()) {
+      const snapshot = await sessionManager.hydrate()
+      const demoUser = snapshot?.user || DEMO_ADMIN_USER
+      setUser(demoUser)
+      setIsDemoSession(true)
+      return demoUser
+    }
     try {
       const currentUser = await sessionManager.validateToken(authToken)
       if (!currentUser) {
@@ -54,17 +76,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [clearSession])
 
   const revalidateSession = useCallback(async () => {
-    if (!API_URL) {
-      setAuthError('Configuracion incompleta: falta VITE_API_URL.')
-      await clearSession()
-      return
-    }
     const snapshot = await sessionManager.hydrate()
     if (!snapshot?.token) {
       await clearSession()
       return
     }
 
+    if (isDemoSessionToken(snapshot.token) && isAdminDemoMode()) {
+      setToken(snapshot.token)
+      setIsDemoSession(true)
+      setUser(snapshot.user || DEMO_ADMIN_USER)
+      axios.defaults.headers.common['Authorization'] = `Bearer ${snapshot.token}`
+      return
+    }
+
+    if (!API_URL) {
+      setAuthError('Configuracion incompleta: falta VITE_API_URL.')
+      await clearSession()
+      return
+    }
     setToken(snapshot.token)
     axios.defaults.headers.common['Authorization'] = `Bearer ${snapshot.token}`
     await fetchUser(snapshot.token)
@@ -84,7 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const interceptorId = axios.interceptors.response.use(
       (response) => response,
       async (error) => {
-        if (error?.response?.status === 401) {
+        if (error?.response?.status === 401 && !isDemoSession) {
           await clearSession()
           setAuthError('Tu sesion ya no es valida. Inicia sesion nuevamente.')
         }
@@ -95,7 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => {
       axios.interceptors.response.eject(interceptorId)
     }
-  }, [clearSession])
+  }, [clearSession, isDemoSession])
 
   useEffect(() => {
     if (!runtime.isCapacitorNative) return
@@ -115,6 +145,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
   }, [revalidateSession])
+
+  const loginAsAdminDemo = async () => {
+    if (!isAdminDemoMode()) {
+      throw new Error('Modo demo no habilitado')
+    }
+    setAuthError(null)
+    resetDemoStore()
+    setToken(DEMO_SESSION_TOKEN)
+    setUser(DEMO_ADMIN_USER)
+    setIsDemoSession(true)
+    await sessionManager.persist({ token: DEMO_SESSION_TOKEN, user: DEMO_ADMIN_USER })
+    axios.defaults.headers.common['Authorization'] = `Bearer ${DEMO_SESSION_TOKEN}`
+    return DEMO_ADMIN_USER
+  }
 
   const login = async (username: string, password: string) => {
     if (!API_URL) {
@@ -145,6 +189,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setToken(access_token)
     setUser(user)
+    setIsDemoSession(false)
     await sessionManager.persist({
       token: access_token,
       user,
@@ -158,7 +203,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading, authError }}>
+    <AuthContext.Provider value={{ user, token, login, loginAsAdminDemo, logout, loading, authError, isDemoSession }}>
       {children}
     </AuthContext.Provider>
   )

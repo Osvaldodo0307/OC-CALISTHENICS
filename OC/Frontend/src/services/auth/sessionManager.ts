@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { User } from '../../types'
 import { runtime } from '../../config/runtime'
+import { DEMO_ADMIN_USER, isDemoSessionToken } from '../../config/adminDemo'
 import { sessionStorage } from '../storage/sessionStorage'
 
 const API_URL = runtime.apiBaseUrl
@@ -20,6 +21,10 @@ export const sessionManager = {
   },
 
   async validateToken(token: string): Promise<User | null> {
+    if (isDemoSessionToken(token)) {
+      const user = await sessionStorage.getUser()
+      return user || DEMO_ADMIN_USER
+    }
     try {
       const response = await axios.get<User>(`${API_URL}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },

@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { runtime } from '../config/runtime'
+import { isAdminDemoMode } from '../config/adminDemo'
 import MobileBottomNav from './MobileBottomNav'
 import OcClubLogo from './brand/OcClubLogo'
 
 export default function AppShell() {
-  const { user, logout } = useAuth()
+  const { user, logout, isDemoSession } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -37,6 +38,8 @@ export default function AppShell() {
     { path: '/app/admin/asistencia', label: 'Asistencia' },
     { path: '/app/admin/clases', label: 'Gestión de Clases' },
     { path: '/app/admin/membresias', label: 'Membresias' },
+    { path: '/app/admin/importar-pagos', label: 'Importar pagos' },
+    { path: '/app/admin/recordatorios', label: 'Recordatorios' },
     { path: '/app/admin/usuarios', label: 'Usuarios' },
   ]
 
@@ -47,6 +50,11 @@ export default function AppShell() {
 
   return (
     <div className="mobile-safe-top min-h-screen bg-oc-dark">
+      {isAdminDemoMode() && isDemoSession && user?.role === 'admin' && (
+        <div className="bg-amber-900/90 border-b border-amber-600 text-amber-50 text-center text-xs sm:text-sm px-3 py-2">
+          Modo demo/local — datos de prueba, sin backend real. Las acciones no persisten en base de datos.
+        </div>
+      )}
       <nav className="sticky top-0 z-30 bg-oc-metal border-b border-oc-red/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">

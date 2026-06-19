@@ -20,8 +20,9 @@ def resolve_membership_status(ctx: MembershipStatusContext) -> str:
     1) suspendida
     2) vencida
     3) con_adeudo
-    4) proxima_a_vencer
-    5) activa
+    4) vence_hoy
+    5) proxima_a_vencer (1..N dias restantes, excluye hoy)
+    6) activa (al corriente)
     """
     if ctx.status_flag == "suspendida":
         return "suspendida"
@@ -29,8 +30,12 @@ def resolve_membership_status(ctx: MembershipStatusContext) -> str:
         return "vencida"
     if (ctx.cost - ctx.total_paid) > 0.009:
         return "con_adeudo"
-    if ctx.end_date and (ctx.end_date - ctx.today).days <= ctx.expiring_soon_days:
-        return "proxima_a_vencer"
+    if ctx.end_date and ctx.end_date == ctx.today:
+        return "vence_hoy"
+    if ctx.end_date:
+        days_left = (ctx.end_date - ctx.today).days
+        if 1 <= days_left <= ctx.expiring_soon_days:
+            return "proxima_a_vencer"
     return "activa"
 
 

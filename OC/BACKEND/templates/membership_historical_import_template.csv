@@ -1,0 +1,3 @@
+socio_nombre,telefono,plan,fecha_pago,monto_pagado,metodo_pago,periodo_inicio,periodo_fin,payment_action,counts_as_income,applies_to_balance,saldo_pendiente,nota,fuente_archivo,referencia_externa
+Juan Pérez,5512345678,Mensual,2024-01-15,800,efectivo,2024-01-01,2024-01-31,register_only,true,true,0,Pago enero histórico,archivo_enero_2024,ENE-2024-001
+María López,5598765432,Grupal,2024-02-10,0,cortesia,2024-02-01,2024-02-29,courtesy_extend,false,false,0,Cortesía febrero,archivo_enero_2024,CORT-2024-002

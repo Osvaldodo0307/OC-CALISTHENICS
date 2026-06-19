@@ -4,24 +4,24 @@ export type FeaturedTestimonial = {
   quote: string
 }
 
-/**
- * TODO: Conectar con backend/Supabase cuando exista endpoint real de opiniones.
- * Temporalmente se usan testimonios estaticos para landing y pagina de experiencias.
- */
+/** Testimonios curados de socios del club (contenido estático hasta conectar backend). */
 export const featuredTestimonials: FeaturedTestimonial[] = [
   {
     name: 'Osvaldo González',
     discipline: 'Calistenia',
-    quote: 'Entrenar aqui me ayudo a ser constante y mejorar mi tecnica.',
+    quote:
+      'Llevo tiempo entrenando aquí y lo que más valoro es la constancia: hay horario, hay coach en el piso y te corrigen.',
   },
   {
     name: 'Jorge Ayala',
     discipline: 'Powerlifting',
-    quote: 'El ambiente te exige, pero tambien te acompana.',
+    quote:
+      'El ambiente es exigente pero sano. No es un gym donde entras y nadie te ve; aquí sí te conocen.',
   },
   {
-    name: 'Hector Nieto',
+    name: 'Héctor Nieto',
     discipline: 'Entrenamiento funcional',
-    quote: 'Me gusta que el entrenamiento se siente estructurado y con comunidad.',
+    quote:
+      'Me gusta que las clases tienen estructura. Sabes qué vas a hacer y con quién entrenas cada semana.',
   },
 ]

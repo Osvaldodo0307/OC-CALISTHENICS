@@ -1,0 +1,42 @@
+﻿sheet,socio_nombre,excel_row,month_column,code,message,raw_value
+DICIEMBRE 2025,TOÑITO OSNAYA,3,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=945.0,0
+DICIEMBRE 2025,LIRIA VILLEGAS,4,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=945.0,0
+DICIEMBRE 2025,FERNANDA ALVA,7,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=995.0,0
+DICIEMBRE 2025,PEDRO FLORES,8,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=945.0,0
+DICIEMBRE 2025,LUIS ALBERTO,9,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=945.0,0
+DICIEMBRE 2025,URIEL. CARDIEL,10,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=945.0,0
+DICIEMBRE 2025,EDIT,11,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado,0
+DICIEMBRE 2025,BETTY,13,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado,0
+DICIEMBRE 2025,HÉCTOR NIETO,23,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=950.0,0
+DICIEMBRE 2025,APRIL,27,2025-12-01 00:00:00,sobrepago,Monto 515.46 > costo plan 171.82,515.46
+DICIEMBRE 2025,TOÑITO OSNAYA,28,2025-12-01 00:00:00,sobrepago,Monto 1890.02 > costo plan 171.82,1890.02
+DICIEMBRE 2025,URIEL CARDIEL,29,2025-12-01 00:00:00,sobrepago,Monto 1890.02 > costo plan 171.82,1890.02
+DICIEMBRE 2025,DANIELA RAMÍREZ,30,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=171.82,0
+DICIEMBRE 2025,ANDREA RODRÍGUEZ,31,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=171.82,0
+DICIEMBRE 2025,PRIMA CHARLIE,0,,plan_no_mapeado,Plan sin mapeo: 1,
+DICIEMBRE 2025,PRIMA CHARLIE,34,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=50.0,0
+DICIEMBRE 2025,ESTHER,0,,plan_no_mapeado,Plan sin mapeo: 1,
+DICIEMBRE 2025,ESTHER,35,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=50.0,0
+DICIEMBRE 2025,HERMANA LIRIA,0,,plan_no_mapeado,Plan sin mapeo: 1,
+DICIEMBRE 2025,HERMANA LIRIA,36,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=50.0,0
+DICIEMBRE 2025,VALERIA MENA,0,,plan_no_mapeado,Plan sin mapeo: 4,
+DICIEMBRE 2025,VALERIA MENA,37,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=75.0,0
+DICIEMBRE 2025,APRIL,0,,plan_no_mapeado,Plan sin mapeo: 3,
+DICIEMBRE 2025,APRIL,38,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=70.0,0
+DICIEMBRE 2025,CYNTHIA JUÁREZ PEREZ,0,,plan_no_mapeado,Plan sin mapeo: X,
+DICIEMBRE 2025,CYNTHIA JUÁREZ PEREZ,39,2025-12-01 00:00:00,sobrepago,Monto 525.0 > costo plan 75.0,525
+DICIEMBRE 2025,ANGELINA HERNÁNDEZ GARCIA,0,,plan_no_mapeado,Plan sin mapeo: X,
+DICIEMBRE 2025,ANGELINA HERNÁNDEZ GARCIA,40,2025-12-01 00:00:00,sobrepago,Monto 375.0 > costo plan 75.0,375
+DICIEMBRE 2025,ALEJANDRA CUELLAR,0,,plan_no_mapeado,Plan sin mapeo: 500,
+DICIEMBRE 2025,ALEJANDRA CUELLAR,41,2025-12-01 00:00:00,sobrepago,Monto 375.0 > costo plan 75.0,375
+DICIEMBRE 2025,ARYA CUELLAR,0,,plan_no_mapeado,Plan sin mapeo: 250,
+DICIEMBRE 2025,ARYA CUELLAR,42,2025-12-01 00:00:00,sobrepago,Monto 600.0 > costo plan 75.0,600
+DICIEMBRE 2025,PATRICIO CUELLAR,0,,plan_no_mapeado,Plan sin mapeo: 250,
+DICIEMBRE 2025,PATRICIO CUELLAR,43,2025-12-01 00:00:00,sobrepago,Monto 375.0 > costo plan 75.0,375
+DICIEMBRE 2025,ZULEIKA DE ZENTENO,0,,plan_no_mapeado,Plan sin mapeo: 260,
+DICIEMBRE 2025,ZULEIKA DE ZENTENO,44,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=75.0,0
+DICIEMBRE 2025,DANIEL ALBERTANO. ZENTENO,0,,plan_no_mapeado,Plan sin mapeo: 260,
+DICIEMBRE 2025,DANIEL ALBERTANO. ZENTENO,45,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=75.0,0
+DICIEMBRE 2025,NICOLE ZENTENO,0,,plan_no_mapeado,Plan sin mapeo: 280,
+DICIEMBRE 2025,NICOLE ZENTENO,46,2025-12-01 00:00:00,sin_pago_detectado,sin_pago_detectado; posible adeudo=75.0,0
+DICIEMBRE 2025,CARLOS ERNESTO,47,2025-12-01 00:00:00,sobrepago,Monto 225.0 > costo plan 75.0,225

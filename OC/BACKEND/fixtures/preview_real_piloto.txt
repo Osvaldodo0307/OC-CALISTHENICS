@@ -1,0 +1,1056 @@
+﻿[DB] Conectando a: 127.0.0.1:3306/oc_gym?charset=utf8mb4...
+
+============================================================
+Socios preexistentes (seed)
+============================================================
+{
+  "socio_juan": 2,
+  "socio_maria_a": 3,
+  "socio_maria_b": 4
+}
+
+============================================================
+1. PREVIEW
+============================================================
+
+--- Columnas detectadas ---
+[
+  "socio_nombre",
+  "telefono",
+  "plan",
+  "fecha_pago",
+  "monto_pagado",
+  "metodo_pago",
+  "periodo_inicio",
+  "periodo_fin",
+  "payment_action",
+  "counts_as_income",
+  "applies_to_balance",
+  "saldo_pendiente",
+  "nota",
+  "fuente_archivo",
+  "referencia_externa"
+]
+
+--- Mapeo sugerido ---
+{
+  "socio_nombre": "socio_nombre",
+  "telefono": "telefono",
+  "plan": "plan",
+  "fecha_pago": "fecha_pago",
+  "monto_pagado": "monto_pagado",
+  "metodo_pago": "metodo_pago",
+  "periodo_inicio": "periodo_inicio",
+  "periodo_fin": "periodo_fin",
+  "payment_action": "payment_action",
+  "counts_as_income": "counts_as_income",
+  "applies_to_balance": "applies_to_balance",
+  "saldo_pendiente": "saldo_pendiente",
+  "nota": "nota",
+  "fuente_archivo": "fuente_archivo",
+  "referencia_externa": "referencia_externa"
+}
+
+--- Hojas ---
+  sheets: ['CSV']
+  selected: CSV
+
+--- Resumen preview ---
+  total_rows: 10
+  new_members: 0
+  existing_members: 0
+  ambiguous_members: 0
+  payments_to_create: 0
+  cycles_to_create: 0
+  error_rows: 10
+  warning_rows: 10
+  duplicate_rows: 0
+  estimated_real_income: 0
+  estimated_courtesies: 0
+  estimated_adjustments: 0
+  estimated_pending_balance: 0
+  blocking_errors: True
+
+--- Filas (detalle) ---
+  Fila 2: status=error match=new TOÐITO OSNAYA | $945.0 None
+    ERRORES: ['metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+  Fila 3: status=error match=new LIRIA VILLEGAS | $945.0 None
+    ERRORES: ['metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+  Fila 4: status=error match=new FERNANDA ALVA | $0.0 None
+    ERRORES: ['monto_pagado debe ser mayor a 0 salvo cortesia', 'metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+  Fila 5: status=error match=new URIEL. CARDIEL | $0.0 None
+    ERRORES: ['monto_pagado debe ser mayor a 0 salvo cortesia', 'metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+  Fila 6: status=error match=new EDIT | $0.0 None
+    ERRORES: ['monto_pagado debe ser mayor a 0 salvo cortesia', 'metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+  Fila 7: status=error match=new RODRIGO ALVA | $995.0 None
+    ERRORES: ['metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+  Fila 8: status=error match=new PEDRO FLORES | $945.0 None
+    ERRORES: ['metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+  Fila 9: status=error match=new LUIS ALBERTO | $945.0 None
+    ERRORES: ['metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+  Fila 10: status=error match=new VALERIA QUINTANA | $945.0 None
+    ERRORES: ['metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+  Fila 11: status=error match=new LUIS ALBERTO | $945.0 None
+    ERRORES: ['metodo_pago es obligatorio']
+    ADVERTENCIAS: ['Socio sin telefono; coincidencia solo por nombre']
+
+============================================================
+2. REPORTE ERRORES/ADVERTENCIAS
+============================================================
+[
+  {
+    "row_number": 2,
+    "status": "error",
+    "referencia_externa": "OC-REAL-TOÐITO_OSN-202511",
+    "errors": [
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "TOÐITO OSNAYA",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-TOÐITO_OSN-202511"
+    },
+    "normalized_data": {
+      "row_number": 2,
+      "socio_nombre": "TOÐITO OSNAYA",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-TOÐITO_OSN-202511",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 945.0,
+      "raw": {
+        "socio_nombre": "TOÐITO OSNAYA",
+        "telefono": null,
+        "plan": "PLAN OC",
+        "fecha_pago": "2025-11-01",
+        "monto_pagado": 945.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-11-01",
+        "periodo_fin": "2025-11-30",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 0.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-TOÐITO_OSN-202511"
+      }
+    }
+  },
+  {
+    "row_number": 3,
+    "status": "error",
+    "referencia_externa": "OC-REAL-LIRIA_VILL-202511",
+    "errors": [
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "LIRIA VILLEGAS",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=ok; MEMBRESIA=0.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-LIRIA_VILL-202511"
+    },
+    "normalized_data": {
+      "row_number": 3,
+      "socio_nombre": "LIRIA VILLEGAS",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=ok; MEMBRESIA=0.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-LIRIA_VILL-202511",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 945.0,
+      "raw": {
+        "socio_nombre": "LIRIA VILLEGAS",
+        "telefono": null,
+        "plan": "PLAN OC",
+        "fecha_pago": "2025-11-01",
+        "monto_pagado": 945.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-11-01",
+        "periodo_fin": "2025-11-30",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 0.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=ok; MEMBRESIA=0.0; COSTO=945.0",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-LIRIA_VILL-202511"
+      }
+    }
+  },
+  {
+    "row_number": 4,
+    "status": "error",
+    "referencia_externa": "OC-REAL-FERNANDA_A-202511",
+    "errors": [
+      {
+        "code": "invalid_amount",
+        "message": "monto_pagado debe ser mayor a 0 salvo cortesia"
+      },
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "FERNANDA ALVA",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 0.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 995.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=mes_sin_pago,adeudo_parcial,col_membresia_menor_costo; MEMBRESIA=500.0; COSTO=995.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-FERNANDA_A-202511"
+    },
+    "normalized_data": {
+      "row_number": 4,
+      "socio_nombre": "FERNANDA ALVA",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 0.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 995.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=mes_sin_pago,adeudo_parcial,col_membresia_menor_costo; MEMBRESIA=500.0; COSTO=995.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-FERNANDA_A-202511",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "invalid_amount",
+          "message": "monto_pagado debe ser mayor a 0 salvo cortesia"
+        },
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 0.0,
+      "raw": {
+        "socio_nombre": "FERNANDA ALVA",
+        "telefono": null,
+        "plan": "PLAN OC",
+        "fecha_pago": "2025-11-01",
+        "monto_pagado": 0.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-11-01",
+        "periodo_fin": "2025-11-30",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 995.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=mes_sin_pago,adeudo_parcial,col_membresia_menor_costo; MEMBRESIA=500.0; COSTO=995.0",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-FERNANDA_A-202511"
+      }
+    }
+  },
+  {
+    "row_number": 5,
+    "status": "error",
+    "referencia_externa": "OC-REAL-URIEL._CAR-202511",
+    "errors": [
+      {
+        "code": "invalid_amount",
+        "message": "monto_pagado debe ser mayor a 0 salvo cortesia"
+      },
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "URIEL. CARDIEL",
+      "telefono": null,
+      "plan": "WELLHUB",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 0.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 945.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=mes_sin_pago,adeudo_parcial,plan_wellhub,col_membresia_menor_costo; MEMBRESIA=90.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-URIEL._CAR-202511"
+    },
+    "normalized_data": {
+      "row_number": 5,
+      "socio_nombre": "URIEL. CARDIEL",
+      "telefono": null,
+      "plan": "WELLHUB",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 0.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 945.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=mes_sin_pago,adeudo_parcial,plan_wellhub,col_membresia_menor_costo; MEMBRESIA=90.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-URIEL._CAR-202511",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "invalid_amount",
+          "message": "monto_pagado debe ser mayor a 0 salvo cortesia"
+        },
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 0.0,
+      "raw": {
+        "socio_nombre": "URIEL. CARDIEL",
+        "telefono": null,
+        "plan": "WELLHUB",
+        "fecha_pago": "2025-11-01",
+        "monto_pagado": 0.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-11-01",
+        "periodo_fin": "2025-11-30",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 945.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=mes_sin_pago,adeudo_parcial,plan_wellhub,col_membresia_menor_costo; MEMBRESIA=90.0; COSTO=945.0",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-URIEL._CAR-202511"
+      }
+    }
+  },
+  {
+    "row_number": 6,
+    "status": "error",
+    "referencia_externa": "OC-REAL-EDIT-202511",
+    "errors": [
+      {
+        "code": "invalid_amount",
+        "message": "monto_pagado debe ser mayor a 0 salvo cortesia"
+      },
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "EDIT",
+      "telefono": null,
+      "plan": "12 CLASES",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 0.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=mes_sin_pago; MEMBRESIA=500.0; COSTO=None",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-EDIT-202511"
+    },
+    "normalized_data": {
+      "row_number": 6,
+      "socio_nombre": "EDIT",
+      "telefono": null,
+      "plan": "12 CLASES",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 0.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=mes_sin_pago; MEMBRESIA=500.0; COSTO=None",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-EDIT-202511",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "invalid_amount",
+          "message": "monto_pagado debe ser mayor a 0 salvo cortesia"
+        },
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 0.0,
+      "raw": {
+        "socio_nombre": "EDIT",
+        "telefono": null,
+        "plan": "12 CLASES",
+        "fecha_pago": "2025-11-01",
+        "monto_pagado": 0.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-11-01",
+        "periodo_fin": "2025-11-30",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 0.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=mes_sin_pago; MEMBRESIA=500.0; COSTO=None",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-EDIT-202511"
+      }
+    }
+  },
+  {
+    "row_number": 7,
+    "status": "error",
+    "referencia_externa": "OC-REAL-RODRIGO_AL-202511",
+    "errors": [
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "RODRIGO ALVA",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 995.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=500.0; COSTO=995.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-RODRIGO_AL-202511"
+    },
+    "normalized_data": {
+      "row_number": 7,
+      "socio_nombre": "RODRIGO ALVA",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 995.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=500.0; COSTO=995.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-RODRIGO_AL-202511",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 995.0,
+      "raw": {
+        "socio_nombre": "RODRIGO ALVA",
+        "telefono": null,
+        "plan": "PLAN OC",
+        "fecha_pago": "2025-11-01",
+        "monto_pagado": 995.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-11-01",
+        "periodo_fin": "2025-11-30",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 0.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=500.0; COSTO=995.0",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-RODRIGO_AL-202511"
+      }
+    }
+  },
+  {
+    "row_number": 8,
+    "status": "error",
+    "referencia_externa": "OC-REAL-PEDRO_FLOR-202511",
+    "errors": [
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "PEDRO FLORES",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=500.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-PEDRO_FLOR-202511"
+    },
+    "normalized_data": {
+      "row_number": 8,
+      "socio_nombre": "PEDRO FLORES",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=500.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-PEDRO_FLOR-202511",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 945.0,
+      "raw": {
+        "socio_nombre": "PEDRO FLORES",
+        "telefono": null,
+        "plan": "PLAN OC",
+        "fecha_pago": "2025-11-01",
+        "monto_pagado": 945.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-11-01",
+        "periodo_fin": "2025-11-30",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 0.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=500.0; COSTO=945.0",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-PEDRO_FLOR-202511"
+      }
+    }
+  },
+  {
+    "row_number": 9,
+    "status": "error",
+    "referencia_externa": "OC-REAL-LUIS_ALBER-202511",
+    "errors": [
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "LUIS ALBERTO",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-LUIS_ALBER-202511"
+    },
+    "normalized_data": {
+      "row_number": 9,
+      "socio_nombre": "LUIS ALBERTO",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-LUIS_ALBER-202511",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 945.0,
+      "raw": {
+        "socio_nombre": "LUIS ALBERTO",
+        "telefono": null,
+        "plan": "PLAN OC",
+        "fecha_pago": "2025-11-01",
+        "monto_pagado": 945.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-11-01",
+        "periodo_fin": "2025-11-30",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 0.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-LUIS_ALBER-202511"
+      }
+    }
+  },
+  {
+    "row_number": 10,
+    "status": "error",
+    "referencia_externa": "OC-REAL-VALERIA_QU-202511",
+    "errors": [
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "VALERIA QUINTANA",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-VALERIA_QU-202511"
+    },
+    "normalized_data": {
+      "row_number": 10,
+      "socio_nombre": "VALERIA QUINTANA",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-11-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-11-01",
+      "periodo_fin": "2025-11-30",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-VALERIA_QU-202511",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 945.0,
+      "raw": {
+        "socio_nombre": "VALERIA QUINTANA",
+        "telefono": null,
+        "plan": "PLAN OC",
+        "fecha_pago": "2025-11-01",
+        "monto_pagado": 945.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-11-01",
+        "periodo_fin": "2025-11-30",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 0.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-VALERIA_QU-202511"
+      }
+    }
+  },
+  {
+    "row_number": 11,
+    "status": "error",
+    "referencia_externa": "OC-REAL-LUIS_ALBER-202510",
+    "errors": [
+      {
+        "code": "missing_method",
+        "message": "metodo_pago es obligatorio"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "missing_phone",
+        "message": "Socio sin telefono; coincidencia solo por nombre"
+      }
+    ],
+    "raw_data": {
+      "socio_nombre": "LUIS ALBERTO",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-10-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-10-01",
+      "periodo_fin": "2025-10-31",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-LUIS_ALBER-202510"
+    },
+    "normalized_data": {
+      "row_number": 11,
+      "socio_nombre": "LUIS ALBERTO",
+      "telefono": null,
+      "plan": "PLAN OC",
+      "fecha_pago": "2025-10-01",
+      "monto_pagado": 945.0,
+      "metodo_pago": null,
+      "periodo_inicio": "2025-10-01",
+      "periodo_fin": "2025-10-31",
+      "payment_action": "register_only",
+      "counts_as_income": true,
+      "applies_to_balance": true,
+      "saldo_pendiente": 0.0,
+      "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+      "fuente_archivo": "OCCALISTHENICS.xlsx",
+      "referencia_externa": "OC-REAL-LUIS_ALBER-202510",
+      "mes": null,
+      "socio_match": "new",
+      "matched_user_id": null,
+      "candidate_user_ids": [],
+      "status": "error",
+      "errors": [
+        {
+          "code": "missing_method",
+          "message": "metodo_pago es obligatorio"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "missing_phone",
+          "message": "Socio sin telefono; coincidencia solo por nombre"
+        }
+      ],
+      "duplicate_key": null,
+      "is_duplicate_in_file": false,
+      "is_duplicate_in_db": false,
+      "will_create_cycle": false,
+      "will_update_active_cycle": false,
+      "estimated_income": 945.0,
+      "raw": {
+        "socio_nombre": "LUIS ALBERTO",
+        "telefono": null,
+        "plan": "PLAN OC",
+        "fecha_pago": "2025-10-01",
+        "monto_pagado": 945.0,
+        "metodo_pago": null,
+        "periodo_inicio": "2025-10-01",
+        "periodo_fin": "2025-10-31",
+        "payment_action": "register_only",
+        "counts_as_income": true,
+        "applies_to_balance": true,
+        "saldo_pendiente": 0.0,
+        "nota": "Hoja NOVIEMBRE 2025; tags=col_membresia_menor_costo; MEMBRESIA=720.0; COSTO=945.0",
+        "fuente_archivo": "OCCALISTHENICS.xlsx",
+        "referencia_externa": "OC-REAL-LUIS_ALBER-202510"
+      }
+    }
+  }
+]
+
+*** COMMIT BLOQUEADO: hay errores graves ***

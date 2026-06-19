@@ -1,0 +1,20 @@
+{
+  "default_plan": "PLAN OC",
+  "mappings": {
+    "PLAN OC": "PLAN OC",
+    "WELLHUB": "WELLHUB",
+    "12 CLASES": "12 CLASES",
+    "OPEN GYM": "OPEN GYM",
+    "5 VISITAS": "5 VISITAS",
+    "GRUPAL": "Grupal",
+    "MENSUAL": "Mensual",
+    "POR CHECK IN": "POR CHECK IN",
+    "POR CLASE": "POR CLASE",
+    "INVITADO": "INVITADO",
+    "INVITADOS": "INVITADO",
+    "INVITADA": "INVITADO",
+    "INVITADAS": "INVITADO"
+  },
+  "unmapped_warning": true,
+  "notes": "Valores sin entrada en mappings conservan texto original y generan advertencia. POR CHECK IN e INVITADO son planes especiales de revisión manual."
+}

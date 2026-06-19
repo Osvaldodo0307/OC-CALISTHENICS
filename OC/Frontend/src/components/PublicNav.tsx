@@ -18,12 +18,9 @@ const NAV_ENTRIES: NavEntry[] = [
   {
     kind: 'group',
     label: ECOSISTEMA_LABEL,
-    items: [
-      { label: 'Bolsa de trabajo', to: '/', hash: 'contacto' },
-      { label: 'OC Store', to: '/tienda' },
-    ],
+    items: [{ label: 'OC Store', to: '/tienda' }],
   },
-  { kind: 'link', label: 'Contacto', to: '/', hash: 'contacto' },
+  { kind: 'link', label: 'Contacto', to: '/', hash: 'solicitud' },
 ]
 
 function ChevronIcon({ open }: { open: boolean }) {

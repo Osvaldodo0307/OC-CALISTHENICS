@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
+import WhatsAppLink from '../components/WhatsAppLink'
 
 const GYM_IMAGES = [
   '/Actualizacion/CLUB/Gimnasio.jpeg',
@@ -93,14 +94,12 @@ export default function Club() {
           <h2 className="text-3xl sm:text-4xl font-bold text-oc-light">Vive el club por dentro</h2>
           <p className="mt-4 text-oc-muted text-lg">Agenda una visita y conoce cada zona en persona.</p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="https://wa.me/525567869589"
-              target="_blank"
-              rel="noopener noreferrer"
+            <WhatsAppLink
+              preset="visita"
               className="px-8 py-4 rounded-full bg-oc-red hover:bg-oc-red-deep text-white font-semibold transition-all"
             >
               Agendar visita
-            </a>
+            </WhatsAppLink>
             <Link
               to="/"
               className="px-8 py-4 rounded-full border-2 border-oc-red text-oc-red hover:bg-oc-red/10 font-semibold transition-all"
@@ -139,11 +138,17 @@ export default function Club() {
                 <Link to="/clases" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
                   Clases
                 </Link>
+                <Link to="/aviso-privacidad" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                  Aviso de privacidad
+                </Link>
+                <Link to="/terminos" className="block text-oc-muted hover:text-oc-red text-sm transition-colors">
+                  Términos
+                </Link>
               </div>
             </div>
           </div>
           <div className="border-t border-oc-border pt-8 text-center">
-            <p className="text-oc-muted text-sm">© {new Date().getFullYear()} OC-CLUB. Todos los derechos reservados.</p>
+            <p className="text-oc-muted text-sm">© {new Date().getFullYear()} OC Club. Todos los derechos reservados.</p>
           </div>
         </div>
       </footer>

@@ -33,6 +33,28 @@
     <title>OC-CLUB · Elite Training Community</title>
   </head>
   <body>
+    <!-- Formulario estático para Netlify Forms (SPA React). Ver LeadCaptureForm.tsx -->
+    <form name="oc-lead-capture" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="oc-lead-capture" />
+      <input type="text" name="nombre" />
+      <input type="tel" name="telefono" />
+      <select name="interes">
+        <option value="membresia-basica">Membresía básica</option>
+        <option value="membresia-premium">Membresía premium</option>
+        <option value="acceso-total">Acceso total</option>
+        <option value="clases">Clases</option>
+        <option value="recovery-lab">Recovery Lab</option>
+        <option value="tienda-merch">Tienda / merch</option>
+      </select>
+      <textarea name="mensaje"></textarea>
+      <input type="text" name="utm_source" />
+      <input type="text" name="utm_medium" />
+      <input type="text" name="utm_campaign" />
+      <input type="text" name="utm_content" />
+      <input type="text" name="page_path" />
+      <input type="checkbox" name="privacy_consent" value="si" />
+      <input type="text" name="bot-field" />
+    </form>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

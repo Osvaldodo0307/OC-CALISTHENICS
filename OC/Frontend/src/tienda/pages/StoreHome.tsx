@@ -29,6 +29,10 @@ export default function StoreHome() {
   return (
     <>
       <StoreHero />
+      <div className="border-b border-amber-200/80 bg-amber-50 px-4 py-3 text-center text-[13px] text-amber-950 sm:px-6">
+        <strong>Catálogo en actualización.</strong> Los artículos mostrados son referencia; disponibilidad, tallas y
+        entrega se confirman con el equipo OC por WhatsApp.
+      </div>
       <StoreTrustBar />
       <StoreCertifications />
 
@@ -60,7 +64,7 @@ export default function StoreHome() {
                 Destacados
               </p>
               <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
-                Lo más vendido del mes
+                Referencia de catálogo
               </h2>
             </div>
             <Link

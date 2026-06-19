@@ -1,0 +1,80 @@
+[
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:valeria_quintana:2025-12-01",
+    "costo_plan": 945.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:arlette_roman:2025-12-01",
+    "costo_plan": 945.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:rodrigo_alva:2025-12-01",
+    "costo_plan": 995.0,
+    "plan_source": "PLAN OC",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:osvaldo:2025-12-01",
+    "costo_plan": 400.0,
+    "plan_source": "OPEN GYM",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:april:2025-12-01",
+    "costo_plan": 171.82,
+    "plan_source": "POR CHECK IN",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:tonito_osnaya:2025-12-01",
+    "costo_plan": 171.82,
+    "plan_source": "POR CHECK IN",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:uriel_cardiel:2025-12-01",
+    "costo_plan": 171.82,
+    "plan_source": "POR CHECK IN",
+    "plan_mapped": true
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:cynthia_juarez_perez:2025-12-01",
+    "costo_plan": 75.0,
+    "plan_source": "X",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:angelina_hernandez_garcia:2025-12-01",
+    "costo_plan": 75.0,
+    "plan_source": "X",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:alejandra_cuellar:2025-12-01",
+    "costo_plan": 75.0,
+    "plan_source": "500",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:arya_cuellar:2025-12-01",
+    "costo_plan": 75.0,
+    "plan_source": "250",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:patricio_cuellar:2025-12-01",
+    "costo_plan": 75.0,
+    "plan_source": "250",
+    "plan_mapped": false
+  },
+  {
+    "referencia_externa": "OCCALISTHENICS:DICIEMBRE 2025:carlos_ernesto:2025-12-01",
+    "costo_plan": 75.0,
+    "plan_source": "",
+    "plan_mapped": true
+  }
+]

@@ -8,6 +8,15 @@ env/
 .env
 .env.local
 .env.*.local
+.env.backup.local
+
+# Supabase manual backups (local only)
+OC/BACKEND/backups/
+**/backups/supabase/
+roles.sql
+schema.sql
+data.sql
+*.sql.backup
 
 # Python
 __pycache__/
