@@ -260,6 +260,66 @@ class MembershipImportRecord(Base):
     note = relationship("MembershipNote")
 
 
+class HistoricalVisitImportBatch(Base):
+    __tablename__ = "historical_visit_import_batches"
+
+    id = Column(Integer, primary_key=True, index=True)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    status = Column(String(30), nullable=False, default="preview", index=True)
+    filename = Column(String(255), nullable=True)
+    sheet_name = Column(String(120), nullable=True)
+    file_sha256 = Column(String(64), nullable=True)
+    diagnosis = Column(JSON, nullable=True)
+    preview_summary = Column(JSON, nullable=True)
+    committed_summary = Column(JSON, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    committed_at = Column(DateTime(timezone=True), nullable=True)
+
+    creator = relationship("User", foreign_keys=[created_by])
+    records = relationship("HistoricalVisitImportRecord", back_populates="batch", cascade="all, delete-orphan")
+
+
+class HistoricalVisitImportRecord(Base):
+    __tablename__ = "historical_visit_import_records"
+
+    id = Column(Integer, primary_key=True, index=True)
+    batch_id = Column(Integer, ForeignKey("historical_visit_import_batches.id"), nullable=False, index=True)
+    row_number = Column(Integer, nullable=False)
+    status = Column(String(30), nullable=False, index=True)
+    raw_data = Column(JSON, nullable=False)
+    normalized_data = Column(JSON, nullable=True)
+    warnings = Column(JSON, nullable=True)
+    referencia_externa = Column(String(120), nullable=True, index=True)
+    matched_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    batch = relationship("HistoricalVisitImportBatch", back_populates="records")
+    matched_user = relationship("User", foreign_keys=[matched_user_id])
+
+
+class HistoricalVisitSummary(Base):
+    __tablename__ = "historical_visit_summaries"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    raw_member_name = Column(String(200), nullable=False)
+    normalized_member_name = Column(String(200), nullable=False, index=True)
+    period_month = Column(Date, nullable=False, index=True)
+    visits_count = Column(Integer, nullable=False)
+    source_file = Column(String(255), nullable=True)
+    source_sheet = Column(String(120), nullable=True)
+    source_row = Column(Integer, nullable=True)
+    import_batch_id = Column(Integer, ForeignKey("historical_visit_import_batches.id"), nullable=True, index=True)
+    match_status = Column(String(30), nullable=False, default="unmatched", index=True)
+    is_historical_import = Column(Boolean, nullable=False, default=True)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", foreign_keys=[user_id])
+    import_batch = relationship("HistoricalVisitImportBatch")
+    creator = relationship("User", foreign_keys=[created_by])
+
+
 class MembershipCycleAudit(Base):
     __tablename__ = "membership_cycle_audits"
 

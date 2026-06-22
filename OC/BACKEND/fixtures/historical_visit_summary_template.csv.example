@@ -1,0 +1,4 @@
+raw_member_name,normalized_member_name,period_month,visits_count,source_sheet,source_row,match_status
+Socio Demo A,socio demo a,2025-10-01,12,ENERO 2026,3,matched
+Socio Demo B,socio demo b,2026-01-01,4,ENERO 2026,4,new_candidate
+Socio Demo C,socio demo c,2025-11-01,0,ENERO 2026,5,unmatched

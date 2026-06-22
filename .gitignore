@@ -49,6 +49,10 @@ Resumen IA.txt
 OC/BACKEND/fixtures/OCCALISTHENICS_prod_safe_diciembre_2025.csv
 OC/BACKEND/fixtures/OCCALISTHENICS_prod_pending_review_diciembre_2025.csv
 
+# Exportaciones de visitas historicas (datos reales; repo publico)
+OC/BACKEND/fixtures/OCCALISTHENICS_visit_*.csv
+!OC/BACKEND/fixtures/historical_visit_summary_template.csv.example
+
 # Supabase local temp/config (keep migrations and SQL files versioned)
 supabase/.branches/
 supabase/.temp/
