@@ -68,6 +68,23 @@ function matchStatusLabel(status: string) {
 }
 
 export default function ImportarVisitas() {
+  if (!runtime.enableHistoricalVisitsImport) {
+    return (
+      <div className="px-4 py-10">
+        <h1 className="text-2xl font-bold text-white">Importar visitas históricas</h1>
+        <p className="text-oc-muted mt-2">
+          Esta función no está disponible en este entorno. Contacta al administrador del sistema.
+        </p>
+        <Link to="/app/admin/membresias" className="text-sm text-oc-red hover:underline mt-4 inline-block">
+          Volver a membresías
+        </Link>
+      </div>
+    )
+  }
+  return <ImportarVisitasContent />
+}
+
+function ImportarVisitasContent() {
   const [file, setFile] = useState<File | null>(null)
   const [sheetName, setSheetName] = useState('ENERO 2026')
   const [busy, setBusy] = useState(false)
