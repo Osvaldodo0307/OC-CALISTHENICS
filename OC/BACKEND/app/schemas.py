@@ -245,6 +245,8 @@ class MembershipImportCommitRequest(BaseModel):
         return {int(k): int(v) for k, v in value.items()}
 
 
+class HistoricalVisitImportCommitRequest(BaseModel):
+    batch_id: int
 # Class Session
 class ClassSessionBase(BaseModel):
     title: str

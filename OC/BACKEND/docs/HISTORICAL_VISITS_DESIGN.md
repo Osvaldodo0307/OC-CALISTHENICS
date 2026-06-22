@@ -140,10 +140,31 @@ Ruta propuesta: `/app/admin/importar-visitas`
 | Criterio | Estado |
 |----------|--------|
 | Modelo separado de pagos/check-ins | ✅ |
-| Parser probado con fixture local | ✅ (si existe xlsx) |
+| Parser probado con fixture local | ✅ |
 | Preview sin auto-crear usuarios | ✅ |
+| Endpoints admin preview/commit | ✅ Fase 2C.2 |
+| UI `/app/admin/importar-visitas` | ✅ Fase 2C.2 |
 | Migración lista para staging | ✅ |
-| Commit de importación | ❌ pendiente Fase 2C.2 |
-| UI admin | ❌ pendiente |
+| Commit de importación | ✅ solo `matched`, bloquea resto |
+| Producción | ❌ **NO-GO** hasta staging |
 
-**Recomendación: GO condicionado** para aplicar migración en **staging** y continuar con Fase 2C.2 (commit + UI), manteniendo **NO-GO en producción** hasta validar matches y resolver ambiguos manualmente.
+## Política de commit (2C.2)
+
+1. El batch debe estar en `preview` con `can_commit=true`.
+2. Solo se importan filas con `match_status=matched`.
+3. Si existe `ambiguous`, `new_candidate` o `unmatched`, el commit se bloquea.
+4. No se crean usuarios automáticamente.
+5. Idempotencia por `(normalized_member_name, period_month, source_sheet)` — duplicados se marcan `skipped_duplicate`.
+6. No se crean pagos, ciclos, membresías ni recordatorios.
+
+## Endpoints (staging/local)
+
+| Método | Ruta |
+|--------|------|
+| POST | `/historical-visits/admin/imports/preview` |
+| POST | `/historical-visits/admin/imports/commit` |
+| GET | `/historical-visits/admin/imports/{batch_id}` |
+| GET | `/historical-visits/admin/imports/{batch_id}/records` |
+| GET | `/historical-visits/admin/summaries` |
+
+**Recomendación: GO condicionado** para validar en staging con archivo real y resolver matches manualmente antes de producción.

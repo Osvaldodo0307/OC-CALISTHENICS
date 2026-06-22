@@ -37,6 +37,7 @@ const AdminAsistencia = lazy(() => import('./pages/admin/Asistencia'))
 const AdminMembresiasControl = lazy(() => import('./pages/admin/MembresiasControl'))
 const AdminRecordatorios = lazy(() => import('./pages/admin/Recordatorios'))
 const AdminImportarPagos = lazy(() => import('./pages/admin/ImportarPagos'))
+const AdminImportarVisitas = lazy(() => import('./pages/admin/ImportarVisitas'))
 const AdminSocioExpediente = lazy(() => import('./pages/admin/SocioExpediente'))
 const CoachDashboard = lazy(() => import('./pages/coach/Dashboard'))
 const CoachAlumnos = lazy(() => import('./pages/coach/Alumnos'))
@@ -215,6 +216,10 @@ function App() {
             <Route
               path="admin/importar-pagos"
               element={<ProtectedRoute requiredRole="admin"><AdminImportarPagos /></ProtectedRoute>}
+            />
+            <Route
+              path="admin/importar-visitas"
+              element={<ProtectedRoute requiredRole="admin"><AdminImportarVisitas /></ProtectedRoute>}
             />
             <Route
               path="admin/socios/:id"

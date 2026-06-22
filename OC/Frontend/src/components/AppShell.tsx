@@ -39,6 +39,7 @@ export default function AppShell() {
     { path: '/app/admin/clases', label: 'Gestión de Clases' },
     { path: '/app/admin/membresias', label: 'Membresias' },
     { path: '/app/admin/importar-pagos', label: 'Importar pagos' },
+    { path: '/app/admin/importar-visitas', label: 'Importar visitas' },
     { path: '/app/admin/recordatorios', label: 'Recordatorios' },
     { path: '/app/admin/usuarios', label: 'Usuarios' },
   ]

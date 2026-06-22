@@ -25,6 +25,7 @@ from app.routes import (
     routines,
     admin,
     exercises,
+    historical_visits,
 )
 
 # =========================
@@ -192,6 +193,7 @@ app.include_router(dashboard.router)
 app.include_router(routines.router)
 app.include_router(admin.router)
 app.include_router(exercises.router)
+app.include_router(historical_visits.router)
 
 # =========================
 # ENDPOINTS BASE
