@@ -1,0 +1,3 @@
+socio_nombre,telefono,plan,fecha_pago,monto_pagado,metodo_pago,periodo_inicio,periodo_fin,payment_action,counts_as_income,applies_to_balance,saldo_pendiente,nota,fuente_archivo,referencia_externa
+SOCIO DEMO A,,PLAN OC,2025-12-01,945.0,historico_sin_metodo,2025-12-01,2025-12-31,renew_extend,true,true,0.0,Ejemplo anonimizado para repositorio publico.,OCCALISTHENICS,OCCALISTHENICS:DICIEMBRE 2025:socio_demo_a:2025-12-01
+SOCIO DEMO B,,OPEN GYM,2025-12-01,400.0,historico_sin_metodo,2025-12-01,2025-12-31,renew_extend,true,true,0.0,Ejemplo anonimizado para repositorio publico.,OCCALISTHENICS,OCCALISTHENICS:DICIEMBRE 2025:socio_demo_b:2025-12-01

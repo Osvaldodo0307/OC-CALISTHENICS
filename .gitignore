@@ -45,6 +45,10 @@ qa-*.png
 render_openapi*.json
 Resumen IA.txt
 
+# Paquetes productivos diciembre 2025 (datos reales; repo publico)
+OC/BACKEND/fixtures/OCCALISTHENICS_prod_safe_diciembre_2025.csv
+OC/BACKEND/fixtures/OCCALISTHENICS_prod_pending_review_diciembre_2025.csv
+
 # Supabase local temp/config (keep migrations and SQL files versioned)
 supabase/.branches/
 supabase/.temp/
