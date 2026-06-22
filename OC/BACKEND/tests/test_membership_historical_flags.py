@@ -198,3 +198,120 @@ def test_historical_followups_security_unchanged(client, db_session):
 
     denied_clients = client.get("/membership/admin/clients?include_historical=true", headers=coach_headers)
     assert denied_clients.status_code == 403
+
+
+def test_clients_search_uses_users_name_not_full_name(client, db_session):
+    admin = _create_user(db_session, "admin_hist", "admin")
+    socio = User(
+        username="tonito_search",
+        name="TOÑITO OSNAYA",
+        password_hash=hash_password("Pass123!"),
+        role="socio",
+        phone=None,
+        is_active=True,
+    )
+    db_session.add(socio)
+    db_session.flush()
+    membership = Membership(user_id=socio.id, status="expired", plan="PLAN OC")
+    db_session.add(membership)
+    db_session.commit()
+    headers = _admin_headers(client)
+
+    found = client.get(
+        "/membership/admin/clients?status=todos&search=TOÑITO+OSNAYA&include_historical=true",
+        headers=headers,
+    )
+    assert found.status_code == 200
+    rows = found.json()
+    assert len(rows) == 1
+    assert rows[0]["user_id"] == socio.id
+    assert rows[0]["name"] == "TOÑITO OSNAYA"
+
+
+def test_clients_include_historical_with_search_is_fast_enough(client, db_session):
+    admin = _create_user(db_session, "admin_hist", "admin")
+    headers = _admin_headers(client)
+    for index in range(30):
+        _create_historical_only_socio(db_session, admin, username=f"bulk_hist_{index}")
+    target, _, _ = _create_historical_only_socio(db_session, admin, username="target_hist")
+    db_session.query(User).filter(User.id == target.id).update({"name": "TOÑITO OSNAYA"})
+    db_session.commit()
+
+    import time
+
+    started = time.perf_counter()
+    response = client.get(
+        "/membership/admin/clients?status=todos&search=TOÑITO&include_historical=true",
+        headers=headers,
+    )
+    elapsed = time.perf_counter() - started
+    assert response.status_code == 200
+    assert any(row["user_id"] == target.id for row in response.json())
+    assert elapsed < 2.0
+
+
+def test_followups_historical_marked_as_vencido_historico(client, db_session):
+    admin = _create_user(db_session, "admin_hist", "admin")
+    socio_hist, _, _ = _create_historical_only_socio(db_session, admin, username="socio_hist_cat")
+    headers = _admin_headers(client)
+
+    inbox = client.get(
+        "/membership/admin/followups?status=vencidos&include_historical=true",
+        headers=headers,
+    )
+    assert inbox.status_code == 200
+    row = next(item for item in inbox.json() if item["user_id"] == socio_hist.id)
+    assert row["is_historical_import"] is True
+    assert row["priority_category"] == "vencido_historico"
+
+
+def test_historical_socio_with_null_is_active_still_listed(client, db_session):
+    admin = _create_user(db_session, "admin_hist", "admin")
+    socio = User(
+        username="null_active_hist",
+        name="Socio Null Active",
+        password_hash=hash_password("Pass123!"),
+        role="socio",
+        phone="5599001122",
+        is_active=None,
+    )
+    db_session.add(socio)
+    db_session.flush()
+    batch = MembershipImportBatch(created_by=admin.id, status="committed", filename="piloto.csv")
+    db_session.add(batch)
+    db_session.flush()
+    membership = Membership(user_id=socio.id, status="expired", plan="PLAN OC")
+    db_session.add(membership)
+    db_session.flush()
+    db_session.add(
+        MembershipCycle(
+            membership_id=membership.id,
+            user_id=socio.id,
+            membership_type="PLAN OC",
+            cost=945.0,
+            start_date=date(2025, 11, 1),
+            end_date=date(2025, 11, 30),
+            status="vencida",
+            is_active_cycle=False,
+            is_historical_import=True,
+            historical_source="OCCALISTHENICS",
+            import_batch_id=batch.id,
+            created_by=admin.id,
+        )
+    )
+    db_session.commit()
+    headers = _admin_headers(client)
+
+    clients = client.get(
+        "/membership/admin/clients?status=todos&include_historical=true&search=Socio+Null",
+        headers=headers,
+    )
+    assert clients.status_code == 200
+    assert any(row["user_id"] == socio.id for row in clients.json())
+
+    followups = client.get(
+        "/membership/admin/followups?status=vencidos&include_historical=true",
+        headers=headers,
+    )
+    assert followups.status_code == 200
+    assert any(row["user_id"] == socio.id for row in followups.json())

@@ -276,6 +276,27 @@ def test_phone_normalization_from_excel_float():
     assert _normalize_phone("55 1234 5678") == "5512345678"
 
 
+def test_cannot_commit_already_committed_batch(client, db_session):
+    _create_user(db_session, "admin", "admin", phone=None)
+    headers = _admin_headers(client)
+    files = {"file": ("historico.csv", io.BytesIO(_csv_bytes(VALID_CSV)), "text/csv")}
+    preview = client.post("/membership/admin/imports/preview", headers=headers, files=files).json()
+    first = client.post(
+        "/membership/admin/imports/commit",
+        headers=headers,
+        json={"batch_id": preview["batch_id"]},
+    )
+    assert first.status_code == 200
+
+    second = client.post(
+        "/membership/admin/imports/commit",
+        headers=headers,
+        json={"batch_id": preview["batch_id"]},
+    )
+    assert second.status_code == 400
+    assert "ya fue importado" in second.json()["detail"].lower()
+
+
 def test_template_download_requires_admin(client, db_session):
     _create_user(db_session, "admin", "admin", phone=None)
     headers = _admin_headers(client)

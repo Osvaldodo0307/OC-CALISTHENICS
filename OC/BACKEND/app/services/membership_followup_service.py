@@ -26,13 +26,14 @@ PRIORITY_RANK = {
     "vencidos_con_adeudo": 1,
     "vence_hoy": 2,
     "vencidos_sin_contacto": 3,
-    "por_vencer": 4,
-    "seguimientos_atrasados": 5,
-    "seguimientos_hoy": 6,
-    "suspendidos_con_adeudo": 7,
-    "con_adeudo": 8,
-    "vencido": 9,
-    "suspendido": 10,
+    "vencido_historico": 4,
+    "por_vencer": 5,
+    "seguimientos_atrasados": 6,
+    "seguimientos_hoy": 7,
+    "suspendidos_con_adeudo": 8,
+    "con_adeudo": 9,
+    "vencido": 10,
+    "suspendido": 11,
     "otro": 99,
 }
 
@@ -40,6 +41,7 @@ RECOMMENDED_ACTIONS = {
     "vencidos_con_adeudo": "Contactar por adeudo y renovacion urgente",
     "vence_hoy": "Recordar vencimiento hoy y ofrecer renovacion",
     "vencidos_sin_contacto": "Contactar socio vencido sin seguimiento reciente",
+    "vencido_historico": "Inspeccionar importacion historica (no operacion diaria)",
     "por_vencer": "Recordar vencimiento proximo",
     "seguimientos_atrasados": "Retomar seguimiento atrasado",
     "seguimientos_hoy": "Ejecutar seguimiento programado para hoy",
@@ -157,17 +159,38 @@ def _assign_priority_category(
     return "otro"
 
 
-def _latest_followups_by_user(db: Session) -> dict[int, MembershipFollowUp]:
-    followups = (
-        db.query(MembershipFollowUp)
-        .order_by(MembershipFollowUp.user_id, MembershipFollowUp.created_at.desc())
-        .all()
+def _latest_followups_by_user(
+    db: Session,
+    user_ids: list[int] | None = None,
+) -> dict[int, MembershipFollowUp]:
+    query = db.query(MembershipFollowUp).order_by(
+        MembershipFollowUp.user_id,
+        MembershipFollowUp.created_at.desc(),
+        MembershipFollowUp.id.desc(),
     )
+    if user_ids:
+        query = query.filter(MembershipFollowUp.user_id.in_(user_ids))
+    followups = query.all()
     result: dict[int, MembershipFollowUp] = {}
-    for f in followups:
-        if f.user_id not in result:
-            result[f.user_id] = f
+    for followup in followups:
+        if followup.user_id not in result:
+            result[followup.user_id] = followup
     return result
+
+
+def _creator_names(db: Session, followups: list[MembershipFollowUp]) -> dict[int, str]:
+    creator_ids = {
+        user_id
+        for followup in followups
+        for user_id in (followup.created_by, followup.updated_by)
+        if user_id
+    }
+    if not creator_ids:
+        return {}
+    return {
+        row.id: row.name
+        for row in db.query(User.id, User.name).filter(User.id.in_(creator_ids)).all()
+    }
 
 
 def _followup_to_payload(f: MembershipFollowUp, creators: dict[int, str]) -> dict:
@@ -207,15 +230,21 @@ def build_followup_inbox(
         search=search,
         active_only=True,
         include_historical=include_historical,
+        limit=None,
     )
-    latest_by_user = _latest_followups_by_user(db)
-    creators = {u.id: u.name for u in db.query(User).all()}
+    user_ids = [entry["user_id"] for entry in entries]
+    latest_by_user = _latest_followups_by_user(db, user_ids)
+    creators = _creator_names(db, list(latest_by_user.values()))
 
     inbox: list[dict] = []
     for entry in entries:
         membership_status = entry.get("status") or ""
         pending = float(entry.get("pending_balance_total") or entry.get("pending_balance") or 0.0)
         latest = latest_by_user.get(entry["user_id"])
+        is_historical_row = bool(entry.get("is_historical_import")) or bool(entry.get("is_historical_only_member"))
+
+        if not include_historical and is_historical_row:
+            continue
 
         relevant = membership_status in {
             "proxima_a_vencer",
@@ -229,21 +258,23 @@ def build_followup_inbox(
             next_day = latest.next_followup_at.date() if isinstance(latest.next_followup_at, datetime) else latest.next_followup_at
             has_followup_due = next_day <= today
 
+        if include_historical and is_historical_row and membership_status in {"vencida", "con_adeudo", "suspendida"}:
+            relevant = True
+
         if not relevant and not has_followup_due:
             if latest and latest.status == "pendiente":
                 pass
             else:
                 continue
 
-        if membership_status == "suspendida" and pending <= 0 and not has_followup_due:
-            continue
-
-        if not include_historical and entry.get("is_historical_only_member"):
-            continue
-        if not include_historical and entry.get("is_historical_import"):
+        if membership_status == "suspendida" and pending <= 0 and not has_followup_due and not (
+            include_historical and is_historical_row
+        ):
             continue
 
         priority_category = _assign_priority_category(entry, latest, today, now)
+        if include_historical and entry.get("is_historical_import") and membership_status == "vencida":
+            priority_category = "vencido_historico"
         if priority_category == "otro" and not has_followup_due:
             continue
 
@@ -275,7 +306,13 @@ def _apply_inbox_filter(items: list[dict], status_filter: str, today) -> list[di
     if f == "vence_hoy":
         return [i for i in items if i.get("status") == "vence_hoy"]
     if f == "vencidos":
-        return [i for i in items if i.get("status") == "vencida" or i["priority_category"].startswith("vencido")]
+        return [
+            i
+            for i in items
+            if i.get("status") == "vencida"
+            or i["priority_category"].startswith("vencido")
+            or i["priority_category"] == "vencido_historico"
+        ]
     if f == "adeudo":
         return [i for i in items if float(i.get("pending_balance_total") or i.get("pending_balance") or 0) > 0]
     if f == "seguimiento_pendiente":
@@ -439,11 +476,11 @@ def update_followup(
 
 
 def list_user_followups(db: Session, user_id: int) -> list[dict]:
-    creators = {u.id: u.name for u in db.query(User).all()}
     rows = (
         db.query(MembershipFollowUp)
         .filter(MembershipFollowUp.user_id == user_id)
         .order_by(MembershipFollowUp.created_at.desc())
         .all()
     )
+    creators = _creator_names(db, rows)
     return [_followup_to_payload(f, creators) for f in rows]

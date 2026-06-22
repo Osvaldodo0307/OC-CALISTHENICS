@@ -779,6 +779,7 @@ def _create_socio_user(db: Session, *, name: str, phone: str | None) -> User:
         password_hash=hash_password(password),
         role="socio",
         phone=phone,
+        is_active=True,
     )
     db.add(user)
     db.flush()

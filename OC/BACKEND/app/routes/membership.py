@@ -28,6 +28,7 @@ from app.services.membership_followup_service import (
     _infer_followup_type_from_status,
 )
 from app.services.membership_admin import (
+    DEFAULT_CLIENTS_LIMIT,
     build_membership_alerts,
     build_membership_summary,
     cycle_balance_paid,
@@ -155,6 +156,8 @@ async def list_membership_clients(
     status: str = Query("todos"),
     search: str = Query(""),
     include_historical: bool = Query(False),
+    limit: int | None = Query(None, ge=1, le=500),
+    offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin),
 ):
@@ -166,6 +169,8 @@ async def list_membership_clients(
         status_filter=normalized,
         search=search,
         include_historical=include_historical,
+        limit=limit if limit is not None else DEFAULT_CLIENTS_LIMIT,
+        offset=offset,
     )
 
 
