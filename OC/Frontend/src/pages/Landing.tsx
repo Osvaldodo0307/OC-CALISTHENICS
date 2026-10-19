@@ -7,9 +7,9 @@ import LeadCaptureForm from '../components/landing/LeadCaptureForm'
 import WhatsAppLink from '../components/WhatsAppLink'
 import { featuredTestimonials } from '../data/testimonials'
 
-const IMG_HERO = '/Actualizacion/VisualRefresh/hero-oc.svg'
-const IMG_COMPETENCIA = '/Actualizacion/VisualRefresh/competencia-oc.svg'
-const IMG_COMUNIDAD = '/Actualizacion/VisualRefresh/comunidad-oc.svg'
+const IMG_HERO = '/Actualizacion/Front/GYM_Cel.png'
+const IMG_COMPETENCIA = '/Competencia.jpeg'
+const IMG_COMUNIDAD = '/Comunidad.jpeg'
 
 const DISCIPLINES: {
   slug: string
@@ -21,19 +21,19 @@ const DISCIPLINES: {
     slug: 'hyrox',
     title: 'HYROX',
     blurb: 'Entrenamiento híbrido de resistencia, fuerza y rendimiento funcional.',
-    image: '/Actualizacion/VisualRefresh/hyrox-oc.svg',
+    image: '/HYROX.jpeg',
   },
   {
     slug: 'calistenia',
     title: 'Calistenia',
     blurb: 'Control corporal, fuerza relativa y progresiones técnicas.',
-    image: '/Actualizacion/VisualRefresh/calistenia-oc.svg',
+    image: '/Calistenia.jpeg',
   },
   {
     slug: 'powerlifting',
     title: 'Powerlifting',
     blurb: 'Fuerza máxima en sentadilla, press banca y peso muerto.',
-    image: '/Actualizacion/VisualRefresh/powerlifting-oc.svg',
+    image: '/Powerlifting.jpeg',
   },
 ]
 
