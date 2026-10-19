@@ -91,12 +91,12 @@ export default function Landing() {
               Elite Training Community · <span className="text-white">Tlalpan, CDMX</span>
             </p>
             <h1 className="mt-6 font-hero text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.95] text-white uppercase tracking-tight">
-              OC-CLUB
-              <span className="block text-oc-red mt-1">Elite Training Community</span>
+              ENTRENA EN TLALPAN
+              <span className="block text-oc-red mt-1">CON ESTRUCTURA REAL</span>
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-white/85 font-medium leading-snug max-w-xl">
-              Entrena con estructura, comunidad y seguimiento real.
-              <span className="text-white"> Te guiamos en el piso para competir contigo mismo.</span>
+              Fuerza, técnica y progreso medible en una comunidad que te exige y te acompaña.
+              <span className="text-white"> No es solo un gym: es tu club.</span>
             </p>
             <div className="mt-9 flex flex-wrap gap-3 sm:gap-4">
               <Link
@@ -156,7 +156,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 2 · Por qué OC-CLUB */}
+      {/* 2 · NO ES SOLO UN GYM */}
       <section id="por-que" className="scroll-mt-24 border-t border-oc-red/25 bg-[#0c0c0c] py-16 md:py-20">
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
           <div className="max-w-2xl mb-12 md:mb-14">
@@ -186,7 +186,7 @@ export default function Landing() {
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-12">
             <div>
-              <h2 className="font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">Qué entrenas</h2>
+              <h2 className="font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">OFERTA CLARA POR DISCIPLINA</h2>
               <p className="mt-3 text-white/65 max-w-xl leading-relaxed">
                 Oferta clara por disciplina. Cada bloque tiene su lenguaje; el club unifica estándar y respeto.
               </p>
@@ -198,25 +198,24 @@ export default function Landing() {
               Ver todas las clases →
             </Link>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {DISCIPLINES.map((d) => (
-              <article
-                key={d.slug}
-                className="group relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden rounded-lg bg-zinc-900"
-              >
-                <img
-                  src={d.image}
-                  alt={`Entrenamiento de ${d.title} en OC-CLUB`}
-                  className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/10"
-                  aria-hidden
-                />
-                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6">
-                  <h3 className="font-display text-xl font-bold text-white tracking-tight">{d.title}</h3>
-                  <p className="mt-2 text-sm text-white/75 leading-snug">{d.blurb}</p>
+          <div className="grid gap-6 md:grid-cols-3">
+            {DISCIPLINES.map((d, index) => (
+              <article key={d.slug} className="group overflow-hidden border border-[#262626] bg-[#111]">
+                <div className="relative aspect-[4/3] md:aspect-[3/4] overflow-hidden">
+                  <img src={d.image} alt={`Entrenamiento de ${d.title} en OC-CLUB`} className="h-full w-full object-cover grayscale-[35%] transition duration-700 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" aria-hidden />
+                  <span className="absolute left-4 top-4 bg-[#D21F2D] px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">{['HÍBRIDO / RACING','GIMNÁSTICOS','BARBELL CLUB'][index]}</span>
+                </div>
+                <div className="border-t-2 border-[#D21F2D] px-5 py-6">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-hero text-3xl uppercase text-white">{d.title}</h3>
+                    <span className="pt-1 text-right text-[10px] font-bold uppercase tracking-wide text-[#D21F2D]">{['RESISTENCIA + FUERZA','CONTROL RELATIVO','FUERZA PURA'][index]}</span>
+                  </div>
+                  <p className="mt-3 min-h-[3.5rem] text-sm leading-relaxed text-[#bcbcbc]">{d.blurb}</p>
+                  <div className="mt-6 flex items-center justify-between gap-3 border-t border-white/10 pt-4 text-[10px] font-bold uppercase tracking-wider">
+                    <Link to="/clases" className="text-white transition-colors hover:text-[#D21F2D]">TODA LA OFERTA</Link>
+                    <Link to="/clases" className="text-[#D21F2D] transition-colors hover:text-white">VER HORARIOS →</Link>
+                  </div>
                 </div>
               </article>
             ))}
