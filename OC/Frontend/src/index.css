@@ -646,3 +646,31 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
+
+
+/* OC-CLUB / Stitch Iron Discipline — public landing only.
+   Scoped to protect the member, coach and admin applications. */
+.oc-home {
+  --oc-stitch-red: #d21f2d;
+  --oc-stitch-background: #060606;
+  --oc-stitch-surface: #111111;
+  --oc-stitch-stroke: #262626;
+  background: var(--oc-stitch-background);
+}
+.oc-home article {
+  border-radius: 0;
+  box-shadow: none;
+}
+.oc-home article img { display: block; }
+.oc-home a:focus-visible,
+.oc-home button:focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .oc-home *, .oc-home *::before, .oc-home *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
