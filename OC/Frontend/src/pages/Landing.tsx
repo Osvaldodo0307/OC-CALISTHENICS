@@ -3,10 +3,10 @@ import PublicNav from '../components/PublicNav'
 import OcClubLogo from '../components/brand/OcClubLogo'
 import { featuredTestimonials } from '../data/testimonials'
 
-const IMG_HERO = '/Gimnasio.jpeg'
-const IMG_CLUB_INTERIOR = '/2do piso.jpeg'
-const IMG_COMPETENCIA = '/Competencia.jpeg'
-const IMG_COMUNIDAD = '/Comunidad.jpeg'
+const IMG_HERO = '/Actualizacion/VisualRefresh/hero-oc.svg'
+const IMG_CLUB_INTERIOR = '/Actualizacion/VisualRefresh/instalaciones-oc.svg'
+const IMG_COMPETENCIA = '/Actualizacion/VisualRefresh/competencia-oc.svg'
+const IMG_COMUNIDAD = '/Actualizacion/VisualRefresh/comunidad-oc.svg'
 
 const DISCIPLINES: {
   slug: string
@@ -18,19 +18,19 @@ const DISCIPLINES: {
     slug: 'hyrox',
     title: 'HYROX',
     blurb: 'Entrenamiento híbrido de resistencia, fuerza y rendimiento funcional.',
-    image: '/HYROX.jpeg',
+    image: '/Actualizacion/VisualRefresh/hyrox-oc.svg',
   },
   {
     slug: 'calistenia',
     title: 'Calistenia',
     blurb: 'Control corporal, fuerza relativa y progresiones técnicas.',
-    image: '/Calistenia.jpeg',
+    image: '/Actualizacion/VisualRefresh/calistenia-oc.svg',
   },
   {
     slug: 'powerlifting',
     title: 'Powerlifting',
     blurb: 'Fuerza máxima en sentadilla, press banca y peso muerto.',
-    image: '/Powerlifting.jpeg',
+    image: '/Actualizacion/VisualRefresh/powerlifting-oc.svg',
   },
 ]
 
