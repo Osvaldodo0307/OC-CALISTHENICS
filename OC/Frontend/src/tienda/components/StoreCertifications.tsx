@@ -33,7 +33,7 @@ export default function StoreCertifications() {
           aria-hidden
         />
         <div className="relative z-10 mt-auto flex w-full flex-col gap-1 p-5 sm:p-6">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-oc-red">Confianza</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-oc-red">Formación</span>
           <span
             id="tienda-certificaciones-card"
             className="text-base font-bold text-white sm:text-lg"
@@ -41,13 +41,13 @@ export default function StoreCertifications() {
             Certificaciones
           </span>
           <span className="line-clamp-1 text-[12px] text-white/75">
-            Reconocimientos y formaciones del equipo OC
+            Consulta programas, requisitos, fechas y costos
           </span>
           <span
             className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-white"
             aria-hidden
           >
-            Ver certificaciones <span>→</span>
+            Consultar certificaciones <span>→</span>
           </span>
         </div>
       </Link>
