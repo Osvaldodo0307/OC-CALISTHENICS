@@ -10,10 +10,9 @@ interface Props {
 const NAV_LINKS = [
   { to: '/tienda', label: 'Inicio', end: true },
   { to: '/tienda/catalogo', label: 'Catálogo' },
-  { to: '/tienda/catalogo?categoria=ropa', label: 'Ropa' },
+  { to: '/tienda/catalogo?categoria=entrenamiento', label: 'Equipamiento' },
   { to: '/tienda/catalogo?categoria=suplementos', label: 'Suplementos' },
-  { to: '/tienda/catalogo?categoria=joyeria', label: 'Joyería' },
-  { to: '/tienda/catalogo?categoria=recovery', label: 'Recovery' },
+  { to: '/tienda/certificaciones', label: 'Certificaciones' },
 ]
 
 export default function StoreNav({ onOpenCart }: Props) {
