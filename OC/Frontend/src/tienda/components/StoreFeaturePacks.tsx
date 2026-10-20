@@ -37,10 +37,10 @@ export default function StoreFeaturePacks() {
         <div className="grid gap-4 lg:grid-cols-2">
           {FOCUS.map((item) => (
             <article key={item.number} className="grid overflow-hidden border border-white/15 bg-[#141414] sm:grid-cols-[44%_56%]">
-              <Link to={item.to} className="group relative block aspect-[16/9] overflow-hidden sm:aspect-auto" aria-label={item.action}>
+              <div className="group relative block aspect-[16/9] overflow-hidden sm:aspect-auto">
                 <img src={item.image} alt={item.alt} className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
                 <span className="absolute left-3 top-3 bg-oc-red px-2 py-1 font-hero text-lg text-white">{item.number}</span>
-              </Link>
+              </div>
               <div className="flex flex-col p-5 sm:p-6">
                 <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-oc-red">{item.eyebrow}</p>
                 <h3 className="mt-2 font-hero text-2xl uppercase leading-tight text-white">{item.title}</h3>
