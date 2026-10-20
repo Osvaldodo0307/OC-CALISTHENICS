@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import ProductGrid from '../components/ProductGrid'
 import ProductFilters from '../components/ProductFilters'
-import CategoryNav from '../components/CategoryNav'
 import EmptyState from '../components/EmptyState'
 import ProductQuickView from '../components/ProductQuickView'
 import { PRODUCTS } from '../data/products'
@@ -67,8 +66,8 @@ export default function StoreCatalog() {
     filters.category !== 'todas' ? CATEGORY_BY_SLUG[filters.category] : null
 
   return (
-    <>
-      <section className="border-b border-neutral-200 bg-white">
+    <div className="oc-store-stitch min-h-screen bg-[#060606] text-white">
+      <section className="border-b border-white/10 bg-[#111]">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-10 lg:py-12">
           <nav className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] uppercase tracking-wider text-neutral-500">
             <Link to="/tienda" className="hover:text-oc-red">Tienda</Link>
@@ -82,7 +81,7 @@ export default function StoreCatalog() {
             )}
           </nav>
 
-          <h1 className="font-display text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
             {categoryMeta ? categoryMeta.name : 'Catálogo completo'}
           </h1>
           <p className="mt-2 max-w-2xl text-[14px] text-neutral-500">
@@ -91,9 +90,7 @@ export default function StoreCatalog() {
               : 'Explora todos los artículos oficiales OC. Filtra por categoría, precio y disponibilidad.'}
           </p>
 
-          <div className="mt-5">
-            <CategoryNav variant="pills" activeSlug={categoryMeta?.slug} />
-          </div>
+          
         </div>
       </section>
 
@@ -134,6 +131,6 @@ export default function StoreCatalog() {
       </section>
 
       <ProductQuickView product={quickView} onClose={() => setQuickView(null)} />
-    </>
+    </div>
   )
 }
