@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react'
 import type { CartLine, CartTotals, Product, ProductVariant } from '../types/store'
+import { PRODUCTS } from '../data/products'
 
 /**
  * Carrito local (frontend-only) con persistencia en localStorage.
@@ -112,7 +113,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (!raw) return
       const parsed = JSON.parse(raw) as Partial<CartState> & { coupon?: unknown }
       if (parsed && Array.isArray(parsed.lines)) {
-        const { lines } = parsed
+        const allowed = new Map(PRODUCTS.map((product) => [product.id, product]))
+        // Evita que carritos guardados antes de limitar OC-STORE vuelvan a mostrar
+        // ropa, merch, recovery u otras líneas retiradas de la venta.
+        const lines = parsed.lines.filter((line): line is CartLine => {
+          if (!line || typeof line.productId !== 'string') return false
+          const product = allowed.get(line.productId)
+          return Boolean(product && product.inStock && line.productSlug === product.slug
+            && Number.isFinite(line.quantity) && line.quantity > 0)
+        })
         dispatch({ type: 'hydrate', state: { lines } })
       }
     } catch {
