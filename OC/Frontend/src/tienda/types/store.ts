@@ -8,15 +8,7 @@
  */
 
 /** Categorías comerciales soportadas en la primera versión. */
-export type StoreCategorySlug =
-  | 'ropa'
-  | 'joyeria'
-  | 'suplementos'
-  | 'peluches'
-  | 'merch'
-  | 'entrenamiento'
-  | 'recovery'
-  | 'promo'
+export type StoreCategorySlug = 'entrenamiento' | 'suplementos'
 
 /** Línea editorial de un producto: dispara estilos visuales en el badge. */
 export type ProductBadgeKind =
