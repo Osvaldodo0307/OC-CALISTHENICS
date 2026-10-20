@@ -18,7 +18,7 @@ export default function StoreCertifications() {
     >
       <Link
         to="/tienda/certificaciones"
-        className="group relative flex aspect-[16/9] overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-all hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.18)] sm:aspect-[21/9]"
+        className="group relative flex aspect-[16/9] overflow-hidden rounded-sm border border-white/10 bg-[#111] transition-colors hover:border-oc-red/60 sm:aspect-[21/9]"
       >
         <img
           src={CERTIFICACIONES_BANNER}

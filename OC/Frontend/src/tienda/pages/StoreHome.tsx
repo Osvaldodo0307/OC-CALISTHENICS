@@ -6,6 +6,7 @@ import StoreTrustBar from '../components/StoreTrustBar'
 import StoreCertifications from '../components/StoreCertifications'
 import ProductGrid from '../components/ProductGrid'
 import StoreCTA from '../components/StoreCTA'
+import StoreFeaturePacks from '../components/StoreFeaturePacks'
 import ProductQuickView from '../components/ProductQuickView'
 import { PRODUCTS } from '../data/products'
 import type { Product } from '../types/store'
@@ -27,14 +28,15 @@ export default function StoreHome() {
   )
 
   return (
-    <>
+    <div className="oc-store-stitch bg-[#060606] text-white">
       <StoreHero />
-      <div className="border-b border-amber-200/80 bg-amber-50 px-4 py-3 text-center text-[13px] text-amber-950 sm:px-6">
+      <div className="border-b border-oc-red/35 bg-[#1b1213] px-4 py-3 text-center text-[12px] leading-relaxed text-white/80 sm:px-6">
         <strong>Catálogo en actualización.</strong> Los artículos mostrados son referencia; disponibilidad, tallas y
         entrega se confirman con el equipo OC por WhatsApp.
       </div>
       <StoreTrustBar />
       <StoreCertifications />
+      <StoreFeaturePacks />
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
         <header className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
@@ -42,13 +44,13 @@ export default function StoreHome() {
             <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-oc-red">
               Por categoría
             </p>
-            <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
+            <h2 className="font-hero text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl">
               Encuentra lo tuyo
             </h2>
           </div>
           <Link
             to="/tienda/catalogo"
-            className="text-[12px] font-bold uppercase tracking-wider text-neutral-700 hover:text-oc-red"
+            className="text-[12px] font-bold uppercase tracking-wider text-white/75 hover:text-oc-red"
           >
             Ver todo →
           </Link>
@@ -56,20 +58,20 @@ export default function StoreHome() {
         <CategoryNav />
       </section>
 
-      <section className="bg-white">
+      <section className="border-y border-white/10 bg-[#0c0c0c]">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
           <header className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-oc-red">
                 Destacados
               </p>
-              <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
+              <h2 className="font-hero text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl">
                 Referencia de catálogo
               </h2>
             </div>
             <Link
               to="/tienda/catalogo"
-              className="text-[12px] font-bold uppercase tracking-wider text-neutral-700 hover:text-oc-red"
+              className="text-[12px] font-bold uppercase tracking-wider text-white/75 hover:text-oc-red"
             >
               Ver catálogo →
             </Link>
@@ -85,7 +87,7 @@ export default function StoreHome() {
               <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-oc-red">
                 Recién llegado
               </p>
-              <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
+              <h2 className="font-hero text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl">
                 Nuevos drops
               </h2>
             </div>
@@ -97,6 +99,6 @@ export default function StoreHome() {
       <StoreCTA />
 
       <ProductQuickView product={quickView} onClose={() => setQuickView(null)} />
-    </>
+    </div>
   )
 }

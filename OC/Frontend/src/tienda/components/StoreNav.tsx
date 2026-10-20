@@ -34,7 +34,7 @@ export default function StoreNav({ onOpenCart }: Props) {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#080808]/95 text-white backdrop-blur">
       <div className="hidden bg-neutral-950 text-white sm:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-1.5 text-[11px] sm:px-6 lg:px-10">
           <p className="max-w-[min(100%,52rem)] tracking-wide text-white/70">
@@ -60,7 +60,7 @@ export default function StoreNav({ onOpenCart }: Props) {
           <OcClubLogo
             variant="nav"
             priority
-            className="h-7 w-auto sm:h-8 [filter:invert(0)] mix-blend-multiply"
+            className="h-7 w-auto sm:h-8 [filter:invert(0)] mix-blend-normal"
           />
           <span className="hidden text-[10px] font-bold uppercase tracking-[0.25em] text-oc-red sm:inline">
             Store
@@ -78,11 +78,11 @@ export default function StoreNav({ onOpenCart }: Props) {
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Buscar productos…"
-              className="w-full rounded-full border border-neutral-200 bg-neutral-50 py-2 pl-10 pr-4 text-sm outline-none focus:border-oc-red focus:bg-white"
+              className="w-full rounded-sm border border-white/15 bg-[#161616] py-2 pl-10 pr-4 text-sm outline-none focus:border-oc-red focus:bg-[#111]"
               aria-label="Buscar productos"
             />
             <svg
-              className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400"
+              className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -102,7 +102,7 @@ export default function StoreNav({ onOpenCart }: Props) {
           <button
             type="button"
             onClick={onOpenCart}
-            className="relative inline-flex h-10 items-center gap-2 rounded-full border border-neutral-200 bg-white px-3.5 text-sm font-semibold text-neutral-800 transition-colors hover:border-neutral-400"
+            className="relative inline-flex h-10 items-center gap-2 rounded-sm border border-white/15 bg-[#111] px-3.5 text-sm font-semibold text-white/85 transition-colors hover:border-neutral-400"
             aria-label={`Abrir carrito (${totals.itemCount} artículos)`}
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -115,7 +115,7 @@ export default function StoreNav({ onOpenCart }: Props) {
             </svg>
             <span className="hidden sm:inline">Carrito</span>
             {totals.itemCount > 0 && (
-              <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-oc-red px-1 text-[10px] font-bold text-white">
+              <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-sm bg-oc-red px-1 text-[10px] font-bold text-white">
                 {totals.itemCount}
               </span>
             )}
@@ -124,7 +124,7 @@ export default function StoreNav({ onOpenCart }: Props) {
           <button
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
-            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-800"
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-sm border border-white/15 bg-[#111] text-white/85"
             aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={mobileOpen}
           >
@@ -139,7 +139,7 @@ export default function StoreNav({ onOpenCart }: Props) {
         </div>
       </div>
 
-      <nav className="hidden border-t border-neutral-100 bg-white md:block" aria-label="Categorías">
+      <nav className="hidden border-t border-white/10 bg-[#111] md:block" aria-label="Categorías">
         <div className="mx-auto flex max-w-7xl items-center gap-5 overflow-x-auto px-4 sm:px-6 lg:px-10">
           {NAV_LINKS.map((l) => (
             <NavLink
@@ -150,7 +150,7 @@ export default function StoreNav({ onOpenCart }: Props) {
                 `whitespace-nowrap py-3 text-[12px] font-bold uppercase tracking-[0.15em] transition-colors ${
                   isActive
                     ? 'text-oc-red'
-                    : 'text-neutral-700 hover:text-neutral-900'
+                    : 'text-white/70 hover:text-white'
                 }`
               }
             >
@@ -161,14 +161,14 @@ export default function StoreNav({ onOpenCart }: Props) {
       </nav>
 
       {mobileOpen && (
-        <div className="border-t border-neutral-200 bg-white px-4 pb-4 pt-3 md:hidden">
+        <div className="border-t border-white/15 bg-[#111] px-4 pb-4 pt-3 md:hidden">
           <form onSubmit={submitSearch} role="search" className="mb-3">
             <input
               type="search"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Buscar productos…"
-              className="w-full rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-sm outline-none focus:border-oc-red focus:bg-white"
+              className="w-full rounded-sm border border-white/15 bg-[#161616] px-4 py-2 text-sm outline-none focus:border-oc-red focus:bg-[#111]"
               aria-label="Buscar productos"
             />
           </form>
@@ -180,8 +180,8 @@ export default function StoreNav({ onOpenCart }: Props) {
                 end={l.end}
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
-                  `border-b border-neutral-100 py-3 text-sm font-semibold ${
-                    isActive ? 'text-oc-red' : 'text-neutral-800'
+                  `border-b border-white/10 py-3 text-sm font-semibold ${
+                    isActive ? 'text-oc-red' : 'text-white/85'
                   }`
                 }
               >
@@ -191,7 +191,7 @@ export default function StoreNav({ onOpenCart }: Props) {
             <Link
               to="/"
               onClick={() => setMobileOpen(false)}
-              className="border-b border-neutral-100 py-3 text-sm font-semibold text-neutral-500"
+              className="border-b border-white/10 py-3 text-sm font-semibold text-neutral-500"
             >
               ← Volver al sitio OC
             </Link>

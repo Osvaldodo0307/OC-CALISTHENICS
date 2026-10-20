@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import '../styles/storeStitch.css'
 import { Outlet } from 'react-router-dom'
 import { CartProvider } from '../context/CartContext'
 import StoreNav from '../components/StoreNav'

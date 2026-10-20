@@ -1,0 +1,72 @@
+/* OC-STORE | Stitch Iron Discipline 2026
+ * Scoped to home and catalog. Other OC-CLUB pages, cart, product detail,
+ * checkout and administrative modules retain their existing components.
+ */
+.oc-store-stitch {
+  --store-red: #d21f2d;
+  --store-canvas: #060606;
+  --store-panel: #111111;
+  --store-border: #2b2626;
+  background: var(--store-canvas);
+  color: #f5f5f5;
+}
+.oc-store-stitch .bg-white,
+.oc-store-stitch .bg-neutral-50 {
+  background-color: var(--store-panel) !important;
+}
+.oc-store-stitch .bg-neutral-100 {
+  background-color: #1c1b1b !important;
+}
+.oc-store-stitch .text-neutral-900,
+.oc-store-stitch .text-neutral-800 {
+  color: #f5f5f5 !important;
+}
+.oc-store-stitch .text-neutral-700,
+.oc-store-stitch .text-neutral-600,
+.oc-store-stitch .text-neutral-500 {
+  color: #b3afaf !important;
+}
+.oc-store-stitch .border-neutral-200,
+.oc-store-stitch .border-neutral-300 {
+  border-color: var(--store-border) !important;
+}
+.oc-store-stitch .rounded-full,
+.oc-store-stitch .rounded-xl,
+.oc-store-stitch .rounded-lg {
+  border-radius: 2px !important;
+}
+.oc-store-stitch input,
+.oc-store-stitch select {
+  color: #f5f5f5;
+  background: #101010;
+  border-color: #393333;
+  border-radius: 2px;
+}
+.oc-store-stitch input::placeholder { color: #a3a3a3; }
+.oc-store-stitch input:focus-visible,
+.oc-store-stitch select:focus-visible {
+  outline: 2px solid var(--store-red);
+  outline-offset: 1px;
+}
+.oc-store-stitch input[type="checkbox"] { accent-color: var(--store-red); }
+.oc-store-stitch .oc-store-product-card {
+  border: 1px solid var(--store-border) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+.oc-store-stitch .oc-store-product-card:hover { border-color: var(--store-red) !important; }
+.oc-store-stitch .oc-store-product-card button:not(:disabled) {
+  background: var(--store-red);
+  color: #fff;
+  border-radius: 2px;
+}
+.oc-store-stitch .oc-store-product-card button:not(:disabled):hover { background: #b01824; }
+.oc-store-stitch a:focus-visible,
+.oc-store-stitch button:focus-visible {
+  outline: 2px solid var(--store-red);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .oc-store-stitch * { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+}

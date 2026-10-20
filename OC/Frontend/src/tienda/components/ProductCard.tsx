@@ -29,7 +29,7 @@ export default function ProductCard({ product, onQuickView }: Props) {
 
   return (
     <article
-      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-neutral-200/80 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.18)]"
+      className="oc-store-product-card group relative flex h-full flex-col overflow-hidden rounded-xl border border-neutral-200/80 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.18)]"
       aria-label={product.name}
     >
       <Link
