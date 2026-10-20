@@ -1,86 +1,66 @@
 import { Link } from 'react-router-dom'
-import { CERTIFICACIONES } from '../data/certificaciones'
+import { buildWhatsAppHref } from '../../utils/whatsapp'
 
 /**
- * Vista pública de certificaciones del equipo OC.
- * Endpoint: /tienda/certificaciones
- *
- * Diseño: alineado con el resto de la tienda (fondo claro, acento rojo OC,
- * tarjetas con sombra suave). No promete relación médica ni resultados;
- * solo presenta los reconocimientos del equipo.
+ * Oferta comercial de certificaciones por consulta.
+ * Las fotografías de diplomas anteriores siguen archivadas en el repositorio,
+ * pero no representan cursos actuales ni títulos en venta.
  */
 export default function Certifications() {
+  const contactHref = buildWhatsAppHref(
+    'Hola OC-STORE, quiero información sobre las certificaciones disponibles, requisitos, modalidad, fechas y costos.',
+  )
+
   return (
-    <div className="bg-neutral-50 pb-16">
-      <nav
-        className="mx-auto max-w-7xl flex flex-wrap items-center gap-2 px-4 pt-6 text-[12px] text-neutral-500 sm:px-6 lg:px-10 lg:pt-10"
-        aria-label="Migas de pan"
-      >
-        <Link to="/tienda" className="hover:text-oc-red">
-          Tienda
-        </Link>
-        <span aria-hidden>/</span>
-        <span className="text-neutral-700">Certificaciones</span>
-      </nav>
+    <div className="min-h-screen bg-[#060606] pb-20 text-white">
+      <div className="relative overflow-hidden border-b border-white/10 bg-[#111]">
+        <div className="absolute inset-0 opacity-25" aria-hidden
+          style={{ backgroundImage: "url('/tienda/imagenes/certificaciones/banner.png')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#060606] via-[#060606]/90 to-transparent" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
+          <nav className="mb-8 flex items-center gap-2 text-xs text-white/60" aria-label="Migas de pan">
+            <Link to="/tienda" className="hover:text-oc-red">OC-STORE</Link>
+            <span aria-hidden>/</span>
+            <span className="text-white">Certificaciones</span>
+          </nav>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-oc-red">Formación y desarrollo</p>
+          <h1 className="mt-3 max-w-3xl font-hero text-4xl uppercase leading-tight sm:text-5xl lg:text-6xl">
+            CERTIFICACIONES <span className="text-oc-red">OC-STORE</span>
+          </h1>
+          <p className="mt-5 max-w-2xl text-sm leading-relaxed text-white/75 sm:text-base">
+            Consulta la oferta de formación y certificaciones relacionadas con el entrenamiento y
+            la preparación deportiva. Los programas, organismos emisores, modalidad, requisitos,
+            fechas y precios se confirman directamente con el equipo OC.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href={contactHref} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-oc-red px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-oc-red-deep">
+              Solicitar información por WhatsApp →
+            </a>
+            <Link to="/tienda" className="inline-flex items-center justify-center border border-white/25 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-white/10">
+              Volver a OC-STORE
+            </Link>
+          </div>
+        </div>
+      </div>
 
-      <header className="mx-auto max-w-7xl px-4 pb-8 pt-6 sm:px-6 lg:px-10">
-        <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-oc-red">Confianza</p>
-        <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
-          Certificaciones del equipo OC
-        </h1>
-        <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-neutral-600 sm:text-[15px]">
-          Reconocimientos y formaciones que respaldan el acompañamiento y la curaduría
-          de producto del equipo OC. Iremos sumando más a medida que se emitan.
-        </p>
-      </header>
-
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {CERTIFICACIONES.map((cert) => (
-            <li
-              key={cert.id}
-              className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
-            >
-              <div
-                className={`grid gap-1 bg-neutral-100 ${
-                  cert.fotos.length > 1 ? 'grid-cols-2' : 'grid-cols-1'
-                }`}
-              >
-                {cert.fotos.map((foto) => (
-                  <a
-                    key={foto.src}
-                    href={foto.src}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative block aspect-[3/4] overflow-hidden bg-neutral-100"
-                    aria-label={`Abrir imagen completa: ${foto.alt}`}
-                  >
-                    <img
-                      src={foto.src}
-                      alt={foto.alt}
-                      loading="lazy"
-                      decoding="async"
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    />
-                  </a>
-                ))}
-              </div>
-              <div className="flex flex-1 flex-col gap-1 p-5">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-oc-red">
-                  Certificación
-                </span>
-                <h2 className="text-base font-bold text-neutral-900 sm:text-lg">{cert.nombre}</h2>
-                {cert.emisor && (
-                  <p className="text-[12px] text-neutral-500">{cert.emisor}</p>
-                )}
-                {cert.resumen && (
-                  <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">{cert.resumen}</p>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
+      <section className="mx-auto grid max-w-7xl gap-5 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-10">
+        {[
+          { title: 'Programas', body: 'Conoce qué opciones de formación se encuentran disponibles actualmente.' },
+          { title: 'Requisitos y modalidad', body: 'Solicita información sobre perfil de ingreso, duración, formato y evaluación.' },
+          { title: 'Inscripción', body: 'Recibe directamente los costos, próximas fechas y procedimiento de contratación.' },
+        ].map((item, index) => (
+          <article key={item.title} className="border border-white/10 bg-[#111] p-6">
+            <span className="font-hero text-3xl text-oc-red">0{index + 1}</span>
+            <h2 className="mt-4 font-hero text-2xl uppercase">{item.title}</h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/65">{item.body}</p>
+          </article>
+        ))}
       </section>
+      <p className="mx-auto max-w-7xl px-4 text-xs text-white/50 sm:px-6 lg:px-10">
+        Información comercial sujeta a confirmación. Esta página no promete emisión de certificados,
+        acreditaciones o reconocimientos oficiales sin documentación del programa correspondiente.
+      </p>
     </div>
   )
 }
