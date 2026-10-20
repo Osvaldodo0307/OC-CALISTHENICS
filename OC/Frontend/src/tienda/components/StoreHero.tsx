@@ -42,7 +42,7 @@ export default function StoreHero() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" aria-hidden />
           <div className="absolute bottom-0 left-0 right-0 p-6">
             <p className="text-[10px] font-bold uppercase tracking-widest text-oc-red">Ropa deportiva</p>
-            <p className="mt-1 font-hero text-3xl uppercase">VISte LA DISCIPLINA</p>
+            <p className="mt-1 font-hero text-3xl uppercase">VISTE LA DISCIPLINA</p>
             <span className="mt-2 inline-block text-xs font-bold uppercase text-white">Explorar ropa →</span>
           </div>
         </Link>
