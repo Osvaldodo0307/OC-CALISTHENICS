@@ -7,33 +7,41 @@ import LeadCaptureForm from '../components/landing/LeadCaptureForm'
 import WhatsAppLink from '../components/WhatsAppLink'
 import { featuredTestimonials } from '../data/testimonials'
 
-const IMG_HERO = '/Actualizacion/Front/GYM_Cel.png'
+const IMG_HERO = '/Actualizacion/StitchFotografias2026/hero-oc-club.webp'
 const IMG_COMPETENCIA = '/Competencia.jpeg'
-const IMG_COMUNIDAD = '/Comunidad.jpeg'
+const IMG_COMUNIDAD = '/Actualizacion/StitchFotografias2026/comunidad-oc-club.webp'
 
 const DISCIPLINES: {
   slug: string
   title: string
   blurb: string
   image: string
+  label: string
+  attribute: string
 }[] = [
   {
     slug: 'hyrox',
     title: 'HYROX',
     blurb: 'Entrenamiento híbrido de resistencia, fuerza y rendimiento funcional.',
-    image: '/HYROX.jpeg',
+    image: '/Actualizacion/StitchFotografias2026/hyrox-oc-club.webp',
+    label: 'HÍBRIDO / RACING',
+    attribute: 'RESISTENCIA + FUERZA',
   },
   {
     slug: 'calistenia',
     title: 'Calistenia',
     blurb: 'Control corporal, fuerza relativa y progresiones técnicas.',
-    image: '/Calistenia.jpeg',
+    image: '/Actualizacion/StitchFotografias2026/calistenia-oc-club.webp',
+    label: 'GIMNÁSTICOS',
+    attribute: 'CONTROL CORPORAL',
   },
   {
     slug: 'powerlifting',
     title: 'Powerlifting',
     blurb: 'Fuerza máxima en sentadilla, press banca y peso muerto.',
-    image: '/Powerlifting.jpeg',
+    image: '/Actualizacion/StitchFotografias2026/powerlifting-oc-club.webp',
+    label: 'BARBELL CLUB',
+    attribute: 'FUERZA PURA',
   },
 ]
 
@@ -73,14 +81,14 @@ export default function Landing() {
         <div className="absolute inset-0 z-0">
           <img
             src={IMG_HERO}
-            alt="Interior real del gimnasio OC-CLUB en Tlalpan"
-            className="h-full w-full object-cover object-center"
+            alt="Atleta entrenando fuerza en un gimnasio de alto rendimiento; imagen conceptual"
+            className="h-full w-full object-cover object-[64%_center] sm:object-center"
             fetchPriority="high"
             loading="eager"
             decoding="async"
           />
           <div
-            className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/55 sm:to-black/35"
+            className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/25 sm:via-black/70 sm:to-black/10"
             aria-hidden
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/65" aria-hidden />
@@ -96,7 +104,7 @@ export default function Landing() {
             <h1 className="mt-3 sm:mt-4 font-hero text-[clamp(1.7rem,8.2vw,5.5rem)] leading-[0.96] text-white uppercase tracking-tight">
               OC Club
               <span className="block text-oc-red mt-0.5 sm:mt-1 text-[clamp(1.1rem,4.5vw,2.75rem)]">
-                Entrena en Tlalpan con estructura real
+                Elite Training Community
               </span>
             </h1>
             <p className="mt-3 text-[13px] sm:text-lg text-white/85 font-medium leading-snug max-w-xl">
@@ -114,7 +122,7 @@ export default function Landing() {
                 to="/membresias"
                 className="inline-flex w-full sm:w-auto items-center justify-center px-5 sm:px-8 py-2.5 sm:py-3.5 border border-white/25 text-white hover:bg-white/10 text-sm font-semibold rounded-sm transition-colors"
               >
-                Ver membresías
+                Conocer membresías
               </Link>
             </div>
           </div>
@@ -191,7 +199,7 @@ export default function Landing() {
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-12">
             <div>
-              <h2 className="font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">Qué entrenas</h2>
+              <h2 className="font-hero text-4xl sm:text-5xl text-white uppercase tracking-tight">Entrena con propósito</h2>
               <p className="mt-3 text-white/65 max-w-xl leading-relaxed">
                 Oferta clara por disciplina. Cada bloque tiene su lenguaje; el club unifica estándar y respeto.
               </p>
@@ -203,25 +211,37 @@ export default function Landing() {
               Ver todas las clases →
             </Link>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {DISCIPLINES.map((d) => (
               <article
                 key={d.slug}
-                className="group relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden rounded-lg bg-zinc-900"
+                className="group overflow-hidden rounded-sm border border-white/10 bg-[#101010] transition-colors hover:border-oc-red/60"
               >
-                <img
-                  src={d.image}
-                  alt={`Entrenamiento de ${d.title} en OC-CLUB`}
-                  className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/10"
-                  aria-hidden
-                />
-                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6">
-                  <h3 className="font-display text-xl font-bold text-white tracking-tight">{d.title}</h3>
-                  <p className="mt-2 text-sm text-white/75 leading-snug">{d.blurb}</p>
+                <div className="relative aspect-[4/3] overflow-hidden bg-zinc-900">
+                  <img
+                    src={d.image}
+                    alt={`Atleta practicando ${d.title}; fotografía conceptual`}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/10" aria-hidden />
+                  <span className="absolute left-4 top-4 border border-white/10 bg-oc-red px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white">
+                    {d.label}
+                  </span>
+                </div>
+                <div className="border-t-2 border-oc-red px-5 pb-5 pt-5 sm:px-6">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="font-hero text-2xl uppercase tracking-tight text-white">{d.title}</h3>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-oc-red">{d.attribute}</span>
+                  </div>
+                  <p className="mt-3 min-h-[3rem] text-sm leading-relaxed text-white/75">{d.blurb}</p>
+                  <Link
+                    to="/clases"
+                    className="mt-5 inline-flex items-center gap-2 border-t border-white/10 pt-4 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:text-oc-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-oc-red"
+                  >
+                    Conocer la disciplina <span aria-hidden>→</span>
+                  </Link>
                 </div>
               </article>
             ))}
@@ -273,7 +293,7 @@ export default function Landing() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10">
               <img
                 src={IMG_COMUNIDAD}
-                alt="Comunidad de entrenamiento en OC-CLUB"
+                alt="Atletas realizando entrenamiento funcional en grupo; imagen conceptual"
                 className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
                 loading="lazy"
               />
