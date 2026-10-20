@@ -13,11 +13,11 @@ export default function StoreCTA() {
             Únete al ecosistema OC
           </p>
           <h2 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl">
-            Comprar en OC es más que un drop: es entrar al club.
+            Equipa tu espacio. Impulsa tu preparación.
           </h2>
           <p className="mt-3 text-[14px] text-white/70 sm:text-[15px]">
-            Cada compra apoya a los atletas OC, las clínicas, los seminarios y la comunidad
-            OC-CALISTHENICS. Nuestros socios reciben acceso prioritario a nuevos lanzamientos.
+            Consulta máquinas, poleas, ligas, suplementos o información de certificaciones.
+            El equipo OC te apoya a confirmar especificaciones, disponibilidad y condiciones.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -28,10 +28,10 @@ export default function StoreCTA() {
             Ver catálogo
           </Link>
           <Link
-            to="/membresias"
+            to="/tienda/certificaciones"
             className="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3 text-[12px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-white/10"
           >
-            Conocer membresías
+            Ver certificaciones
           </Link>
         </div>
       </div>
