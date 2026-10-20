@@ -66,6 +66,15 @@ export default function CategoryNav({ activeSlug, variant = 'cards' }: Props) {
           </div>
         </Link>
       ))}
+      <Link to="/tienda/certificaciones" className="group relative flex aspect-[4/3] overflow-hidden rounded-sm border border-white/10 bg-[#111] transition-colors hover:border-oc-red/60">
+        <img src="/tienda/imagenes/certificaciones/banner.png" alt="" aria-hidden loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" aria-hidden />
+        <div className="relative z-10 mt-auto flex w-full flex-col gap-1 p-4">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-oc-red">Formación</span>
+          <span className="font-hero text-xl uppercase text-white">Certificaciones</span>
+          <span className="line-clamp-1 text-[12px] text-white/70">Programas y requisitos por consultar</span>
+        </div>
+      </Link>
     </div>
   )
 }
