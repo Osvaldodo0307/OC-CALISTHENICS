@@ -10,7 +10,7 @@ export default function StoreFooter() {
             Tienda OC
           </p>
           <p className="mt-3 text-[14px] leading-relaxed text-white/65">
-            La tienda oficial de OC-CLUB. Equipamiento, suplementos y merch
+            La tienda oficial de OC-CLUB. Equipamiento, suplementos y certificaciones
             seleccionados por nuestro staff y atletas.
           </p>
         </div>
@@ -20,11 +20,9 @@ export default function StoreFooter() {
             Comprar
           </p>
           <ul className="mt-3 space-y-2 text-[13px]">
-            <li><Link to="/tienda/catalogo" className="hover:text-oc-red">Todos los productos</Link></li>
-            <li><Link to="/tienda/catalogo?categoria=ropa" className="hover:text-oc-red">Ropa</Link></li>
+            <li><Link to="/tienda/catalogo?categoria=entrenamiento" className="hover:text-oc-red">Equipamiento</Link></li>
             <li><Link to="/tienda/catalogo?categoria=suplementos" className="hover:text-oc-red">Suplementos</Link></li>
-            <li><Link to="/tienda/catalogo?categoria=joyeria" className="hover:text-oc-red">Joyería</Link></li>
-            <li><Link to="/tienda/catalogo?categoria=recovery" className="hover:text-oc-red">Recovery</Link></li>
+            <li><Link to="/tienda/certificaciones" className="hover:text-oc-red">Certificaciones</Link></li>
           </ul>
         </div>
 
@@ -34,7 +32,7 @@ export default function StoreFooter() {
           </p>
           <ul className="mt-3 space-y-2 text-[13px]">
             <li><span className="text-white/55">Envíos y devoluciones: consúltanos por WhatsApp</span></li>
-            <li><span className="text-white/55">Guía de tallas: disponible al pedir</span></li>
+            <li><span className="text-white/55">Máquinas y poleas: solicita cotización</span></li>
             <li><Link to="/terminos" className="hover:text-oc-red">Términos y condiciones</Link></li>
             <li><Link to="/aviso-privacidad" className="hover:text-oc-red">Aviso de privacidad</Link></li>
             <li>
