@@ -45,16 +45,16 @@ const ITEMS: TrustItem[] = [
 
 export default function StoreTrustBar() {
   return (
-    <section className="border-y border-neutral-200 bg-neutral-50">
+    <section className="border-y border-white/10 bg-[#101010]">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 py-6 sm:grid-cols-2 sm:px-6 md:grid-cols-4 md:gap-6 md:py-8 lg:px-10">
         {ITEMS.map((item) => (
           <div key={item.title} className="flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-oc-red/10 text-oc-red">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-oc-red/10 text-oc-red">
               {item.icon}
             </div>
             <div className="min-w-0">
-              <p className="text-[13px] font-bold text-neutral-900">{item.title}</p>
-              <p className="text-[12px] leading-snug text-neutral-500">{item.text}</p>
+              <p className="text-[13px] font-bold text-white">{item.title}</p>
+              <p className="text-[12px] leading-snug text-white/60">{item.text}</p>
             </div>
           </div>
         ))}
