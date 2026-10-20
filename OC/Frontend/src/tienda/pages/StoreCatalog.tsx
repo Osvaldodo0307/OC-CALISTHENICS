@@ -13,16 +13,7 @@ import type {
   StoreCategorySlug,
 } from '../types/store'
 
-const CATEGORY_SLUGS: StoreCategorySlug[] = [
-  'ropa',
-  'joyeria',
-  'suplementos',
-  'peluches',
-  'merch',
-  'entrenamiento',
-  'recovery',
-  'promo',
-]
+const CATEGORY_SLUGS: StoreCategorySlug[] = ['entrenamiento', 'suplementos']
 
 function isStoreCategory(value: string | null): value is StoreCategorySlug {
   return !!value && (CATEGORY_SLUGS as string[]).includes(value)
@@ -87,7 +78,7 @@ export default function StoreCatalog() {
           <p className="mt-2 max-w-2xl text-[14px] text-neutral-500">
             {categoryMeta
               ? categoryMeta.tagline
-              : 'Explora todos los artículos oficiales OC. Filtra por categoría, precio y disponibilidad.'}
+              : 'Explora equipamiento y suplementos de OC-STORE. Para máquinas y poleas, solicita una cotización personalizada.'}
           </p>
 
           
