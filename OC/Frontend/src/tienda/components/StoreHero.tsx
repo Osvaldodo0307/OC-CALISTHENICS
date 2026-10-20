@@ -19,11 +19,11 @@ export default function StoreHero() {
             <span className="h-[2px] w-9 bg-oc-red" aria-hidden /> OC-STORE · CATÁLOGO OFICIAL
           </p>
           <h1 className="font-hero text-[clamp(3rem,7vw,6.5rem)] uppercase leading-[0.95] tracking-tight">
-            HARDWARE <span className="text-oc-red">&</span> ATHLETIC GEAR
+            EQUIPAMIENTO <span className="text-oc-red">&</span> FORMACIÓN
           </h1>
           <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
-            Equípate con la actitud de OC-CLUB. Explora ropa, equipamiento, recuperación
-            y suplementos. Consulta disponibilidad y precios antes de confirmar tu pedido.
+            OC-STORE se especializa en máquinas, poleas, barras, ligas y accesorios de entrenamiento,
+            suplementos y certificaciones. Consulta disponibilidad y cotizaciones antes de confirmar.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link to="/tienda/catalogo" className="inline-flex items-center justify-center bg-oc-red px-6 py-3 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-oc-red-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
@@ -37,13 +37,13 @@ export default function StoreHero() {
             Pedidos coordinados por WhatsApp. No se procesan pagos en línea.
           </p>
         </div>
-        <Link to="/tienda/catalogo?categoria=ropa" className="group relative hidden aspect-[4/3] overflow-hidden border border-white/15 bg-[#111] lg:block" aria-label="Explorar ropa deportiva en OC-STORE">
-          <img src={TIENDA_HERO_EDITORIAL} alt="Selección conceptual de ropa deportiva negra" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+        <Link to="/tienda/catalogo?categoria=suplementos" className="group relative hidden aspect-[4/3] overflow-hidden border border-white/15 bg-[#111] lg:block" aria-label="Explorar suplementos en OC-STORE">
+          <img src={TIENDA_HERO_EDITORIAL} alt="Fotografía conceptual de suplementos deportivos" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" aria-hidden />
           <div className="absolute bottom-0 left-0 right-0 p-6">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-oc-red">Ropa deportiva</p>
-            <p className="mt-1 font-hero text-3xl uppercase">VISTE LA DISCIPLINA</p>
-            <span className="mt-2 inline-block text-xs font-bold uppercase text-white">Explorar ropa →</span>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-oc-red">Suplementos</p>
+            <p className="mt-1 font-hero text-3xl uppercase">NUTRE TU PROGRESO</p>
+            <span className="mt-2 inline-block text-xs font-bold uppercase text-white">Ver suplementos →</span>
           </div>
         </Link>
       </div>
