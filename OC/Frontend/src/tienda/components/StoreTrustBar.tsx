@@ -6,8 +6,8 @@ interface TrustItem {
 
 const ITEMS: TrustItem[] = [
   {
-    title: 'Producto oficial OC',
-    text: 'Artículos de la marca y selección comercial OC-CALISTHENICS.',
+    title: 'Especialización OC-STORE',
+    text: 'Selección de equipamiento y suplementos; certificaciones por consulta directa.',
     icon: (
       <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m9 12 2 2 4-4m5.6 4a9 9 0 1 1-17.2 0 9 9 0 0 1 17.2 0Z" />
