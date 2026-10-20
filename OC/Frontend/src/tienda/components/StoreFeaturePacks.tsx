@@ -5,7 +5,7 @@ const FOCUS = [
     number: '01',
     eyebrow: 'FUERZA Y TÉCNICA',
     title: 'ENTRENAMIENTO SIN CONCESIONES',
-    description: 'Herramientas para entrenar con intención: equipos, agarres, bandas y accesorios.',
+    description: 'Equipos de fuerza y acondicionamiento: máquinas, poleas, barras, ligas y accesorios sujetos a cotización.',
     image: '/tienda/stitch2026/equipamiento-stitch.webp',
     to: '/tienda/catalogo?categoria=entrenamiento',
     action: 'EXPLORAR EQUIPAMIENTO',
@@ -32,7 +32,7 @@ export default function StoreFeaturePacks() {
             <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-oc-red">EQUIPA TU OBJETIVO</p>
             <h2 className="font-hero text-3xl uppercase leading-tight text-white sm:text-4xl">SELECCIONES <span className="text-oc-red">DE RENDIMIENTO</span></h2>
           </div>
-          <p className="max-w-sm text-xs leading-relaxed text-white/55">Explora nuestras categorías. Los artículos y precios se confirman antes de realizar el pedido.</p>
+          <p className="max-w-sm text-xs leading-relaxed text-white/55">Equipamiento y suplementos se cotizan o confirman antes de cada pedido. Consulta las certificaciones en su sección propia.</p>
         </header>
         <div className="grid gap-4 lg:grid-cols-2">
           {FOCUS.map((item) => (
