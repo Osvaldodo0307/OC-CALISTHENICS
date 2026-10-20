@@ -12,20 +12,21 @@ import type { StoreCategorySlug } from '../types/store'
 
 export const PRODUCTO_IMAGEN_PENDIENTE = '/tienda/imagenes/pendiente.svg'
 
-export const TIENDA_HERO_PRINCIPAL = '/tienda/imagenes/hero/principal-front.png'
+export const TIENDA_HERO_PRINCIPAL = '/tienda/stitch2026/equipamiento-stitch.webp'
+export const TIENDA_HERO_EDITORIAL = '/tienda/stitch2026/ropa-stitch.webp'
 
 /** Cover/banner para la tarjeta de Certificaciones en el home (en `public/tienda/imagenes/certificaciones/banner.png`). */
 export const CERTIFICACIONES_BANNER = '/tienda/imagenes/certificaciones/banner.png'
 
 /** Cover de categoría (paneles). */
 export const CATEGORIA_COVER: Record<StoreCategorySlug, string> = {
-  ropa: '/tienda/imagenes/categorias/ropa.png',
+  ropa: '/tienda/stitch2026/ropa-stitch.webp',
   joyeria: '/tienda/imagenes/categorias/joyeria.png',
-  suplementos: '/tienda/imagenes/categorias/suplementos.png',
+  suplementos: '/tienda/stitch2026/suplementos-stitch.webp',
   peluches: '/tienda/imagenes/categorias/peluches.png',
   merch: '/tienda/imagenes/categorias/merch.png',
-  entrenamiento: '/tienda/imagenes/categorias/entrenamiento.png',
-  recovery: '/tienda/imagenes/categorias/recovery.png',
+  entrenamiento: '/tienda/stitch2026/equipamiento-stitch.webp',
+  recovery: '/tienda/stitch2026/recovery-stitch.webp',
   promo: '/tienda/imagenes/categorias/promo.png',
 }
 
