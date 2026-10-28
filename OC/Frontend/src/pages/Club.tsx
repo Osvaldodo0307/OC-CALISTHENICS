@@ -17,10 +17,10 @@ export default function Club() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-oc-dark to-oc-metal">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl font-bold">
-            <span className="text-oc-light">Conoce</span> <span className="text-oc-red">El Club</span>
+            <span className="text-oc-light">Tu gimnasio en</span> <span className="text-oc-red">San Pedro Mártir, Tlalpan</span>
           </h1>
           <p className="mt-5 text-lg text-oc-muted max-w-3xl mx-auto">
-            Un recorrido por las zonas de entrenamiento que hacen de OC-CLUB una experiencia real de alto rendimiento.
+            Conoce las zonas de gimnasio, calistenia y fuerza de OC-CLUB en Ejidos de San Pedro Mártir, Tlalpan, Ciudad de México.
           </p>
         </div>
       </section>

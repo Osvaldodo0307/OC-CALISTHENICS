@@ -104,7 +104,7 @@ export default function Landing() {
             <h1 className="mt-3 sm:mt-4 font-hero text-[clamp(1.7rem,8.2vw,5.5rem)] leading-[0.96] text-white uppercase tracking-tight">
               OC Club
               <span className="block text-oc-red mt-0.5 sm:mt-1 text-[clamp(1.1rem,4.5vw,2.75rem)]">
-                Elite Training Community
+                Gimnasio en Tlalpan
               </span>
             </h1>
             <p className="mt-3 text-[13px] sm:text-lg text-white/85 font-medium leading-snug max-w-xl">
@@ -435,6 +435,43 @@ export default function Landing() {
         </div>
       </section>
 
+      <section className="py-14 md:py-16 bg-oc-carbon border-t border-white/[0.06]" aria-labelledby="preguntas-gimnasio">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-10">
+          <h2 id="preguntas-gimnasio" className="font-hero text-3xl sm:text-4xl text-white uppercase tracking-tight">
+            Entrenar en OC-CLUB, Tlalpan
+          </h2>
+          <div className="mt-6 divide-y divide-white/10">
+            <details className="py-4">
+              <summary className="cursor-pointer font-semibold text-white">¿Dónde está el gimnasio OC-CLUB?</summary>
+              <p className="mt-3 text-sm text-white/70 leading-relaxed">
+                Estamos en Lázaro Cárdenas 8, Ejidos de San Pedro Mártir, C.P. 14400, Tlalpan, Ciudad de México.
+                Puedes escribirnos al 55 6786 9589 para agendar una visita.
+              </p>
+            </details>
+            <details className="py-4">
+              <summary className="cursor-pointer font-semibold text-white">¿Qué clases puedo tomar en Tlalpan?</summary>
+              <p className="mt-3 text-sm text-white/70 leading-relaxed">
+                OC-CLUB ofrece calistenia, HYROX y powerlifting, además del acceso al gimnasio.
+                Consulta las <Link to="/clases" className="underline hover:text-oc-red">clases y horarios</Link> para elegir tu disciplina.
+              </p>
+            </details>
+            <details className="py-4">
+              <summary className="cursor-pointer font-semibold text-white">¿Necesito experiencia para empezar calistenia?</summary>
+              <p className="mt-3 text-sm text-white/70 leading-relaxed">
+                Las clases contemplan distintos niveles y progresiones. Comenta tus objetivos y experiencia con el equipo para elegir el grupo adecuado.
+              </p>
+            </details>
+            <details className="py-4">
+              <summary className="cursor-pointer font-semibold text-white">¿Cómo consulto las membresías y Recovery Lab?</summary>
+              <p className="mt-3 text-sm text-white/70 leading-relaxed">
+                En <Link to="/membresias" className="underline hover:text-oc-red">membresías y servicios</Link> puedes revisar OC GYM,
+                Acceso Total, clases y Recovery Lab. Confirma con el equipo los servicios incluidos y los costos adicionales.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
       {/* Aviso comercial */}
       <section className="py-10 md:py-12 bg-oc-carbon border-t border-white/[0.06]">
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-10">
@@ -462,12 +499,21 @@ export default function Landing() {
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-oc-red/90">Contacto</p>
               <h2 className="mt-3 font-hero text-3xl sm:text-4xl text-white uppercase tracking-tight">
-                ¿Listo para visitarnos?
+                Gimnasio en San Pedro Mártir, Tlalpan
               </h2>
               <p className="mt-4 text-white/70 leading-relaxed">
-                Estamos en Tlalpan, CDMX. Escríbenos por WhatsApp para agendar una visita o déjanos tus datos y te
-                llamamos.
+                Visítanos en Lázaro Cárdenas 8, Ejidos de San Pedro Mártir, C.P. 14400, Tlalpan, Ciudad de México.
+                Abrimos de lunes a viernes de 6:00 a 23:00 y los sábados de 8:00 a 16:00.
+                Escríbenos por WhatsApp para agendar una visita o déjanos tus datos y te llamamos.
               </p>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=L%C3%A1zaro+C%C3%A1rdenas+8%2C+Ejidos+de+San+Pedro+M%C3%A1rtir%2C+14400%2C+Tlalpan%2C+Ciudad+de+M%C3%A9xico"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-block text-sm text-white underline hover:text-oc-red"
+              >
+                Cómo llegar a OC-CLUB en Google Maps
+              </a>
               <WhatsAppLink
                 preset="visita"
                 className="mt-6 inline-flex items-center justify-center rounded-sm bg-oc-red px-6 py-3 text-sm font-bold text-white hover:bg-oc-red-deep transition-colors"

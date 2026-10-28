@@ -13,12 +13,12 @@ export default function Membresias() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-oc-dark to-oc-metal">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="text-oc-red">¡No es un entrenamiento,</span>
+            <span className="text-oc-red">Membresías de gimnasio</span>
             <br />
-            <span className="text-oc-light">es una experiencia única!</span>
+            <span className="text-oc-light">en Tlalpan</span>
           </h1>
           <p className="text-lg text-oc-muted mb-6">
-            Elige el plan que mejor se adapte a tus objetivos
+            Elige tu plan OC-CLUB en Ejidos de San Pedro Mártir: gimnasio, clases, Acceso Total y Recovery Lab.
           </p>
 
           {/* Horarios */}

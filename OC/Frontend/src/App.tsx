@@ -13,6 +13,7 @@ import PublicLayout from './layouts/PublicLayout'
 import AuthLayout from './layouts/AuthLayout'
 import AppLayout from './layouts/AppLayout'
 import WebOnlyModule from './pages/app/WebOnlyModule'
+import RouteSeo from './components/RouteSeo'
 
 const Landing = lazy(() => import('./pages/Landing'))
 const Membresias = lazy(() => import('./pages/Membresias'))
@@ -153,6 +154,7 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, RootErrorBoun
 function App() {
   return (
     <BrowserRouter>
+      <RouteSeo />
       <AuthProvider>
         <ScrollToTop />
         <NetworkStatusBanner />

@@ -106,10 +106,17 @@ export default function PublicNav() {
           <div className="hidden lg:flex flex-1 min-w-0 items-center justify-end gap-0.5 xl:gap-1">
             {NAV_ENTRIES.map((entry) =>
               entry.kind === 'link' ? (
-                <button
+                <Link
                   key={entry.label}
-                  type="button"
-                  onClick={() => handleNavClick(entry.to, entry.hash)}
+                  to={entry.hash ? `${entry.to}#${entry.hash}` : entry.to}
+                  onClick={(event) => {
+                    setMobileMenuOpen(false)
+                    setOpenGroup(null)
+                    if (entry.hash) {
+                      event.preventDefault()
+                      handleNavClick(entry.to, entry.hash)
+                    }
+                  }}
                   className={`px-3 xl:px-3.5 py-2 rounded-sm text-[11px] xl:text-[12px] font-semibold tracking-wide transition-colors border border-transparent ${
                     isActive(entry.to, entry.hash)
                       ? 'text-oc-light bg-white/[0.05] border-white/[0.07]'
@@ -117,7 +124,7 @@ export default function PublicNav() {
                   }`}
                 >
                   {entry.label}
-                </button>
+                </Link>
               ) : (
                 <div key={entry.label} ref={entry.label === ECOSISTEMA_LABEL ? groupDesktopRef : undefined} className="relative">
                   <button
@@ -201,16 +208,23 @@ export default function PublicNav() {
             <div className="flex flex-col gap-0.5">
               {NAV_ENTRIES.map((entry) =>
                 entry.kind === 'link' ? (
-                  <button
+                  <Link
                     key={entry.label}
-                    type="button"
-                    onClick={() => handleNavClick(entry.to, entry.hash)}
+                    to={entry.hash ? `${entry.to}#${entry.hash}` : entry.to}
+                    onClick={(event) => {
+                      setMobileMenuOpen(false)
+                      setOpenGroup(null)
+                      if (entry.hash) {
+                        event.preventDefault()
+                        handleNavClick(entry.to, entry.hash)
+                      }
+                    }}
                     className={`px-3 py-2.5 text-left rounded-sm text-sm font-medium tracking-wide transition-colors ${
                       isActive(entry.to, entry.hash) ? 'text-oc-light bg-white/[0.05]' : 'text-oc-muted hover:text-oc-light'
                     }`}
                   >
                     {entry.label}
-                  </button>
+                  </Link>
                 ) : (
                   <div key={entry.label} className="flex flex-col">
                     <button

@@ -12,11 +12,11 @@ export default function ClasesInfo() {
       <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-oc-dark to-oc-metal">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4">
-            <span className="text-oc-light">Clases y</span>{' '}
-            <span className="text-oc-red">Servicios</span>
+            <span className="text-oc-light">Clases y entrenamiento en</span>{' '}
+            <span className="text-oc-red">Tlalpan</span>
           </h1>
           <p className="text-base sm:text-xl text-oc-muted mb-2 sm:mb-8">
-            Clases grupales de 60 minutos · Todos los niveles
+            Calistenia, HYROX y powerlifting en OC-CLUB, San Pedro Mártir · Clases grupales de 60 minutos · Todos los niveles
           </p>
         </div>
       </section>
